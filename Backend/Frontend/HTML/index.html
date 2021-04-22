@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <link rel="stylesheet" href="/css">
+    <script src="http://localhost:8080/Frontend/JS/p5.js">
+    </script>
+    <script defer src="http://localhost:8080/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+
+    <div id="content">
+        <div class="row-1">
+            <h1 id="headline">Snake</h1>
+        </div>
+        <div class="column">
+            <div class="row-2">
+                <div id="game">
+                    <div id="sketchHere"></div>
+                    <div class="row-1">
+                        <input id="input-name" type="text" placeholder="name">
+                        <button id="start">Start snake</button>
+                    </div>
+                </div>
+
+                <div class="row-2" id="scores">
+                    <h2>High scores</h2>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!--
+    <script src="../Frontend/JS/snake.js"></script>
+    <script src="../Frontend/JS/food.js"></script>
+    <script defer src="../Frontend/JS/clientSnake.js"></script>
+    <script src="../Frontend/sketch.js"></script>
+    -->
+        <script src="/js"></script>
+</body>
+
+</html>
