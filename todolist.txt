@@ -1,0 +1,4 @@
+Lag database for typ highscore
+Feilmelding når piltrykk ved spill ikke aktiv __ done
+Unik farge på slangen for hver spiller
+Dø når slangen treffer seg selv eller andre slanger
