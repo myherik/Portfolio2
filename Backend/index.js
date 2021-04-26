@@ -5,26 +5,23 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-server.listen(8080, () => {
-
-});
+const path = require('path');
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/Frontend/HTML/index.html")
+    res.sendFile(path.join(__dirname, "../Frontend/HTML/index.html"))
 })
 
-app.get("/css", (req, res) => {
-    res.sendFile(__dirname + "/Frontend/CSS/main.css")
+app.get("/CSS/:file", (req, res) => {
+    res.sendFile(path.join(__dirname, "../") + "Frontend/CSS/" + req.params.file)
 })
 
-app.get("/js", (req, res) => {
-    res.sendFile(__dirname + "/Frontend/JS/sketch.js")
+app.get("/JS/:file", (req, res) => {
+    res.sendFile(path.join(__dirname, "../") + "/Frontend/JS/" + req.params.file)
 })
 
+io.on('connection', (socket) => {
 
-io.on('connection', socket => {
-
-    socket.on('register', data => {
+    socket.on('register', (data) => {
         /*
         {
             name: name,
@@ -32,11 +29,23 @@ io.on('connection', socket => {
         }
         */
 
-        socket.subscribe.emit(data);
+        socket.broadcast.emit('register', data);
         console.log(data);
     });
 
     socket.on('update', data => {
-        socket.subscribe.emit(data);
+        socket.broadcast.emit('update', data);
     });
+
+    socket.on('dead', data => {
+        socket.broadcast.emit('dead', data);
+    })
+
+    socket.on('foodUpdate', data => {
+        socket.broadcast.emit('foodUpdate', data)
+    })
 })
+
+server.listen(8080, () => {
+    console.log(__dirname)
+});

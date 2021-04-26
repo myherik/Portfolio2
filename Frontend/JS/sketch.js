@@ -5,19 +5,25 @@ let startButton = document.getElementById("start");
 let snake = null;
 let food = null;
 
-const foodList = [];
+//let foodList = [];
+
+let users = [];
+let snakeList = {};
+let foodList = {};
 
 let w, h;
 
 startButton.addEventListener("click", (e) => {
+    console.log(users.indexOf("finnesIkke"));
     startButton.style.display = "none";
-    food = new Food(200, 200);
-    foodList.push(food);
-    snake = new Snake();
+    snake = new Snake(document.getElementById("input-name").value);
+    food = new Food(200, 200, snake.name);
+    foodList[snake.name] = food;
     snake.setDir(0, 0);
     const obj = {
         name: document.getElementById("input-name").value,
-        snake: snake
+        snake: snake,
+        food: food
     };
     socketReg(obj)
 });
@@ -32,19 +38,32 @@ function setup() {
 
 function draw() {
     background(220);
+    for (let user of users) {
+        foodList[user].show();
+    }
     if (food !== null) {
         food.show();
     }
+
     if (snake !== null) {
         snake.update();
         snake.show();
+        update({
+            name: snake.name,
+            snake: snake
+        });
         snake.eatFood(food)
         if (snake.checkDead()) {
+            dead(snake.name);
             snake = null;
-            //Hvis highscore etc
+            //vis highscore etc
             startButton.style.display = "block";
             startButton.innerHTML = "Start på nytt";
         }
+    }
+
+    for (let user of users) {
+        snakeList[user].show();
     }
 
 }

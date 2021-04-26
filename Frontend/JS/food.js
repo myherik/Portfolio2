@@ -1,10 +1,11 @@
 class Food{
 
-    constructor(x, y){
+    constructor(x, y, name){
         console.log(x + " " + y)
         this.x = x;
         this.y = y;
-        this.food = createVector(this.x, this.y);
+        this.food = new Point(this.x, this.y);
+        this.name = name;
     }
 
     show() {

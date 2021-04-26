@@ -1,6 +1,7 @@
 Lag database for typ highscore
 Feilmelding når piltrykk ved spill ikke aktiv __ done
-Unik farge på slangen for hver spiller
+Unik farge på slangen for hver spiller __ done
 Dø når slangen treffer seg selv eller andre slanger
-implementer express
-name follows snake continously
+implementer express __ done
+name follows snake continously __ done
+mat kan ikke lages på sted slange allerede befinner seg
