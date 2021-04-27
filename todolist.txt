@@ -1,7 +1,12 @@
 Lag database for typ highscore
-Feilmelding når piltrykk ved spill ikke aktiv __ done
-Unik farge på slangen for hver spiller __ done
-Dø når slangen treffer seg selv eller andre slanger
-implementer express __ done
-name follows snake continously __ done
+        Feilmelding når piltrykk ved spill ikke aktiv __ done
+        Unik farge på slangen for hver spiller __ done
+    Dø når slangen treffer seg selv eller andre slanger __ ish done
+        implementer express __ done
+        name follows snake continously __ done
 mat kan ikke lages på sted slange allerede befinner seg
+mat kan spises av alle slanger uavhengig av hvem maten "tilhører"
+død slange blir til mat
+"Hvordan spille spillet instruksjoner"
+innlogging for brukere (ingen like brukernavn og highscores skal bli accurate)
+Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)

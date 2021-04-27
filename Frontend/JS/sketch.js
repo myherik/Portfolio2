@@ -53,6 +53,14 @@ function draw() {
             snake: snake
         });
         snake.eatFood(food)
+
+        for (let user of users) {
+
+            if (snake.hitSnake(snakeList[user])) {
+                dead(snakeList[snake.name]);
+            }
+        }
+
         if (snake.checkDead()) {
             dead(snake.name);
             snake = null;
@@ -87,6 +95,7 @@ function keyPressed() {
                 snake.setDir(0, -1);
             }
         } else if (key == ' ') {
+            snake.setDir(0, 0);
         }
     }
 }

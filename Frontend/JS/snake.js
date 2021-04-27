@@ -57,11 +57,39 @@ class Snake {
         return false;
     }
 
+    hitSnake(snake) {
+        let i = 0;
+        for (i; i < snake.body.length; i++) {
+            if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
+                && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
+                console.log(this.name + " died trying to take a bite of " + snake.name);
+                return true;
+            }
+            else if (this.x - 2.5 < snake.body[i].x + 5 && this.x + 2.5 > snake.body[i].x + 5
+                && this.y - 2.5 < snake.body[i].y + 5 && this.y + 2.5 > snake.body[i].y + 5) {
+                console.log(this.name + " died trying to take a bite of " + snake.name);
+                return true;
+            }
+            else if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
+                && this.y - 2.5 < snake.body[i].y + 5 && this.y + 2.5 > snake.body[i].y + 5) {
+                console.log(this.name + " died trying to take a bite of " + snake.name);
+                return true;
+            }
+            else if (this.x - 2.5 < snake.body[i].x + 5 && this.x + 2.5 > snake.body[i].x + 5
+                && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
+                console.log(this.name + " died trying to take a bite of " + snake.name);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     eatFood(food) {
         if (food.food.x - 2.5 < this.x && food.food.x + 2.5 > this.x && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
             food.refreshFood();
-            foodUpdate({food: food, name: food.name})
-            console.log("treff")
+            foodUpdate({ food: food, name: food.name })
+            console.log("nom nom")
             let i;
             for (i = 0; i < 60; i++) {
                 this.grow();
@@ -71,7 +99,7 @@ class Snake {
         else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
             && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
             food.refreshFood();
-            foodUpdate({food: food, name: food.name})
+            foodUpdate({ food: food, name: food.name })
             console.log("treff")
             let i;
             for (i = 0; i < 60; i++) {
@@ -81,7 +109,7 @@ class Snake {
         else if (food.food.x - 2.5 < this.x && food.food.x + 2.5 > this.x
             && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
             food.refreshFood();
-            foodUpdate({food: food, name: food.name})
+            foodUpdate({ food: food, name: food.name })
             console.log("treff")
             let i;
             for (i = 0; i < 60; i++) {
@@ -91,7 +119,7 @@ class Snake {
         else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
             && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
             food.refreshFood();
-            foodUpdate({food: food, name: food.name})
+            foodUpdate({ food: food, name: food.name })
             console.log("treff")
             let i;
             for (i = 0; i < 60; i++) {
