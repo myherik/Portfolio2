@@ -2,6 +2,10 @@
 let startButton = document.getElementById("start");
 //let sketchHere = document.getElementById("sketchHere");
 
+(() => {
+    getData();
+})();
+
 let snake = null;
 let food = null;
 
@@ -14,7 +18,7 @@ let foodList = {};
 let w, h;
 
 startButton.addEventListener("click", (e) => {
-    console.log(users.indexOf("finnesIkke"));
+
     startButton.style.display = "none";
     snake = new Snake(document.getElementById("input-name").value);
     food = new Food(200, 200, snake.name);
@@ -33,13 +37,13 @@ function setup() {
     w = width;
     h = height;
     canvas.parent("sketchHere");
-    frameRate(120);
+    frameRate(60);
 }
 
 function draw() {
     background(220);
     for (let user of users) {
-        foodList[user].show();
+        //foodList[user].show();
     }
     if (food !== null) {
         food.show();
@@ -57,11 +61,14 @@ function draw() {
         for (let user of users) {
 
             if (snake.hitSnake(snakeList[user])) {
-                dead(snakeList[snake.name]);
+                dead(snake.name);
+                snake = null;
+                startButton.style.display = "block";
+                startButton.innerHTML = "Start på nytt";
             }
         }
 
-        if (snake.checkDead()) {
+        if (snake !== null && snake.checkDead()) {
             dead(snake.name);
             snake = null;
             //vis highscore etc

@@ -4,6 +4,7 @@ Lag database for typ highscore
     Dø når slangen treffer seg selv eller andre slanger __ ish done
         implementer express __ done
         name follows snake continously __ done
+        docker container for online spill :) __ done
 mat kan ikke lages på sted slange allerede befinner seg
 mat kan spises av alle slanger uavhengig av hvem maten "tilhører"
 død slange blir til mat

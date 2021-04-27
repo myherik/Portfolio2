@@ -1,11 +1,9 @@
 const socket = io();
 
+let updateBool = false;
+
 const socketReg = (regObj) => {
     socket.emit('register', regObj);
-}
-
-const update = (regObj) => {
-    socket.emit('update', regObj);
 }
 
 socket.on('register', regObj => {
@@ -22,10 +20,39 @@ socket.on('register', regObj => {
     foodList[regObj.name] = food;
 })
 
+const getData = () => {
+    console.log('get-data kalt')
+    socket.emit('get-data', "")
+}
+
+socket.on('get-data', obj => {
+    console.log("get-data motatt")
+    updateBool = true;
+
+    console.log(obj.users);
+
+    users = obj.users;
+    for (let user of users) {
+        const newSnake = new Snake(user);
+        newSnake.body = obj.snakes[user].body;
+        newSnake.rgb = obj.snakes[user].rgb;
+        snakeList[user] = newSnake;
+    }
+    console.log(snakeList)
+
+})
+
+const update = (regObj) => {
+    socket.emit('update', regObj);
+}
+
 socket.on('update', (regObj) => {
+    //console.log(regObj);
     //const outSnake = new Snake(regObj.name);
     //outSnake.body = regObj.snake.body;
-    snakeList[regObj.name].body = regObj.snake.body
+    if (updateBool) {
+        snakeList[regObj.name].body = regObj.snake.body;
+    }
     //snakeList[regObj.name] = outSnake;
 })
 
@@ -34,12 +61,12 @@ const foodUpdate = (food) => {
 }
 
 socket.on('foodUpdate', (food) => {
-    foodList[food.name].x = food.food.x;
-    foodList[food.name].y = food.food.y;
+    //foodList[food.name].x = food.food.x;
+    //foodList[food.name].y = food.food.y;
 })
 
 const dead = (name) => {
-    socket.emit('dead', {name: name})
+    socket.emit('dead', { name: name })
 }
 
 socket.on('dead', (name) => {
