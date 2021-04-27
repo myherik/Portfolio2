@@ -24,6 +24,7 @@ let users = [];
 let snakes = {};
 
 io.on('connection', (socket) => {
+    console.log(socket.id)
     socket.on('get-data', obj => {
 
         socket.emit('get-data', { users: users, snakes: snakes })
@@ -37,7 +38,7 @@ io.on('connection', (socket) => {
         }
         */
 
-        userBySoket[socket] = data.name;
+        userBySoket[socket.id] = data.name;
         users.push(data.name);
         snakes[data.name] = data.snake;
 
@@ -50,8 +51,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('dead', data => {
-        let user = userBySoket[socket];
-        if (user !== null) {
+        let user = userBySoket[socket.id];
+        console.log(user);
+        if (user !== undefined) {
             socket.broadcast.emit('dead', data);
             delete snakes[user];
             users.splice(users.indexOf(user), 1);
@@ -63,9 +65,11 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', obj => {
-        let user = userBySoket[socket];
-        if (user !== null) {
-            socket.broadcast.emit('dead', {name: user});
+        let user = userBySoket[socket.id];
+        console.log(user);
+        if (user !== undefined) {
+            console.log(user)
+            socket.broadcast.emit('dead', { name: user });
             delete snakes[user];
             users.splice(users.indexOf(user), 1);
         }
