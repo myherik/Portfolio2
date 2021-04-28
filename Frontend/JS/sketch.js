@@ -9,8 +9,6 @@ let startButton = document.getElementById("start");
 let snake = null;
 let food = null;
 
-//let foodList = [];
-
 let users = [];
 let snakeList = {};
 let foodList = {};
@@ -20,8 +18,37 @@ let w, h;
 startButton.addEventListener("click", (e) => {
 
     startButton.style.display = "none";
-    snake = new Snake(document.getElementById("input-name").value);
-    food = new Food(200, 200, snake.name);
+    while (snake === null) {
+        let testSnake = new Snake(document.getElementById("input-name").value);
+        let available = true;
+        for (let user of users) {
+            if (testSnake.hitSnake(snakeList[user])) {
+                available = false;
+                break;
+            }
+        }
+        if (available) {
+            snake = testSnake;
+        }
+    }
+    while (food === null) {
+        let tempx = Math.floor(Math.random() * 715 + 2.5);
+        let tempy = Math.floor(Math.random() * 495 + 2.5);
+        let bool = true;
+        for (let user of users) {
+            if (foodList[user].x === tempx && foodList[user].y === tempy) {
+                bool = false;
+                break;
+            }
+        }
+        if (!bool) {
+            continue;
+        }
+        food = new Food(tempx, tempy, snake.name);
+        console.log("food is made!");
+        break;
+    }
+
     foodList[snake.name] = food;
     snake.setDir(0, 0);
     const obj = {
@@ -41,12 +68,16 @@ function setup() {
 }
 
 function draw() {
+
     background(220);
-    for (let user of users) {
-        //foodList[user].show();
-    }
+
     if (food !== null) {
+        //console.log(food.x + " " + food.y);
         food.show();
+    }
+
+    for (let user of users) {
+        foodList[user].show();
     }
 
     if (snake !== null) {
@@ -56,9 +87,10 @@ function draw() {
             name: snake.name,
             snake: snake
         });
-        snake.eatFood(food)
+        snake.eatFood(food);
 
         for (let user of users) {
+            snake.eatFood(foodList[user])
 
             if (snake.hitSnake(snakeList[user])) {
                 dead(snake.name);

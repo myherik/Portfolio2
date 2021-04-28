@@ -37,6 +37,11 @@ socket.on('get-data', obj => {
         newSnake.body = obj.snakes[user].body;
         newSnake.rgb = obj.snakes[user].rgb;
         snakeList[user] = newSnake;
+
+        const newFood = new Food(0, 0, user);
+        newFood.x = obj.foods[user].x;
+        newFood.y = obj.foods[user].y;
+        foodList[user] = newFood;
     }
     console.log(snakeList)
 
@@ -56,13 +61,18 @@ socket.on('update', (regObj) => {
     //snakeList[regObj.name] = outSnake;
 })
 
-const foodUpdate = (food) => {
-    socket.emit('foodUpdate', food)
+const foodUpdate = (foodObj) => {
+    socket.emit('foodUpdate', foodObj)
 }
 
-socket.on('foodUpdate', (food) => {
-    //foodList[food.name].x = food.food.x;
-    //foodList[food.name].y = food.food.y;
+socket.on('foodUpdate', (foodObj) => {
+    if (foodObj.name === snake.name) {
+        food.x = foodObj.food.x;
+        food.y = foodObj.food.y;
+    } else {
+        foodList[foodObj.name].x = food.food.x;
+        foodList[foodObj.name].y = food.food.y;
+    }
 })
 
 const dead = (name) => {

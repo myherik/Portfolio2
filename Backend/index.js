@@ -22,37 +22,41 @@ app.get("/JS/:file", (req, res) => {
 let userBySoket = {}
 let users = [];
 let snakes = {};
+let foods = {};
 
 io.on('connection', (socket) => {
     console.log(socket.id)
     socket.on('get-data', obj => {
 
-        socket.emit('get-data', { users: users, snakes: snakes })
+        socket.emit('get-data', { users: users, snakes: snakes, foods: foods })
     })
 
     socket.on('register', (data) => {
         /*
         {
             name: name,
-            snake: snake
+            snake: snake.
+            food: food
         }
         */
 
         userBySoket[socket.id] = data.name;
         users.push(data.name);
         snakes[data.name] = data.snake;
+        foods[data.name] = data.food;
 
         socket.broadcast.emit('register', data);
         console.log(data);
     });
 
     socket.on('update', data => {
+        snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
     });
 
     socket.on('dead', data => {
         let user = userBySoket[socket.id];
-        console.log(user);
+        console.log(user + " died");
         if (user !== undefined) {
             socket.broadcast.emit('dead', data);
             delete snakes[user];
@@ -61,14 +65,14 @@ io.on('connection', (socket) => {
     })
 
     socket.on('foodUpdate', data => {
+        foods[data.name] = data.food;
         socket.broadcast.emit('foodUpdate', data)
     })
 
     socket.on('disconnect', obj => {
         let user = userBySoket[socket.id];
-        console.log(user);
+        console.log(user + " disconnected");
         if (user !== undefined) {
-            console.log(user)
             socket.broadcast.emit('dead', { name: user });
             delete snakes[user];
             users.splice(users.indexOf(user), 1);

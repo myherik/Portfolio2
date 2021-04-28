@@ -3,8 +3,8 @@ class Snake {
 
     constructor(name) {
         this.body = [];
-        this.x = width / 2;
-        this.y = height / 2;
+        this.x = Math.floor(Math.random() * 710 ) + 5;
+        this.y = Math.floor(Math.random() * 490 ) + 5;
         this.body[0] = new Point(this.x, this.y);
         this.xdir = 0;
         this.ydir = 0;
