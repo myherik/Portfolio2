@@ -50,6 +50,13 @@ io.on('connection', (socket) => {
     });
 
     socket.on('update', data => {
+        if (userBySoket[socket.id] === undefined) {
+            userBySoket[socket.id] = data.name;
+            users.push(data.name);
+            snakes[data.name] = data.snake;
+            socket.broadcast.emit('register', data)
+        }
+
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
     });

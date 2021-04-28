@@ -86,7 +86,7 @@ class Snake {
 
 
     eatFood(food) {
-        if (food.food.x - 2.5 < this.x && food.food.x + 2.5 > this.x && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
+        if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
             console.log("nom nom")
@@ -96,8 +96,8 @@ class Snake {
             }
 
         }
-        else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
-            && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
+        else if (food.x - 2.5 < this.x + 5 && food.x + 2.5 > this.x + 5
+            && food.y - 2.5 < this.y + 5 && food.y + 2.5 > this.y + 5) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
             console.log("treff")
@@ -106,7 +106,7 @@ class Snake {
                 this.grow();
             }
         }
-        else if (food.food.x - 2.5 < this.x && food.food.x + 2.5 > this.x
+        else if (food.x - 2.5 < this.x && food.x + 2.5 > this.x
             && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })

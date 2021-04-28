@@ -13,9 +13,12 @@ let users = [];
 let snakeList = {};
 let foodList = {};
 
+let name = null;
+
 let w, h;
 
 startButton.addEventListener("click", (e) => {
+    name = document.getElementById("input-name").value;
 
     startButton.style.display = "none";
     while (snake === null) {
@@ -85,7 +88,8 @@ function draw() {
         snake.show();
         update({
             name: snake.name,
-            snake: snake
+            snake: snake,
+            food: food
         });
         snake.eatFood(food);
 

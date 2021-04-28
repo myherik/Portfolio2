@@ -70,8 +70,8 @@ socket.on('foodUpdate', (foodObj) => {
         food.x = foodObj.food.x;
         food.y = foodObj.food.y;
     } else {
-        foodList[foodObj.name].x = food.food.x;
-        foodList[foodObj.name].y = food.food.y;
+        foodList[foodObj.name].x = foodObj.food.x;
+        foodList[foodObj.name].y = foodObj.food.y;
     }
 })
 
