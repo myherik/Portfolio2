@@ -82,6 +82,7 @@ const dead = (name) => {
 socket.on('dead', (name) => {
     //users[regObj.name].pop();
 
-    users.splice(users.indexOf(name.name), 1)
+    //users.splice(users.indexOf(name.name), 1)
+    users = users.filter(e => e !== name.name)
     delete snakeList[name.name];
 })

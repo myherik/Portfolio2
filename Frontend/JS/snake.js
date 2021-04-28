@@ -32,8 +32,8 @@ class Snake {
     show() {
 
         textSize(8);
-        text(this.name, this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
         fill(this.rgb[0], this.rgb[1], this.rgb[2]);
+        text(this.name, this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
 
         for (let i = 0; i < this.body.length; i++) {
             fill(this.rgb[0], this.rgb[1], this.rgb[2]);

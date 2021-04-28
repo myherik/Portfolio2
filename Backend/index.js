@@ -25,9 +25,9 @@ let snakes = {};
 let foods = {};
 
 io.on('connection', (socket) => {
-    console.log(socket.id)
+    console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
-
+        //console.log(snakes);
         socket.emit('get-data', { users: users, snakes: snakes, foods: foods })
     })
 
@@ -46,11 +46,12 @@ io.on('connection', (socket) => {
         foods[data.name] = data.food;
 
         socket.broadcast.emit('register', data);
-        console.log(data);
+        console.log(data.name + " registered");
     });
 
     socket.on('update', data => {
         if (userBySoket[socket.id] === undefined) {
+            console(data.name + " re registered")
             userBySoket[socket.id] = data.name;
             users.push(data.name);
             snakes[data.name] = data.snake;
@@ -67,7 +68,8 @@ io.on('connection', (socket) => {
         if (user !== undefined) {
             socket.broadcast.emit('dead', data);
             delete snakes[user];
-            users.splice(users.indexOf(user), 1);
+            //users.splice(users.indexOf(user), 1);
+            users = users.filter(e => e !== user)
         }
     })
 
@@ -82,7 +84,8 @@ io.on('connection', (socket) => {
         if (user !== undefined) {
             socket.broadcast.emit('dead', { name: user });
             delete snakes[user];
-            users.splice(users.indexOf(user), 1);
+            //users.splice(users.indexOf(user), 1);
+            users = users.filter(e => e !== user);
         }
     })
 })
