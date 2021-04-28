@@ -67,6 +67,7 @@ function setup() {
     w = width;
     h = height;
     canvas.parent("sketchHere");
+    //frameRate(12);
     frameRate(60);
 }
 
@@ -86,12 +87,13 @@ function draw() {
     if (snake !== null) {
         snake.update();
         snake.show();
+        snake.eatFood(food);
+        /*
         update({
             name: snake.name,
             snake: snake,
             food: food
         });
-        snake.eatFood(food);
 
         for (let user of users) {
             snake.eatFood(foodList[user])
@@ -111,6 +113,7 @@ function draw() {
             startButton.style.display = "block";
             startButton.innerHTML = "Start på nytt";
         }
+        */
     }
 
     for (let user of users) {

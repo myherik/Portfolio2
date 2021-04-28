@@ -12,3 +12,4 @@ død slange blir til mat
 innlogging for brukere (ingen like brukernavn og highscores skal bli accurate)
 Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
 disconnect problemer
+livemap før registrering
