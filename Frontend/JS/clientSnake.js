@@ -88,8 +88,8 @@ const deadFoodUpdate = (deadFood) => {
 
 socket.on('deadFood', (deadFood) => {
     let newList = [];
-    for (food of deadFood) {
-        newList.push(new Food(food.x, food.y, null));
+    for (let dead of deadFood) {
+        newList.push(new Food(dead.x, dead.y, null));
     }
 
     deadFood = newList;
