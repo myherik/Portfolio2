@@ -7,7 +7,8 @@ Lag database for typ highscore
         docker container for online spill :) __ done
 mat kan ikke lages på sted slange allerede befinner seg
 mat kan spises av alle slanger uavhengig av hvem maten "tilhører"
-død slange blir til mat
+    død slange blir til mat__ ish done
+Hitbox, slange     
 "Hvordan spille spillet instruksjoner"
 innlogging for brukere (ingen like brukernavn og highscores skal bli accurate)
 Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
