@@ -97,7 +97,11 @@ socket.on('deadFood', (deadFood) => {
 
 })
 
-const dead = (name) => {
+const dead = (name, infood) => {
+    infood.name = null;
+    deadFood.push(infood);
+
+    deadFoodUpdate(deadFood);
     socket.emit('dead', { name: name })
 }
 

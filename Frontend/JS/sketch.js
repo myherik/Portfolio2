@@ -25,6 +25,7 @@ let w, h;
 
 startButton.addEventListener("click", (e) => {
     name = document.getElementById("input-name").value;
+    getData();
 
     startButton.style.display = "none";
     while (snake === null) {
@@ -112,7 +113,8 @@ function draw() {
             snake.eatFood(foodList[user])
 
             if (snake.hitSnake(snakeList[user])) {
-                dead(snake.name);
+                dead(snake.name, food);
+                food = null;
                 snake = null;
                 startButton.style.display = "block";
                 startButton.innerHTML = "Start på nytt";
@@ -120,7 +122,8 @@ function draw() {
         }
 
         if (snake !== null && snake.checkDead()) {
-            dead(snake.name);
+            dead(snake.name, food);
+            food = null;
             snake = null;
             //vis highscore etc
             startButton.style.display = "block";
