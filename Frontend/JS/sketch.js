@@ -24,6 +24,21 @@ let name = null;
 let w, h;
 
 startButton.addEventListener("click", (e) => {
+    if (snake === null) {
+        startGame();
+    }
+});
+
+document.getElementById("input-name").addEventListener("keypress", (e) => {
+    if (snake === null && e.keyCode === ENTER) {
+        startGame();
+        document.getElementById("input-name").blur();
+    }
+})
+
+
+
+const startGame = () => {
     name = document.getElementById("input-name").value;
     getData();
 
@@ -67,7 +82,7 @@ startButton.addEventListener("click", (e) => {
         food: food
     };
     socketReg(obj)
-});
+}
 
 function setup() {
     let canvas = createCanvas(720, 500);
@@ -166,5 +181,5 @@ function keyPressed() {
         else if (key == 'c') {
             snake.changeColor();
         }
-    }
+    } 
 }
