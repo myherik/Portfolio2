@@ -82,10 +82,6 @@ function draw() {
         food.show();
     }
 
-    for (let foodEl of deadFood) {
-        foodEl.show();
-        snake.eatFood(foodEl);
-    }
 
     for (let user of users) {
         foodList[user].show();
@@ -101,6 +97,11 @@ function draw() {
             snake: snake,
             food: food
         });
+
+        for (let foodEl of deadFood) {
+            foodEl.show();
+            snake.eatFood(foodEl);
+        }
 
         for (let user of users) {
             snake.eatFood(foodList[user])

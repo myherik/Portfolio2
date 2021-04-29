@@ -90,7 +90,7 @@ class Snake {
         const newPoint = new Point(this.points[0][0].x, this.points[0][0].y)
         console.log(newPoint);
         this.body.unshift(newPoint);
-        this.points.unshift([]);
+        this.points.unshift([newPoint]);
         this.len++;
     }
 

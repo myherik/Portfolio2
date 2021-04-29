@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
     console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
         //console.log(snakes);
-        socket.emit('get-data', { users: users, snakes: snakes, foods: foods })
+        socket.emit('get-data', { users: users, snakes: snakes, foods: foods, deadFood: deadFood})
     })
 
     socket.on('register', (data) => {
@@ -52,6 +52,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('update', data => {
+        /*
         if (userBySoket[socket.id] === undefined) {
             console(data.name + " re registered");
             userBySoket[socket.id] = data.name;
@@ -59,6 +60,7 @@ io.on('connection', (socket) => {
             snakes[data.name] = data.snake;
             socket.broadcast.emit('register', data)
         }
+        */
 
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
@@ -80,6 +82,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('deadFood', data => {
+        deadFood = data;
         socket.broadcast.emit('deadFood', data);
     })
 

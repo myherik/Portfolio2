@@ -21,15 +21,15 @@ socket.on('register', regObj => {
 })
 
 const getData = () => {
-    console.log('get-data kalt')
+    //console.log('get-data kalt')
     socket.emit('get-data', "")
 }
 
 socket.on('get-data', obj => {
-    console.log("get-data motatt")
+    //console.log("get-data motatt")
     updateBool = true;
 
-    console.log(obj.users);
+    //console.log(obj.users);
 
     users = obj.users;
     for (let user of users) {
@@ -43,7 +43,13 @@ socket.on('get-data', obj => {
         newFood.y = obj.foods[user].y;
         foodList[user] = newFood;
     }
-    console.log(snakeList)
+
+    let newDeadFood = [];
+    for (let foorish of obj.deadFood) {
+        newDeadFood.push(new Food(foorish.x, foorish.y, null));
+    }
+    deadFood = newDeadFood;
+    //console.log(snakeList)
 
 })
 
