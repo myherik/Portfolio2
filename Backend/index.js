@@ -24,6 +24,8 @@ let users = [];
 let snakes = {};
 let foods = {};
 
+let deadFood = [];
+
 io.on('connection', (socket) => {
     console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
@@ -66,11 +68,19 @@ io.on('connection', (socket) => {
         let user = userBySoket[socket.id];
         console.log(user + " died");
         if (user !== undefined) {
-            socket.broadcast.emit('dead', data);
+            for (let bodypart of snakes[user].body) {
+                deadFood.push(bodypart);
+            }
+            socket.broadcast.emit('dead', { name: user, food: deadFood });
             delete snakes[user];
+            delete userBySoket[socket.id];
             //users.splice(users.indexOf(user), 1);
             users = users.filter(e => e !== user)
         }
+    })
+
+    socket.on('deadFood', data => {
+        socket.broadcast.emit('deadFood', data);
     })
 
     socket.on('foodUpdate', data => {
@@ -82,8 +92,12 @@ io.on('connection', (socket) => {
         let user = userBySoket[socket.id];
         console.log(user + " disconnected");
         if (user !== undefined) {
-            socket.broadcast.emit('dead', { name: user });
+            for (let bodypart of snakes[user].body) {
+                deadFood.push(bodypart);
+            }
+            socket.broadcast.emit('dead', { name: user, food: deadFood });
             delete snakes[user];
+            delete userBySoket[socket.id];
             //users.splice(users.indexOf(user), 1);
             users = users.filter(e => e !== user);
         }

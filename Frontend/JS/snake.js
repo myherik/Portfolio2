@@ -133,8 +133,14 @@ class Snake {
 
     eatFood(food) {
         if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
-            food.refreshFood();
-            foodUpdate({ food: food, name: food.name })
+            if (food.name !== null) {
+                food.refreshFood();
+                foodUpdate({ food: food, name: food.name })
+            } else {
+                deadFood = deadFood.filter(e => e !== food);
+                deadFoodUpdate(deadFood);
+            }
+
             console.log("nom nom")
             //let i;
             //for (i = 0; i < 2; i++) {
@@ -144,22 +150,37 @@ class Snake {
         }
         else if (food.x - 2.5 < this.x + 5 && food.x + 2.5 > this.x + 5
             && food.y - 2.5 < this.y + 5 && food.y + 2.5 > this.y + 5) {
-            food.refreshFood();
-            foodUpdate({ food: food, name: food.name })
+            if (food.name !== null) {
+                food.refreshFood();
+                foodUpdate({ food: food, name: food.name })
+            } else {
+                deadFood = deadFood.filter(e => e !== food);
+                deadFoodUpdate(deadFood);
+            }
             console.log("treff")
             this.grow();
         }
         else if (food.x - 2.5 < this.x && food.x + 2.5 > this.x
             && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
-            food.refreshFood();
-            foodUpdate({ food: food, name: food.name })
+            if (food.name !== null) {
+                food.refreshFood();
+                foodUpdate({ food: food, name: food.name })
+            } else {
+                deadFood = deadFood.filter(e => e !== food);
+                deadFoodUpdate(deadFood);
+            }
             console.log("food");
             this.grow();
         }
         else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
             && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
-            food.refreshFood();
-            foodUpdate({ food: food, name: food.name })
+            if (food.name !== null) {
+                food.refreshFood();
+                foodUpdate({ food: food, name: food.name })
+            } else {
+                deadFood = deadFood.filter(e => e !== food);
+                deadFoodUpdate(deadFood);
+            }
             console.log("wihooo");
             this.grow();
         }

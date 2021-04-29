@@ -76,6 +76,20 @@ socket.on('foodUpdate', (foodObj) => {
     }
 })
 
+const deadFoodUpdate = (deadFood) => {
+    socket.emit('deadFood', deadFood);
+}
+
+socket.on('deadFood', (deadFood) => {
+    let newList = [];
+    for (food of deadFood) {
+        newList.push(new Food(food.x, food.y, null));
+    }
+
+    deadFood = newList;
+
+})
+
 const dead = (name) => {
     socket.emit('dead', { name: name })
 }
@@ -86,4 +100,10 @@ socket.on('dead', (name) => {
     //users.splice(users.indexOf(name.name), 1)
     users = users.filter(e => e !== name.name)
     delete snakeList[name.name];
+
+    for (let mat of name.food) {
+        const thisfood = new Food(mat.x, mat.y, null);
+        deadFood.push(thisfood);
+    }
+
 })
