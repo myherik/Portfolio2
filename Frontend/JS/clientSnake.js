@@ -48,8 +48,7 @@ socket.on('get-data', obj => {
     for (let foorish of obj.deadFood) {
         newDeadFood.push(new Food(foorish.x, foorish.y, null));
     }
-    deadFood = newDeadFood;
-    //console.log(snakeList)
+    setDead(newDeadFood);
 
 })
 
