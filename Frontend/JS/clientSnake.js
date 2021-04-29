@@ -57,6 +57,7 @@ socket.on('update', (regObj) => {
     //outSnake.body = regObj.snake.body;
     if (updateBool) {
         snakeList[regObj.name].body = regObj.snake.body;
+        snakeList[regObj.name].rgb = regObj.snake.rgb;
     }
     //snakeList[regObj.name] = outSnake;
 })

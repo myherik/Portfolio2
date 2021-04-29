@@ -1,26 +1,25 @@
 
-class Snake2 {
+class Snake {
 
     constructor(name) {
         this.body = [];
-        this.dir = [];
+        this.points = []
         this.x = Math.floor(Math.random() * 710) + 5;
         this.y = Math.floor(Math.random() * 490) + 5;
         this.body[0] = new Point(this.x, this.y);
-        this.dir[0] = new Point(0, 0)
+        this.points[0] = [];
         this.xdir = 0;
         this.ydir = 0;
         this.size = 0;
         this.score = 0;
         this.rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
         this.name = name;
-        this.counter = 1;
+        //this.counter = 1;
     }
 
     setDir(x, y) {
         this.xdir = x;
         this.ydir = y;
-        this.dir[this.dir.length - 1] = { x: this.xdir, y: this.ydir };
     }
 
     show() {
@@ -40,30 +39,46 @@ class Snake2 {
 
     update() {
 
+        if (this.xdir === 0 && this.ydir === 0) {
+            return;
+        }
+
+
         let head = this.body[this.body.length - 1];
+        this.points[this.body.length - 1].push(new Point(this.x, this.y));
+        if (this.points[this.body.length -1 ].length >= 6) {
+            if (this.body.length > 1) {
+                this.points[this.body.length - 2].push(this.points[this.body.length - 1].shift());
+            } else {
+                this.points[this.body.length - 1].shift();
+            }
+        } else{
+            console.log(this.points[this.body.length - 1].length)
+        }
         this.x += this.xdir;
         this.y += this.ydir;
         head.x += this.xdir;
         head.y += this.ydir;
 
-        for (let i = 0; i < this.body.length - 1; i++) {
-            this.body[i].x += this.dir[i + 1].x;
-            this.body[i].y += this.dir[i + 1].y;
-            if (this.counter % 6 === 0) {
-                this.dir[i] = this.dir[i + 1].copy();
-            }
+        for (let i = this.body.length - 2; i >= 0; i--) {
+            
+            this.body[i].x = this.points[i][this.points[i].length -1].x;
+            this.body[i].y = this.points[i][this.points[i].length -1].y;
 
+            if (this.points[i].length >= 6 ) {
+                if (i > 0) {
+                    this.points[i - 1].push(this.points[i].shift());
+                } else {
+                    this.points[i].shift()
+                }
+            }
         }
-        if (this.counter % 6 === 0) { 
-            this.counter = 1;
-        }
+    
 
     }
 
     grow() {
 
-        let tail = this.body[0].copy();
-        let tailDir = this.dir[0].copy();
         /*
         head.x += this.xdir * 5;
         head.y += this.ydir * 5;
@@ -72,11 +87,11 @@ class Snake2 {
         this.body.push(head);
         this.dir.push(headDir);
         */
-        tail.x -= 5 * tailDir.x;
-        tail.y -= 5 * tailDir.y;
-        this.body.unshift(tail);
-        this.dir.unshift(tailDir);
-        this.len++;
+        const newPoint = new Point(this.points[0][0].x, this.points[0][0].y)
+        console.log(newPoint);
+        this.body.unshift(newPoint);
+        this.points.unshift([]);
+        //this.len++;
     }
 
 
@@ -116,15 +131,16 @@ class Snake2 {
     }
 
 
-    eatFood(food) {
+x   eatFood(food) {
         if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
             console.log("nom nom")
-            let i;
-            for (i = 0; i < 2; i++) {
-                this.grow();
-            }
+            //let i;
+            //for (i = 0; i < 2; i++) {
+            //    this.grow();
+            //}
+            this.grow();
 
         }
         else if (food.x - 2.5 < this.x + 5 && food.x + 2.5 > this.x + 5
@@ -132,33 +148,38 @@ class Snake2 {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
             console.log("treff")
-            let i;
-            for (i = 0; i < 2; i++) {
-                this.grow();
-            }
+            this.grow();
         }
         else if (food.x - 2.5 < this.x && food.x + 2.5 > this.x
             && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
-            console.log("treff")
-            let i;
-            for (i = 0; i < 2; i++) {
-                this.grow();
-            }
+            console.log("food");
+            this.grow();
         }
         else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
             && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
-            console.log("treff")
-            let i;
-            for (i = 0; i < 2; i++) {
-                this.grow();
-            }
+            console.log("wihooo");
+            this.grow();
         }
 
 
         return false;
+    }
+
+    copy() {
+        let copy = new Snake(this.name);
+        copy.body = this.body;
+        copy.rgb = this.rgb;
+        //copy.name = this.name;
+        copy.score = this.score;
+
+        return copy;
+    }
+
+    changeColor() {
+        this.rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
     }
 }

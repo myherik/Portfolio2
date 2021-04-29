@@ -88,7 +88,7 @@ function draw() {
         snake.update();
         snake.show();
         snake.eatFood(food);
-        /*
+        
         update({
             name: snake.name,
             snake: snake,
@@ -113,7 +113,7 @@ function draw() {
             startButton.style.display = "block";
             startButton.innerHTML = "Start på nytt";
         }
-        */
+        
     }
 
     for (let user of users) {
@@ -142,6 +142,13 @@ function keyPressed() {
             }
         } else if (key == ' ') {
             snake.setDir(0, 0);
+        }
+        else if(key == 'm') {
+            snake.grow();
+            console.log(snake.copy());
+        }
+        else if(key == 'c') {
+            snake.changeColor();
         }
     }
 }

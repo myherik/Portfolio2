@@ -1,5 +1,5 @@
 
-class Snake {
+class Snake2 {
     constructor(name) {
         this.body = [];
         this.x = Math.floor(Math.random() * 710) + 5;
