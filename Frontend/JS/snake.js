@@ -46,13 +46,13 @@ class Snake {
 
         let head = this.body[this.body.length - 1];
         this.points[this.body.length - 1].push(new Point(this.x, this.y));
-        if (this.points[this.body.length -1 ].length >= 6) {
+        if (this.points[this.body.length - 1].length >= 6) {
             if (this.body.length > 1) {
                 this.points[this.body.length - 2].push(this.points[this.body.length - 1].shift());
             } else {
                 this.points[this.body.length - 1].shift();
             }
-        } else{
+        } else {
             console.log(this.points[this.body.length - 1].length)
         }
         this.x += this.xdir;
@@ -61,11 +61,11 @@ class Snake {
         head.y += this.ydir;
 
         for (let i = this.body.length - 2; i >= 0; i--) {
-            
-            this.body[i].x = this.points[i][this.points[i].length -1].x;
-            this.body[i].y = this.points[i][this.points[i].length -1].y;
 
-            if (this.points[i].length >= 6 ) {
+            this.body[i].x = this.points[i][this.points[i].length - 1].x;
+            this.body[i].y = this.points[i][this.points[i].length - 1].y;
+
+            if (this.points[i].length >= 6) {
                 if (i > 0) {
                     this.points[i - 1].push(this.points[i].shift());
                 } else {
@@ -73,7 +73,7 @@ class Snake {
                 }
             }
         }
-    
+
 
     }
 
@@ -91,7 +91,7 @@ class Snake {
         console.log(newPoint);
         this.body.unshift(newPoint);
         this.points.unshift([]);
-        //this.len++;
+        this.len++;
     }
 
 
@@ -131,7 +131,7 @@ class Snake {
     }
 
 
-x   eatFood(food) {
+    eatFood(food) {
         if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
             food.refreshFood();
             foodUpdate({ food: food, name: food.name })
@@ -141,7 +141,6 @@ x   eatFood(food) {
             //    this.grow();
             //}
             this.grow();
-
         }
         else if (food.x - 2.5 < this.x + 5 && food.x + 2.5 > this.x + 5
             && food.y - 2.5 < this.y + 5 && food.y + 2.5 > this.y + 5) {
@@ -164,8 +163,6 @@ x   eatFood(food) {
             console.log("wihooo");
             this.grow();
         }
-
-
         return false;
     }
 
