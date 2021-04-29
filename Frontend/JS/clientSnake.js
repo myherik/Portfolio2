@@ -92,7 +92,9 @@ socket.on('deadFood', (deadFood) => {
         newList.push(new Food(dead.x, dead.y, null));
     }
 
-    deadFood = newList;
+    console.log(newList.length);
+    setDead(newList);
+    //console.log(deadFood.length);
 
 })
 

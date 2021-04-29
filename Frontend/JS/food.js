@@ -1,7 +1,7 @@
 class Food{
 
     constructor(x, y, name){
-        console.log(x + " " + y)
+        //console.log(x + " " + y)
         this.x = x;
         this.y = y;
         this.food = new Point(this.x, this.y);

@@ -138,10 +138,11 @@ class Snake {
                 foodUpdate({ food: food, name: food.name })
             } else {
                 deadFood = deadFood.filter(e => e !== food);
+                console.log(deadFood.length);
                 deadFoodUpdate(deadFood);
             }
 
-            console.log("nom nom")
+            //console.log("nom nom")
             //let i;
             //for (i = 0; i < 2; i++) {
             //    this.grow();
@@ -155,9 +156,10 @@ class Snake {
                 foodUpdate({ food: food, name: food.name })
             } else {
                 deadFood = deadFood.filter(e => e !== food);
+                console.log(deadFood.length);
                 deadFoodUpdate(deadFood);
             }
-            console.log("treff")
+            //console.log("treff")
             this.grow();
         }
         else if (food.x - 2.5 < this.x && food.x + 2.5 > this.x
@@ -167,9 +169,10 @@ class Snake {
                 foodUpdate({ food: food, name: food.name })
             } else {
                 deadFood = deadFood.filter(e => e !== food);
+                console.log(deadFood.length);
                 deadFoodUpdate(deadFood);
             }
-            console.log("food");
+            //console.log("food");
             this.grow();
         }
         else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
@@ -179,9 +182,10 @@ class Snake {
                 foodUpdate({ food: food, name: food.name })
             } else {
                 deadFood = deadFood.filter(e => e !== food);
+                console.log(deadFood.length);
                 deadFoodUpdate(deadFood);
             }
-            console.log("wihooo");
+            //console.log("wihooo");
             this.grow();
         }
         return false;

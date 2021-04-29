@@ -15,6 +15,10 @@ let foodList = {};
 
 let deadFood = [];
 
+const setDead = (list) => {
+    deadFood = list;
+}
+
 let name = null;
 
 let w, h;
@@ -98,6 +102,7 @@ function draw() {
             food: food
         });
 
+        //console.log(deadFood.length)
         for (let foodEl of deadFood) {
             foodEl.show();
             snake.eatFood(foodEl);
