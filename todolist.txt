@@ -5,12 +5,11 @@ Lag database for typ highscore
         implementer express __ done
         name follows snake continously __ done
         docker container for online spill :) __ done
-mat kan ikke lages på sted slange allerede befinner seg
         mat kan spises av alle slanger uavhengig av hvem maten "tilhører"__ done
-    død slange blir til mat__ ish done
-Hitbox, slange dør selv om den ikke treffer motspiller    
+        død slange blir til mat__ done
+        Hitbox, slange dør selv om den ikke treffer motspiller __ done   
 "Hvordan spille spillet instruksjoner"
-innlogging for brukere (ingen like brukernavn og highscores skal bli accurate)
+    innlogging for brukere (ingen like brukernavn og highscores skal bli accurate) __ ish done
 Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
-disconnect problemer
-livemap før registrering
+        disconnect problemer __ done
+[OPTIONAL] livemap før registrering
