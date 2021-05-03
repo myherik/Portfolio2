@@ -53,7 +53,7 @@ class Snake {
                 this.points[this.body.length - 1].shift();
             }
         } else {
-            console.log(this.points[this.body.length - 1].length)
+            //console.log(this.points[this.body.length - 1].length)
         }
         this.x += this.xdir;
         this.y += this.ydir;
@@ -69,7 +69,7 @@ class Snake {
                 if (i > 0) {
                     this.points[i - 1].push(this.points[i].shift());
                 } else {
-                    this.points[i].shift()
+                    this.points[i].shift();
                 }
             }
         }
@@ -88,7 +88,7 @@ class Snake {
         this.dir.push(headDir);
         */
         const newPoint = new Point(this.points[0][0].x, this.points[0][0].y)
-        console.log(newPoint);
+        //console.log(newPoint);
         this.body.unshift(newPoint);
         this.points.unshift([newPoint]);
         this.len++;
@@ -106,6 +106,15 @@ class Snake {
     hitSnake(snake) {
         let i = 0;
         for (i; i < snake.body.length; i++) {
+            //console.log("dead? " + snake.name)
+            if (this.x + 5 > snake.body[i].x && this.x < snake.body[i].x + 5 && (this.y + 5 > snake.body[i].y && this.y < snake.body[i].y + 5)) {
+                console.log(this.name + " died trying to take a bite of " + snake.name);
+                return true;
+            }
+            
+                
+
+            /*
             if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
                 && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
                 console.log(this.name + " died trying to take a bite of " + snake.name);
@@ -126,12 +135,28 @@ class Snake {
                 console.log(this.name + " died trying to take a bite of " + snake.name);
                 return true;
             }
+            */
+            
         }
         return false;
     }
 
 
     eatFood(food) {
+        ///*
+        if (this.x <= food.x + 2.5 && this.x + 5 >= food.x - 2.5 && this.y <= food.y + 2.5 && this.y + 5 >= food.y - 2.5) {
+            if (food.name !== null) {
+                food.refreshFood();
+                foodUpdate({ food: food, name: food.name })
+            } else {
+                deadFood = deadFood.filter(e => e !== food);
+                //console.log(deadFood.length);
+                deadFoodUpdate(deadFood);
+            }
+            this.grow();
+        }
+        //*/
+        /*
         if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
             if (food.name !== null) {
                 food.refreshFood();
@@ -188,6 +213,7 @@ class Snake {
             //console.log("wihooo");
             this.grow();
         }
+        */
         return false;
     }
 

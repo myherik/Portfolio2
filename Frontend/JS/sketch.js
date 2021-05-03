@@ -93,7 +93,10 @@ function setup() {
     frameRate(60);
 }
 
+let counter = 1;
+
 function draw() {
+    counter++;
 
     background(220);
 
@@ -114,41 +117,63 @@ function draw() {
 
         update({
             name: snake.name,
-            snake: snake,
+            snake: snake.copy(),
             food: food
         });
 
         //console.log(deadFood.length)
-        for (let foodEl of deadFood) {
-            foodEl.show();
-            snake.eatFood(foodEl);
+        if (counter %5 === 0) {
+            for (let foodEl of deadFood) {
+                foodEl.show();
+                snake.eatFood(foodEl);
+            }
+        } else {
+            for (let foodEl of deadFood) {
+                foodEl.show();
+            }
         }
+        
 
         for (let user of users) {
-            snake.eatFood(foodList[user])
+            snakeList[user].show();
+            if (counter %5 === 0) {
+                snake.eatFood(foodList[user])
+                if (snake.hitSnake(snakeList[user])) {
+                    dead(snake.name, food);
+                    food = null;
+                    snake = null;
+                    startButton.style.display = "block";
+                    startButton.innerHTML = "Start på nytt";
+                }
+            }
+            
+        }
 
-            if (snake.hitSnake(snakeList[user])) {
+        if (counter %5 === 0) {
+            if (snake !== null && snake.checkDead()) {
                 dead(snake.name, food);
                 food = null;
                 snake = null;
+                //vis highscore etc
                 startButton.style.display = "block";
                 startButton.innerHTML = "Start på nytt";
             }
         }
 
-        if (snake !== null && snake.checkDead()) {
-            dead(snake.name, food);
-            food = null;
-            snake = null;
-            //vis highscore etc
-            startButton.style.display = "block";
-            startButton.innerHTML = "Start på nytt";
+        
+
+    } else {
+        for (let foodEl of deadFood) {
+            foodEl.show();
         }
 
+        for (let user of users) {
+            snakeList[user].show();
+        }
     }
 
-    for (let user of users) {
-        snakeList[user].show();
+    if (counter %5 === 0) {
+        counter = 1;
     }
 
 }
@@ -180,6 +205,12 @@ function keyPressed() {
         }
         else if (key == 'c') {
             snake.changeColor();
+        }
+        else if (key == 'v') {
+            console.log(snake);
+            if (users.length !== 0) {
+                console.log(snakeList[users[0]]);
+            }
         }
     } 
 }
