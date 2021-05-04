@@ -1,0 +1,21 @@
+version: "3"
+services:
+    node_app:
+        build: .
+        container_name: node_app
+        volumes: 
+            - ./:/usr/src/app/
+            - /usr/src/app/Backend/node_modules
+        ports:
+            - "8080":"8080"
+
+    mongodb:
+        image: mongodb
+        container_name: mongodb
+        volumes:
+            - ./mongodb/data:/data/db
+        ports: 
+            - "27017:27017"
+        environment: 
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
