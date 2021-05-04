@@ -151,7 +151,21 @@ io.on('connection', (socket) => {
     })
 })
 
-mongoose.connect()
+mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", {
+    useNewUrlParser: true/*,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+    */
+})
+.then(
+    (e) => {
+        console.log('connected to db');
+    },
+    (err) => {
+        //console.log(err);
+        console.log("error")
+    })
 
 server.listen(8080, () => {
     console.log(__dirname)

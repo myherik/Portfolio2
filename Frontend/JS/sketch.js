@@ -185,19 +185,19 @@ const endGame = () => {
 
 function keyPressed() {
     if (snake !== null) {
-        if (keyCode === LEFT_ARROW || keyCode === 'a') {
+        if (keyCode === LEFT_ARROW || key == 'a') {
             if (snake.xdir !== 1) {
                 snake.setDir(-1, 0);
             }
-        } else if (keyCode === RIGHT_ARROW || keyCode === 'd') {
+        } else if (keyCode === RIGHT_ARROW || key == 'd') {
             if (snake.xdir !== -1) {
                 snake.setDir(1, 0);
             }
-        } else if (keyCode === DOWN_ARROW || keyCode === 's') {
+        } else if (keyCode === DOWN_ARROW || key == 's') {
             if (snake.ydir !== -1) {
                 snake.setDir(0, 1);
             }
-        } else if (keyCode === UP_ARROW || keyCode === 'w') {
+        } else if (keyCode === UP_ARROW || key == 'w') {
             if (snake.ydir !== 1) {
                 snake.setDir(0, -1);
             }
