@@ -15,6 +15,7 @@ Lag database for typ highscore
 "Hvordan spille spillet instruksjoner"
 Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
 [OPTIONAL] livemap før registrering
+https openssl
 
 
 Sources

@@ -4,6 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const mongoose = require('mongoose');
 
 const path = require('path');
 
@@ -149,6 +150,8 @@ io.on('connection', (socket) => {
         }
     })
 })
+
+mongoose.connect()
 
 server.listen(8080, () => {
     console.log(__dirname)
