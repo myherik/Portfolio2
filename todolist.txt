@@ -1,15 +1,17 @@
-Lag database for typ highscore
         Feilmelding når piltrykk ved spill ikke aktiv __ done
         Unik farge på slangen for hver spiller __ done
-    Dø når slangen treffer seg selv eller andre slanger __ ish done
         implementer express __ done
         name follows snake continously __ done
         docker container for online spill :) __ done
         mat kan spises av alle slanger uavhengig av hvem maten "tilhører"__ done
         død slange blir til mat__ done
         Hitbox, slange dør selv om den ikke treffer motspiller __ done   
-"Hvordan spille spillet instruksjoner"
-    innlogging for brukere (ingen like brukernavn og highscores skal bli accurate) __ ish done
-Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
         disconnect problemer __ done
+
+    Dø når slangen treffer seg selv eller andre slanger __ ish done
+    innlogging for brukere (ingen like brukernavn og highscores skal bli accurate) __ ish done
+
+Lag database for typ highscore
+"Hvordan spille spillet instruksjoner"
+Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
 [OPTIONAL] livemap før registrering

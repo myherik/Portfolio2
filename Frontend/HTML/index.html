@@ -4,55 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width = device-width, initial-scale=1.0">
-    <title>Snake</title>
+    <title>SNAKE</title>
     <link rel="stylesheet" href="/CSS/main.css">
-    <script src="/JS/p5.js"></script>
-    <script defer src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
 
-    <div id="content">
-        <div class="row-1">
-            <h1 id="headline">Snake</h1>
-        </div>
-        <div class="column">
-            <div class="row-2">
-                <div id="game">
-                    <div id="sketchHere"></div>
-                    <div class="row-1">
-                        <input id="input-name" type="text" placeholder="name">
-                        <button id="start">Start snake</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-2" id="scores">
-                <h2>Connected players right now</h2>
-                <div id="placePlayersHere">
-
-                </div>
-                <h2>High scores</h2>
-                <h4>All time record</h4>
-                <p id="all-time"></p>
-                <h4>Your personal best</h4>
-                <p id="pb"></p>
-                <h4>Your realtime score</h4>
-                <p id="realtime"></p>
-                <h4>Others realtime score</h4>
-                <div id="placePlayerScoresHere"></div>
-            </div>
+    <div id="LorR">
+        <div class="show" id="login">
+            <input type="text" id="loginNm">
+            <input type="password" id="loginPwd">
+            <button onclick="login()" class="button">Login</button>
 
         </div>
+        <div class="hidden" id="reg">
+            <input type="text" id="regNm">
+            <input type="password" id="regPwd">
+            <button onclick="register()" class="button">Register</button>
+        </div>
+        <button onclick="toggle()" id="togglebutton" class="button">Register</button>
     </div>
-        <script src="/JS/line.js"></script>
-        <script src="/JS/food.js"></script>
-        <script src="/JS/point.js"></script>
-        <script src="/JS/snake.js"></script>
-        <script src="/JS/tempsnake.js"></script>
-        <script defer src="/JS/clientSnake.js"></script>
-        <script defer src="/JS/sketch.js"></script>
 
+
+
+    <script src="/JS/index.js"></script>
 </body>
 
 </html>

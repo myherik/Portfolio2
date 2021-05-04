@@ -92,6 +92,7 @@ class Snake {
         this.body.unshift(newPoint);
         this.points.unshift([newPoint]);
         this.len++;
+        this.score++;
     }
 
 
@@ -111,8 +112,8 @@ class Snake {
                 console.log(this.name + " died trying to take a bite of " + snake.name);
                 return true;
             }
-            
-                
+
+
 
             /*
             if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
@@ -136,7 +137,7 @@ class Snake {
                 return true;
             }
             */
-            
+
         }
         return false;
     }
@@ -221,7 +222,6 @@ class Snake {
         let copy = new Snake(this.name);
         copy.body = this.body;
         copy.rgb = this.rgb;
-        //copy.name = this.name;
         copy.score = this.score;
 
         return copy;

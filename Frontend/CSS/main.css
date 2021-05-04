@@ -38,3 +38,10 @@
     padding-bottom: 2%;
 }
 
+.show {
+    display: inherit;
+}
+
+.hidden {
+    display: none;
+}

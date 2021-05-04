@@ -36,6 +36,7 @@ socket.on('get-data', obj => {
         const newSnake = new Snake(user);
         newSnake.body = obj.snakes[user].body;
         newSnake.rgb = obj.snakes[user].rgb;
+        newSnake.score = obj.snakes[user].score;
         snakeList[user] = newSnake;
 
         const newFood = new Food(0, 0, user);
@@ -63,6 +64,11 @@ socket.on('update', (regObj) => {
     if (updateBool) {
         snakeList[regObj.name].body = regObj.snake.body;
         snakeList[regObj.name].rgb = regObj.snake.rgb;
+        if (snakeList[regObj.name].score !== regObj.snake.score) {
+            snakeList[regObj.name].score = regObj.snake.score;
+            users.sort((a, b) => snakeList[b].score - snakeList[a].score);
+        }
+
     }
     //snakeList[regObj.name] = outSnake;
 })

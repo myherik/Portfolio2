@@ -2,9 +2,7 @@
 let startButton = document.getElementById("start");
 //let sketchHere = document.getElementById("sketchHere");
 
-(() => {
-    getData();
-})();
+let name = null;
 
 let snake = null;
 let food = null;
@@ -18,8 +16,6 @@ let deadFood = [];
 const setDead = (list) => {
     deadFood = list;
 }
-
-let name = null;
 
 let w, h;
 
@@ -36,15 +32,33 @@ document.getElementById("input-name").addEventListener("keypress", (e) => {
     }
 })
 
+const showPlayers = () => {
+    let htmlUserList = `<p>${snake.name}</p>`;
+    for (let user of users) {
+        htmlUserList += `<p>${user}</p>`;
+    }
+    document.getElementById("placePlayersHere").innerHTML = htmlUserList;
+}
+
+const showScores = () => {
+
+    document.getElementById("realtime").innerHTML = `Score: ${snake.score}`;
+    let scoreList = "<ol>"
+    for (let i = 0; i < Math.min(10, users.length); i++) {
+        let user = users[i];
+        scoreList += `<li>${user}: ${snakeList[user].score}</li>`
+    }
+    scoreList += "</ol>";
+    document.getElementById("placePlayerScoresHere").innerHTML = scoreList;
+}
 
 
 const startGame = () => {
-    name = document.getElementById("input-name").value;
     getData();
 
     startButton.style.display = "none";
     while (snake === null) {
-        let testSnake = new Snake(document.getElementById("input-name").value);
+        let testSnake = new Snake(name);
         let available = true;
         for (let user of users) {
             if (testSnake.hitSnake(snakeList[user])) {
@@ -77,8 +91,8 @@ const startGame = () => {
     foodList[snake.name] = food;
     snake.setDir(0, 0);
     const obj = {
-        name: document.getElementById("input-name").value,
-        snake: snake,
+        name: name,
+        snake: snake.copy(),
         food: food
     };
     socketReg(obj)
@@ -122,7 +136,9 @@ function draw() {
         });
 
         //console.log(deadFood.length)
-        if (counter %5 === 0) {
+        if (counter % 5 === 0) {
+            showScores();
+            showPlayers();
             for (let foodEl of deadFood) {
                 foodEl.show();
                 snake.eatFood(foodEl);
@@ -132,11 +148,11 @@ function draw() {
                 foodEl.show();
             }
         }
-        
+
 
         for (let user of users) {
             snakeList[user].show();
-            if (counter %5 === 0) {
+            if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
                 if (snake.hitSnake(snakeList[user])) {
                     dead(snake.name, food);
@@ -146,10 +162,10 @@ function draw() {
                     startButton.innerHTML = "Start på nytt";
                 }
             }
-            
+
         }
 
-        if (counter %5 === 0) {
+        if (counter % 5 === 0) {
             if (snake !== null && snake.checkDead()) {
                 dead(snake.name, food);
                 food = null;
@@ -160,7 +176,7 @@ function draw() {
             }
         }
 
-        
+
 
     } else {
         for (let foodEl of deadFood) {
@@ -172,7 +188,7 @@ function draw() {
         }
     }
 
-    if (counter %5 === 0) {
+    if (counter % 5 === 0) {
         counter = 1;
     }
 
@@ -210,7 +226,19 @@ function keyPressed() {
             console.log(snake);
             if (users.length !== 0) {
                 console.log(snakeList[users[0]]);
+                console.log(users);
             }
         }
-    } 
+    }
 }
+
+
+(() => {
+    name = sessionStorage.getItem("username");
+    if (name !== null) {
+        getData();
+        startGame();
+    } else {
+        window.location.href = "/";
+    }
+})();
