@@ -115,13 +115,7 @@ function draw() {
     background(220);
 
     if (food !== null) {
-        //console.log(food.x + " " + food.y);
         food.show();
-    }
-
-
-    for (let user of users) {
-        foodList[user].show();
     }
 
     if (snake !== null) {
@@ -151,6 +145,7 @@ function draw() {
 
 
         for (let user of users) {
+            foodList[user].show();
             snakeList[user].show();
             if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
@@ -185,6 +180,7 @@ function draw() {
 
         for (let user of users) {
             snakeList[user].show();
+            foodList[user].show();
         }
     }
 
