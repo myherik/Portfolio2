@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width = device-width, initial-scale=1.0">
     <title>Snake</title>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/CSS/main.css">
     <script src="/JS/p5.js"></script>
     <script defer src="/socket.io/socket.io.js"></script>
@@ -16,16 +18,20 @@
         <div class="row-1">
             <h1 id="headline">Snake</h1>
         </div>
-        <div class="column">
+        <div class="row-1">
             <div class="row-2">
                 <div id="game">
                     <div id="sketchHere"></div>
                     <div class="row-1">
-                        <input id="input-name" type="text" placeholder="name">
-                        <button id="start">Start snake</button>
+                        <button class="btn btn-success" id="start">Start snake</button>
                     </div>
                 </div>
             </div>
+
+            <div id="inYourFace" class="fix hidden">
+                <h1>You died!</h1>
+            </div>
+
 
             <div class="row-2" id="scores">
                 <h2>Connected players right now</h2>
@@ -42,7 +48,6 @@
                 <h4>Others realtime score</h4>
                 <div id="placePlayerScoresHere"></div>
             </div>
-
         </div>
     </div>
     <script src="/JS/line.js"></script>

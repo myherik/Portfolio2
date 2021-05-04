@@ -17,6 +17,8 @@ const login = () => {
             if (data.body.username !== undefined) {
                 sessionStorage.setItem("username", data.body.username);
                 window.location.href = "/game"
+            } else {
+                document.getElementById("loginMessage").innerText = "Wrong username or password"
             }
         });
 }
@@ -35,6 +37,9 @@ const register = () => {
         body: JSON.stringify(user)
     }).then(res => res.json())
         .then(data => {
+            if(data.body === "OK") {
+                document.getElementById("registerMessage").innerText = "Rergistration success!"
+            }
             console.log(data);
         });
 }
@@ -47,6 +52,8 @@ const toggle = () => {
         document.getElementById("reg").classList.remove("hidden");
         document.getElementById("reg").classList.add("show");
 
+        document.getElementById("toggleText").innerText = "Already have an account? Click here to log in!"
+
         document.getElementById("togglebutton").innerText = "Login"
 
     } else {
@@ -54,6 +61,8 @@ const toggle = () => {
         document.getElementById("login").classList.add("show");
         document.getElementById("reg").classList.remove("show");
         document.getElementById("reg").classList.add("hidden");
+
+        document.getElementById("toggleText").innerText = "Don't have an account? Click here to register!"
 
         document.getElementById("togglebutton").innerText = "Register"
     }

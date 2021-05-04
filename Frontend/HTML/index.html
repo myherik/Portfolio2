@@ -5,24 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width = device-width, initial-scale=1.0">
     <title>SNAKE</title>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/CSS/main.css">
 </head>
 
 <body>
 
-    <div id="LorR">
-        <div class="show" id="login">
-            <input type="text" id="loginNm">
-            <input type="password" id="loginPwd">
-            <button onclick="login()" class="button">Login</button>
-
+    <div class="column">
+        <div id="LorR">
+            <div class="show" id="login">
+                <h1>Log in and play</h1>
+                <input type="text" id="loginNm" placeholder="username">
+                <input type="password" id="loginPwd" placeholder="password">
+                <button class="btn btn-primary" onclick="login()" class="button">Login</button>
+                <p id="loginMessage"></p>
+            </div>
+            <div class="hidden" id="reg">
+                <h1>Register a new account to play</h1>
+                <input type="text" id="regNm" placeholder="username">
+                <input type="password" id="regPwd" placeholder="password">
+                <button class="btn btn-primary" onclick="register()" class="button">Register</button>
+                <p id="registerMessage"></p>
+            </div>
+            <div class="show">
+                <h3 id="toggleText">Don't have an account? Click here to register!</h3>
+                <button class="btn btn-secondary" onclick="toggle()" id="togglebutton" class="button">Register</button>
+            </div>     
         </div>
-        <div class="hidden" id="reg">
-            <input type="text" id="regNm">
-            <input type="password" id="regPwd">
-            <button onclick="register()" class="button">Register</button>
+        <div class="row-3">
+            <h1>🦄How to play🦄</h1>
+            <p>To move around press either the arrowkeys shown here</p>
+            <img class="imageKeys" src="/Media/arrowblanks.png" alt="arrowkeys image">
+            <p>or use the "wasd" keys shown here</p>
+            <img class="imageKeys" src="/Media/wasdkeys.png" alt="wasd keys image">
+            <p>Basic instructions</p>
+            <ul>
+                <li>Grow bigger by eating the red apples</li>
+                <li>Do not hit the border as you will die</li>
+                <li>Do not hit another snake as you will die</li>
+            </ul>
+            <p>General information</p>
+            <ul>
+                <li>Bigger snake = bigger score</li>
+                <li>Dead snakes turn to food equivalent of their score</li>
+            </ul>
         </div>
-        <button onclick="toggle()" id="togglebutton" class="button">Register</button>
     </div>
 
 

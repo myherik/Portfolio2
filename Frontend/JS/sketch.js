@@ -25,13 +25,6 @@ startButton.addEventListener("click", (e) => {
     }
 });
 
-document.getElementById("input-name").addEventListener("keypress", (e) => {
-    if (snake === null && e.keyCode === ENTER) {
-        startGame();
-        document.getElementById("input-name").blur();
-    }
-})
-
 const showPlayers = () => {
     let htmlUserList = `<p>${snake.name}</p>`;
     for (let user of users) {
@@ -55,7 +48,7 @@ const showScores = () => {
 
 const startGame = () => {
     getData();
-
+    document.getElementById("inYourFace").classList.add("hidden")
     startButton.style.display = "none";
     while (snake === null) {
         let testSnake = new Snake(name);
@@ -150,11 +143,7 @@ function draw() {
             if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
                 if (snake.hitSnake(snakeList[user])) {
-                    dead(snake.name, food);
-                    food = null;
-                    snake = null;
-                    startButton.style.display = "block";
-                    startButton.innerHTML = "Start på nytt";
+                    endGame();
                 }
             }
 
@@ -162,12 +151,7 @@ function draw() {
 
         if (counter % 5 === 0) {
             if (snake !== null && snake.checkDead()) {
-                dead(snake.name, food);
-                food = null;
-                snake = null;
-                //vis highscore etc
-                startButton.style.display = "block";
-                startButton.innerHTML = "Start på nytt";
+                endGame();
             }
         }
 
@@ -190,21 +174,30 @@ function draw() {
 
 }
 
+const endGame = () => {
+    dead(snake.name, food);
+    food = null;
+    snake = null;
+    startButton.style.display = "block";
+    startButton.innerHTML = "Start på nytt";
+    document.getElementById("inYourFace").classList.remove("hidden");
+}
+
 function keyPressed() {
     if (snake !== null) {
-        if (keyCode === LEFT_ARROW) {
+        if (keyCode === LEFT_ARROW || keyCode === 'a') {
             if (snake.xdir !== 1) {
                 snake.setDir(-1, 0);
             }
-        } else if (keyCode === RIGHT_ARROW) {
+        } else if (keyCode === RIGHT_ARROW || keyCode === 'd') {
             if (snake.xdir !== -1) {
                 snake.setDir(1, 0);
             }
-        } else if (keyCode === DOWN_ARROW) {
+        } else if (keyCode === DOWN_ARROW || keyCode === 's') {
             if (snake.ydir !== -1) {
                 snake.setDir(0, 1);
             }
-        } else if (keyCode === UP_ARROW) {
+        } else if (keyCode === UP_ARROW || keyCode === 'w') {
             if (snake.ydir !== 1) {
                 snake.setDir(0, -1);
             }

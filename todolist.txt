@@ -15,3 +15,12 @@ Lag database for typ highscore
 "Hvordan spille spillet instruksjoner"
 Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen)
 [OPTIONAL] livemap før registrering
+
+
+Sources
+p5
+bootstrap
+Erik for arrowkeys :)
+node.js
+express
+socket.io

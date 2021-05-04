@@ -55,6 +55,10 @@ app.get("/JS/:file", (req, res) => {
     res.sendFile(path.join(__dirname, "../") + "/Frontend/JS/" + req.params.file)
 })
 
+app.get("/Media/:file", (req, res) => {
+    res.sendFile(path.join(__dirname, "../Frontend/Media/" + req.params.file))
+})
+
 let userBySoket = {}
 let users = [];
 let snakes = {};
