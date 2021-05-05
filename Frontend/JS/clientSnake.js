@@ -20,9 +20,9 @@ socket.on('register', regObj => {
     foodList[regObj.name] = food;
 })
 
-const getData = () => {
+const getData = (name) => {
     //console.log('get-data kalt')
-    socket.emit('get-data', "")
+    socket.emit('get-data', {username: name})
 }
 
 socket.on('get-data', obj => {
@@ -30,6 +30,9 @@ socket.on('get-data', obj => {
     updateBool = true;
 
     //console.log(obj.users);
+
+    document.getElementById("pb").innerText = `Highscore: ${obj.score}`;
+    document.getElementById("all-time").innerText = `By: ${obj.high.username} with the score ${obj.high.score}`;
 
     users = obj.users;
     for (let user of users) {
@@ -50,6 +53,8 @@ socket.on('get-data', obj => {
         newDeadFood.push(new Food(foorish.x, foorish.y, null));
     }
     setDead(newDeadFood);
+
+    startGame();
 
 })
 
@@ -123,4 +128,10 @@ socket.on('dead', (name) => {
         deadFood.push(thisfood);
     }
 
+})
+
+socket.on('yeeted', (data) => {
+    if (data.kicked === true) {
+        window.location.href="/"
+    }
 })

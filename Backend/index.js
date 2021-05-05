@@ -10,6 +10,9 @@ const bcrypt = require('bcrypt');
 const userModel = require('./user');
 let User = null;
 
+const scoreModel = require('./score')
+let Score = null;
+
 const path = require('path');
 
 let loginList = [{username: "admin", password: "admin"}];
@@ -42,27 +45,6 @@ app.post("/login", (req, res) => {
             
         });
     }
-
-    
-    /*
-    let boolean = false;
-    const { username, password } = req.body;
-    for (let user of loginList) {
-        if (user.username === username) {
-            if (user.password === password) {
-                res.status(200).json({
-                    body: {username: username}
-                });
-                boolean = true;
-            }
-        }
-    }
-    if (!boolean) {
-        res.status(400).json({
-            body: "invalid username or password"
-        });
-    }
-    */
 })
 
 app.post("/register", (req, res) => {
@@ -83,9 +65,8 @@ app.post("/register", (req, res) => {
                 let insert = new User({username: username, password: data});
                 console.log(insert);
                 insert.save((err) => {
-                    //console.log(err)
+
                     if (err) {
-                        console.log("error")
                         res.status(400).json({
                             body: {
                                 message: "Username already in use"
@@ -93,7 +74,6 @@ app.post("/register", (req, res) => {
                         })
                         
                     } else {
-                        console.log("ikke lenger ved error")
                         res.status(201).json({
                             body: {
                                 message: "User created"
@@ -104,7 +84,6 @@ app.post("/register", (req, res) => {
             });
             
         } catch (err) {
-            console.log(err);
             
         }
     } else {
@@ -114,13 +93,6 @@ app.post("/register", (req, res) => {
             }
         })
     }
-
-    /*
-    loginList.push({ username: username, password: password });
-    res.status(201).json({
-        body: "OK"
-    })
-    */
 })
 
 app.get("/", (req, res) => {
@@ -147,14 +119,31 @@ let userBySoket = {}
 let users = [];
 let snakes = {};
 let foods = {};
-
 let deadFood = [];
+
+let highscore = {username: "non", score: 0};
+
+const getHighScore = () => {
+    scoreModel.findOne({}).sort({score: "descending"}).exec((err, data) => {
+        if (data !== null){
+            highscore = data;
+        }
+    })
+}
 
 io.on('connection', (socket) => {
     console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
-        //console.log(snakes);
-        socket.emit('get-data', { users: users, snakes: snakes, foods: foods, deadFood: deadFood })
+        if (Score !== null) {
+            scoreModel.findOne({username: obj.username}, (err, data) => {
+                if (data !== null) {
+                    socket.emit('get-data', { users: users, snakes: snakes, foods: foods, deadFood: deadFood, score: data.score, high: highscore });
+                }else{
+                    socket.emit('get-data', { users: users, snakes: snakes, foods: foods, deadFood: deadFood, score: 0, high: highscore });
+                }
+            })
+        }
+        
     })
 
     socket.on('register', (data) => {
@@ -166,28 +155,31 @@ io.on('connection', (socket) => {
         }
         */
 
-        userBySoket[socket.id] = data.name;
-        users.push(data.name);
-        snakes[data.name] = data.snake;
-        foods[data.name] = data.food;
-
-        socket.broadcast.emit('register', data);
-        console.log(data.name + " registered");
+        
+        let ava = true;
+        for(let user of users) {
+            if (data.name === user) {
+                ava = false;
+                socket.emit('yeeted', {kicked: true});
+            }
+        }
+        if (ava) {
+            userBySoket[socket.id] = data.name;
+            users.push(data.name);
+            snakes[data.name] = data.snake;
+            foods[data.name] = data.food;
+    
+            socket.broadcast.emit('register', data);
+            console.log(data.name + " registered");
+        }
     });
 
     socket.on('update', data => {
 
 
         if (userBySoket[socket.id] === undefined) {
-            console.log(data.name + " re registered");
-            userBySoket[socket.id] = data.name;
-            users.push(data.name);
-            snakes[data.name] = data.snake;
-            socket.broadcast.emit('register', data)
-
+            socket.emit('yeeted', {kicked: true})
         }
-
-
 
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
@@ -200,11 +192,32 @@ io.on('connection', (socket) => {
             for (let bodypart of snakes[user].body) {
                 deadFood.push(bodypart);
             }
-            socket.broadcast.emit('dead', { name: user, food: deadFood });
+
+            let score = snakes[user].score;
+
             delete snakes[user];
             delete userBySoket[socket.id];
-            //users.splice(users.indexOf(user), 1);
             users = users.filter(e => e !== user)
+
+            socket.broadcast.emit('dead', { name: user, food: deadFood });
+            scoreModel.findOne({username: user}, (err, data) => {
+                if (data !== null) {
+                    if (score > data.score) {
+                        scoreModel.findByIdAndUpdate(data.id, {score: score}, (err, data) => {
+
+                        })
+                    }
+                    data.score
+                }else{
+                    let newScore = new Score({username: user, score: score})
+                    newScore.save();
+                }
+            });
+
+            if (score > highscore.score) {
+                console.log("new score")
+                highscore = {username:user, score: score}
+            }
         }
     })
 
@@ -245,6 +258,9 @@ mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", {
     (e) => {
         console.log('connected to db');
         User = userModel;
+        Score = scoreModel;
+        getHighScore();
+    
     },
     (err) => {
         //console.log(err);

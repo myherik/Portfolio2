@@ -21,7 +21,7 @@ let w, h;
 
 startButton.addEventListener("click", (e) => {
     if (snake === null) {
-        startGame();
+        getData(name)
     }
 });
 
@@ -47,7 +47,6 @@ const showScores = () => {
 
 
 const startGame = () => {
-    getData();
     document.getElementById("inYourFace").classList.add("hidden")
     startButton.style.display = "none";
     while (snake === null) {
@@ -143,7 +142,7 @@ function draw() {
             if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
                 if (snake.hitSnake(snakeList[user])) {
-                    endGame();
+                    //endGame();
                 }
             }
 
@@ -225,8 +224,7 @@ function keyPressed() {
 (() => {
     name = sessionStorage.getItem("username");
     if (name !== null) {
-        getData();
-        startGame();
+        getData(name);
     } else {
         window.location.href = "/";
     }
