@@ -25,3 +25,4 @@ Erik for arrowkeys :)
 node.js
 express
 socket.io
+bcrypt

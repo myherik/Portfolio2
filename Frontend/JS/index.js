@@ -13,12 +13,12 @@ const login = () => {
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data.body.username);
+            //console.log(data.body.username);
             if (data.body.username !== undefined) {
                 sessionStorage.setItem("username", data.body.username);
                 window.location.href = "/game"
             } else {
-                document.getElementById("loginMessage").innerText = "Wrong username or password"
+                document.getElementById("loginMessage").innerText = data.body.message;
             }
         });
 }
@@ -35,13 +35,12 @@ const register = () => {
         },
         method: "POST",
         body: JSON.stringify(user)
-    }).then(res => res.json())
-        .then(data => {
-            if(data.body === "OK") {
-                document.getElementById("registerMessage").innerText = "Rergistration success!"
-            }
-            console.log(data);
-        });
+    })
+    .then(res => res.json())        
+    .then(data => {
+        document.getElementById("registerMessage").innerText = data.body.message;
+        console.log(data);
+    });
 }
 
 const toggle = () => {

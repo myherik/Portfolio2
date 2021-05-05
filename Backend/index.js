@@ -5,6 +5,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
+const userModel = require('./user');
+let User = null;
 
 const path = require('path');
 
@@ -13,6 +17,34 @@ let loginList = [{username: "admin", password: "admin"}];
 app.use(express.json());
 
 app.post("/login", (req, res) => {
+    const { username, password} = req.body;
+    if(User !== null){
+        User.findOne({username: username}, (err, data) => {
+            bcrypt.compare(password, data.password, (err, data) => {
+                if (data) {
+                    res.status(200).json({
+                        status: "OK",
+                        body: {
+                            username: username
+                        }
+                    })
+                }
+                else{
+                    res.status(400).json({
+                        status: "Error",
+                        body: {
+                            message: "Wrong username or password"
+                        }
+                    })
+                }
+                
+            })
+            
+        });
+    }
+
+    
+    /*
     let boolean = false;
     const { username, password } = req.body;
     for (let user of loginList) {
@@ -30,14 +62,65 @@ app.post("/login", (req, res) => {
             body: "invalid username or password"
         });
     }
+    */
 })
 
 app.post("/register", (req, res) => {
     const { username, password } = req.body;
+    if (password.length <= 5) {
+        res.status(400).json({
+            body: {
+                message: "Invalid password; must have at least 5 carachters"
+            }
+        })
+        return;
+    }
+
+    if(User != null) {
+        try {
+            let bool = true;
+            bcrypt.hash(password, 10, (err, data) => {
+                let insert = new User({username: username, password: data});
+                console.log(insert);
+                insert.save((err) => {
+                    //console.log(err)
+                    if (err) {
+                        console.log("error")
+                        res.status(400).json({
+                            body: {
+                                message: "Username already in use"
+                            }
+                        })
+                        
+                    } else {
+                        console.log("ikke lenger ved error")
+                        res.status(201).json({
+                            body: {
+                                message: "User created"
+                            }
+                        });
+                    }
+                });
+            });
+            
+        } catch (err) {
+            console.log(err);
+            
+        }
+    } else {
+        res.status(500).json({
+            body: {
+                message: "DB not available"
+            }
+        })
+    }
+
+    /*
     loginList.push({ username: username, password: password });
     res.status(201).json({
         body: "OK"
     })
+    */
 })
 
 app.get("/", (req, res) => {
@@ -152,15 +235,16 @@ io.on('connection', (socket) => {
 })
 
 mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", {
-    useNewUrlParser: true/*,
+    useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
-    */
+    
 })
 .then(
     (e) => {
         console.log('connected to db');
+        User = userModel;
     },
     (err) => {
         //console.log(err);
