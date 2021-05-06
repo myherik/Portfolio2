@@ -90,8 +90,10 @@ const startGame = () => {
     socketReg(obj)
 }
 
+
+let canvas = null;
 function setup() {
-    let canvas = createCanvas(720, 500);
+    canvas = createCanvas(720, 500);
     w = width;
     h = height;
     canvas.parent("sketchHere");
@@ -216,6 +218,14 @@ function keyPressed() {
                 console.log(snakeList[users[0]]);
                 console.log(users);
             }
+        } else if (key == 'b') {
+            document.getElementById("sketchHere").scroll({
+                top: snake.y - 100,
+                left: snake.x - 100,
+                behavior: 'smooth'
+            });
+        } else if (key == 'n') {
+            canvas.offsetLeft += 10;
         }
     }
 }

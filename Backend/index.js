@@ -15,34 +15,42 @@ let Score = null;
 
 const path = require('path');
 
-let loginList = [{username: "admin", password: "admin"}];
+let loginList = [{ username: "admin", password: "admin" }];
 
 app.use(express.json());
 
 app.post("/login", (req, res) => {
-    const { username, password} = req.body;
-    if(User !== null){
-        User.findOne({username: username}, (err, data) => {
-            bcrypt.compare(password, data.password, (err, data) => {
-                if (data) {
-                    res.status(200).json({
-                        status: "OK",
-                        body: {
-                            username: username
-                        }
-                    })
-                }
-                else{
-                    res.status(400).json({
-                        status: "Error",
-                        body: {
-                            message: "Wrong username or password"
-                        }
-                    })
-                }
-                
-            })
-            
+    const { username, password } = req.body;
+    if (User !== null) {
+        User.findOne({ username: username }, (err, data) => {
+            if (data) {
+                bcrypt.compare(password, data.password, (err, data) => {
+                    if (data) {
+                        res.status(200).json({
+                            status: "OK",
+                            body: {
+                                username: username
+                            }
+                        })
+                    }
+                    else {
+                        res.status(400).json({
+                            status: "Error",
+                            body: {
+                                message: "Wrong username or password"
+                            }
+                        })
+                    }
+
+                })
+            } else {
+                res.status(400).json({
+                    status: "Error",
+                    body: {
+                        message: "Wrong username or password"
+                    }
+                })
+            }
         });
     }
 })
@@ -58,11 +66,11 @@ app.post("/register", (req, res) => {
         return;
     }
 
-    if(User != null) {
+    if (User != null) {
         try {
             let bool = true;
             bcrypt.hash(password, 10, (err, data) => {
-                let insert = new User({username: username, password: data});
+                let insert = new User({ username: username, password: data });
                 console.log(insert);
                 insert.save((err) => {
 
@@ -72,7 +80,7 @@ app.post("/register", (req, res) => {
                                 message: "Username already in use"
                             }
                         })
-                        
+
                     } else {
                         res.status(201).json({
                             body: {
@@ -82,9 +90,9 @@ app.post("/register", (req, res) => {
                     }
                 });
             });
-            
+
         } catch (err) {
-            
+
         }
     } else {
         res.status(500).json({
@@ -121,11 +129,11 @@ let snakes = {};
 let foods = {};
 let deadFood = [];
 
-let highscore = {username: "non", score: 0};
+let highscore = { username: "non", score: 0 };
 
 const getHighScore = () => {
-    scoreModel.findOne({}).sort({score: "descending"}).exec((err, data) => {
-        if (data !== null){
+    scoreModel.findOne({}).sort({ score: "descending" }).exec((err, data) => {
+        if (data !== null) {
             highscore = data;
         }
     })
@@ -135,15 +143,15 @@ io.on('connection', (socket) => {
     console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
         if (Score !== null) {
-            scoreModel.findOne({username: obj.username}, (err, data) => {
+            scoreModel.findOne({ username: obj.username }, (err, data) => {
                 if (data !== null) {
                     socket.emit('get-data', { users: users, snakes: snakes, foods: foods, deadFood: deadFood, score: data.score, high: highscore });
-                }else{
+                } else {
                     socket.emit('get-data', { users: users, snakes: snakes, foods: foods, deadFood: deadFood, score: 0, high: highscore });
                 }
             })
         }
-        
+
     })
 
     socket.on('register', (data) => {
@@ -155,12 +163,12 @@ io.on('connection', (socket) => {
         }
         */
 
-        
+
         let ava = true;
-        for(let user of users) {
+        for (let user of users) {
             if (data.name === user) {
                 ava = false;
-                socket.emit('yeeted', {kicked: true});
+                socket.emit('yeeted', { kicked: true });
             }
         }
         if (ava) {
@@ -168,7 +176,7 @@ io.on('connection', (socket) => {
             users.push(data.name);
             snakes[data.name] = data.snake;
             foods[data.name] = data.food;
-    
+
             socket.broadcast.emit('register', data);
             console.log(data.name + " registered");
         }
@@ -178,7 +186,7 @@ io.on('connection', (socket) => {
 
 
         if (userBySoket[socket.id] === undefined) {
-            socket.emit('yeeted', {kicked: true})
+            socket.emit('yeeted', { kicked: true })
         }
 
         snakes[data.name] = data.snake;
@@ -200,23 +208,23 @@ io.on('connection', (socket) => {
             users = users.filter(e => e !== user)
 
             socket.broadcast.emit('dead', { name: user, food: deadFood });
-            scoreModel.findOne({username: user}, (err, data) => {
+            scoreModel.findOne({ username: user }, (err, data) => {
                 if (data !== null) {
                     if (score > data.score) {
-                        scoreModel.findByIdAndUpdate(data.id, {score: score}, (err, data) => {
+                        scoreModel.findByIdAndUpdate(data.id, { score: score }, (err, data) => {
 
                         })
                     }
                     data.score
-                }else{
-                    let newScore = new Score({username: user, score: score})
+                } else {
+                    let newScore = new Score({ username: user, score: score })
                     newScore.save();
                 }
             });
 
             if (score > highscore.score) {
                 console.log("new score")
-                highscore = {username:user, score: score}
+                highscore = { username: user, score: score }
             }
         }
     })
@@ -252,20 +260,20 @@ mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", {
     useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false
-    
+
 })
-.then(
-    (e) => {
-        console.log('connected to db');
-        User = userModel;
-        Score = scoreModel;
-        getHighScore();
-    
-    },
-    (err) => {
-        //console.log(err);
-        console.log("error")
-    })
+    .then(
+        (e) => {
+            console.log('connected to db');
+            User = userModel;
+            Score = scoreModel;
+            getHighScore();
+
+        },
+        (err) => {
+            //console.log(err);
+            console.log("error")
+        })
 
 server.listen(8080, () => {
     console.log(__dirname)

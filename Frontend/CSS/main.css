@@ -5,6 +5,12 @@
     
 }
 
+#sketchHere {
+    max-width: 100vw!important;
+    max-height: 100vh!important;
+    overflow: hidden;
+}
+
 .row-1 {
     width: 100%;
     display: flex;
