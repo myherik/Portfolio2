@@ -30,7 +30,7 @@ class Snake {
 
         textSize(8);
         fill(this.rgb[0], this.rgb[1], this.rgb[2]);
-        text(this.name, this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
+        text(this.name.split("@")[0], this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
 
 
         for (let i = 0; i < this.body.length; i++) {

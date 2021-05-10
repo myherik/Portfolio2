@@ -7,6 +7,9 @@ const io = new Server(server);
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client("381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com");
+
 const userModel = require('./user');
 let User = null;
 
@@ -99,6 +102,70 @@ app.post("/register", (req, res) => {
             }
         })
     }
+})
+
+app.post("/google", (req, res) => {
+    console.log(req.body.token)
+    client.verifyIdToken({
+        idToken: req.body.token,
+        audience: "381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com", // Specify the CLIENT_ID of the app that accesses the backend
+        }).then((result) => {
+            console.log("verified")
+            if (User != null) {
+                User.findOne({username: result.payload.email}, (err, user) => {
+                    if (err) {
+                        res.status(400).json({
+                            status: 'fail',
+                            body: {
+                                message:"invalid token"
+                            }
+                        })
+                    } else {
+                        if (user && user.password === 'google') {
+                            res.status(200).json({
+                                status: 'success',
+                                body: {
+                                    message:"token OK",
+                                    username: result.payload.email
+                                }
+                            })
+                        } else {
+                            console.log("no user")
+                            User.create({username: result.payload.email, password: "google"}, (errCreate, data) => {
+                                
+                                if (errCreate) {
+                                    res.status(400).json({
+                                        status: 'fail',
+                                        body: {
+                                            message:"invalid token"
+                                        }
+                                    })
+                                } else {
+                                    if (data) {
+                                        res.status(200).json({
+                                            status: 'success',
+                                            body: {
+                                                message:"token OK",
+                                                username: result.payload.email
+                                            }
+                                        })
+                                    }
+                                }
+                                
+                            })
+                        }
+                    }
+                })
+            }
+        }).catch((err) => {
+            console.log(err);
+            res.status(400).json({
+                status: 'fail',
+                body: {
+                    message:"invalid token"
+                }
+            })
+        });
 })
 
 app.get("/", (req, res) => {

@@ -10,6 +10,10 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/CSS/main.css">
+    <!-- Google sign-in stuff -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- NOTE: Replace "content" with your own client ID -->
+    <meta name="google-signin-client_id" content="381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com">
 </head>
 
 <body style="background-color: #e5e5e5">
@@ -41,6 +45,7 @@
             <div class="show">
                 <h3 id="toggleText">Don't have an account? Click here to register!</h3>
                 <button class="btn btn-primary" onclick="toggle()" id="toggleButton" class="button">Register</button>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </div>
         <div class="row-3">
@@ -67,7 +72,7 @@
     </div>
 
 
-
+    <script src="/JS/google.js"></script>
     <script src="/JS/index.js"></script>
 </body>
 
