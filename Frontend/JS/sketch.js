@@ -94,6 +94,7 @@ const startGame = () => {
 let canvas = null;
 function setup() {
     canvas = createCanvas(720, 500);
+    canvas.style.margin = "0";
     w = width;
     h = height;
     canvas.parent("sketchHere");
@@ -106,7 +107,7 @@ let counter = 1;
 function draw() {
     counter++;
 
-    background(220);
+    background(45, 48, 58);
 
     if (food !== null) {
         food.show();
@@ -232,7 +233,7 @@ function keyPressed() {
         } else if (key == 'b') {
             //scrollSnake();
         } else if (key == 'n') {
-            canvas.offsetLeft += 10;
+
         }
     }
 }
