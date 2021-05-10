@@ -125,6 +125,7 @@ function draw() {
 
         //console.log(deadFood.length)
         if (counter % 5 === 0) {
+            scrollSnake();
             showScores();
             showPlayers();
             for (let foodEl of deadFood) {
@@ -175,6 +176,16 @@ function draw() {
 
 }
 
+const scrollSnake = () => {
+    let widthOfScreen = window.innerWidth;
+    let heigthOfScreen = window.innerHeight;
+    document.getElementById("sketchHere").scroll({
+        top: snake.y - heigthOfScreen / 2,
+        left: snake.x - widthOfScreen / 2,
+        behavior: 'smooth'
+    });
+}
+
 const endGame = () => {
     dead(snake.name, food);
     food = null;
@@ -219,11 +230,7 @@ function keyPressed() {
                 console.log(users);
             }
         } else if (key == 'b') {
-            document.getElementById("sketchHere").scroll({
-                top: snake.y - 100,
-                left: snake.x - 100,
-                behavior: 'smooth'
-            });
+            //scrollSnake();
         } else if (key == 'n') {
             canvas.offsetLeft += 10;
         }
