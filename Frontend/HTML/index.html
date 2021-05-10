@@ -3,54 +3,66 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width = device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SNAKE</title>
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">  
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/CSS/main.css">
 </head>
 
-<body>
+<body style="background-color: #e5e5e5">
 
     <div class="column">
         <div id="LorR">
             <div class="show" id="login">
                 <h1>Log in and play</h1>
-                <input type="text" id="loginNm" placeholder="username">
-                <input type="password" id="loginPwd" placeholder="password">
-                <button class="btn btn-primary" onclick="login()" class="button">Login</button>
+                <div class="input-group mb-3" style="display:flex; flex-direction: row;">
+                    <input type="text" id="loginNm" class="form-control" placeholder="username">
+                    <input type="password" id="loginPwd" class="form-control" placeholder="password">
+                    <div class="input-group-append">
+                        <button class="btn outline btn-outline-success" onclick="login()" type="button">Login</button>
+                    </div>
+                </div>
                 <p id="loginMessage"></p>
             </div>
             <div class="hidden" id="reg">
                 <h1>Register a new account to play</h1>
-                <input type="text" id="regNm" placeholder="username">
-                <input type="password" id="regPwd" placeholder="password">
-                <button class="btn btn-primary" onclick="register()" class="button">Register</button>
+                <div class="input-group mb-3" style="display:flex; flex-direction: row;">
+                    <input type="text" id="regNm" class="form-control" placeholder="username">
+                    <input type="password" id="regPwd" class="form-control" placeholder="password">
+                    <div class="input-group-append">
+                        <button class="btn outline btn-outline-success" onclick="register()" type="button">Register</button>
+                    </div>
+                </div>
                 <p id="registerMessage"></p>
             </div>
             <div class="show">
                 <h3 id="toggleText">Don't have an account? Click here to register!</h3>
-                <button class="btn btn-secondary" onclick="toggle()" id="togglebutton" class="button">Register</button>
+                <button class="btn btn-primary" onclick="toggle()" id="toggleButton" class="button">Register</button>
             </div>
         </div>
         <div class="row-3">
+            <br>
             <h1>✨How to play✨</h1>
             <p>To move around press either the arrowkeys shown here</p>
             <img class="imageKeys" src="/Media/arrowblanks.png" alt="arrowkeys image">
             <p>or use the "wasd" keys shown here</p>
             <img class="imageKeys" src="/Media/wasdkeys.png" alt="wasd keys image">
-            <p>Basic instructions</p>
-            <ul>
-                <li>Change colour of your snake by pressing 'c'</li>
-                <li>Grow bigger by eating the red apples</li>
-                <li>Do not hit the border as you will die</li>
-                <li>Do not hit another snake as you will die</li>
-            </ul>
-            <p>General information</p>
-            <ul>
-                <li>Bigger snake = bigger score</li>
-                <li>Dead snakes turn into food equivalent to their score</li>
-            </ul>
+            <h4>Basic instructions</h4>
+            <div class="textbox">
+                <p>Change colour of your snake by pressing 'c'</li>
+                <p>Grow bigger by eating the red apples</li>
+                <p>Do not hit the border as you will die</li>
+                <p>Do not hit another snake as you will die</li>
+            </div>
+            <h4>General information</h4>
+            <div class="textbox">
+                <p>Bigger snake = bigger score</li>
+                <p>Dead snakes turn into food equivalent to their score</li>
+            </div>
+            <br>
         </div>
     </div>
 

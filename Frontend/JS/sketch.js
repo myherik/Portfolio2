@@ -106,7 +106,6 @@ let counter = 1;
 
 function draw() {
     counter++;
-
     background(45, 48, 58);
 
     if (food !== null) {
@@ -179,12 +178,14 @@ function draw() {
 
 const scrollSnake = () => {
     let widthOfScreen = window.innerWidth;
-    let heigthOfScreen = window.innerHeight;
-    document.getElementById("sketchHere").scroll({
-        top: snake.y - heigthOfScreen / 2,
-        left: snake.x - widthOfScreen / 2,
+    let heightOfScreen = window.innerHeight;
+    let sketch = document.getElementById("sketchHere");
+    sketch.scroll({
+        top: snake.y - heightOfScreen / 2,
+        left: snake.x - widthOfScreen/ 2,
         behavior: 'smooth'
     });
+
 }
 
 const endGame = () => {

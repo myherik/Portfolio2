@@ -15,8 +15,6 @@ let Score = null;
 
 const path = require('path');
 
-let loginList = [{ username: "admin", password: "admin" }];
-
 app.use(express.json());
 
 app.post("/login", (req, res) => {
