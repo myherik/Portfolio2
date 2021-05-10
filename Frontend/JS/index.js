@@ -1,7 +1,23 @@
+const loginUsername = document.getElementById("loginNm");
+const loginPassword = document.getElementById("loginPwd")
+
+const loginEl = document.getElementById("login");
+const regEl = document.getElementById("reg");
+
+const regUsername = document.getElementById("regNm");
+const regPassword = document.getElementById("regPwd");
+
+const loginMessage = document.getElementById("loginMessage");
+const regMessage = document.getElementById("registerMessage");
+
+const toggleText = document.getElementById("toggleText");
+const toggleButton = document.getElementById("toggleButton");
+
+
 const login = () => {
     const user = {
-        username: document.getElementById("loginNm").value,
-        password: document.getElementById("loginPwd").value
+        username: loginUsername.value,
+        password: loginPassword.value
     }
     console.log(user);
     fetch("/login", {
@@ -13,20 +29,36 @@ const login = () => {
     })
         .then(res => res.json())
         .then(data => {
-            console.log(data.body.username);
             if (data.body.username !== undefined) {
                 sessionStorage.setItem("username", data.body.username);
                 window.location.href = "/game"
             } else {
-                document.getElementById("loginMessage").innerText = "Wrong username or password"
+                loginMessage.innerText = data.body.message;
+                loginPassword.value = "";
+                loginPassword.focus();
             }
         });
 }
 
+loginUsername.focus();
+
+loginUsername.addEventListener("keypress", (e) => {
+    if (e.key === 'Enter') {
+        loginPassword.focus();
+    }
+})
+
+loginPassword.addEventListener("keypress", (e) => {
+    if (e.key === 'Enter') {
+        login();
+    }
+})
+
+
 const register = () => {
     const user = {
-        username: document.getElementById("regNm").value,
-        password: document.getElementById("regPwd").value
+        username: regUsername.value,
+        password: regPassword.value
     }
     console.log(user);
     fetch("/register", {
@@ -35,35 +67,49 @@ const register = () => {
         },
         method: "POST",
         body: JSON.stringify(user)
-    }).then(res => res.json())
+    })
+        .then(res => res.json())
         .then(data => {
-            if(data.body === "OK") {
-                document.getElementById("registerMessage").innerText = "Rergistration success!"
-            }
+            regMessage.innerText = data.body.message;
             console.log(data);
         });
 }
 
+regUsername.addEventListener("keypress", (e) => {
+    if (e.key === 'Enter') {
+        regPassword.focus();
+    }
+})
+regPassword.addEventListener("keypress", (e) => {
+    if (e.key === 'Enter') {
+        register();
+    }
+})
+
 const toggle = () => {
 
-    if (document.getElementById("login").classList.contains("show")) {
-        document.getElementById("login").classList.remove("show");
-        document.getElementById("login").classList.add("hidden");
-        document.getElementById("reg").classList.remove("hidden");
-        document.getElementById("reg").classList.add("show");
+    if (loginEl.classList.contains("show")) {
+        loginEl.classList.remove("show");
+        loginEl.classList.add("hidden");
+        regEl.classList.remove("hidden");
+        regEl.classList.add("show");
 
-        document.getElementById("toggleText").innerText = "Already have an account? Click here to log in!"
+        regUsername.focus();
 
-        document.getElementById("togglebutton").innerText = "Login"
+        toggleText.innerText = "Already have an account? Click here to log in!"
+
+        toggleButton.innerText = "Login"
 
     } else {
-        document.getElementById("login").classList.remove("hidden");
-        document.getElementById("login").classList.add("show");
-        document.getElementById("reg").classList.remove("show");
-        document.getElementById("reg").classList.add("hidden");
+        loginEl.classList.remove("hidden");
+        loginEl.classList.add("show");
+        regEl.classList.remove("show");
+        regEl.classList.add("hidden");
 
-        document.getElementById("toggleText").innerText = "Don't have an account? Click here to register!"
+        loginUsername.focus();
 
-        document.getElementById("togglebutton").innerText = "Register"
+        toggleText.innerText = "Don't have an account? Click here to register!"
+
+        toggleButton.innerText = "Register"
     }
 }

@@ -21,7 +21,7 @@ let w, h;
 
 startButton.addEventListener("click", (e) => {
     if (snake === null) {
-        startGame();
+        getData(name)
     }
 });
 
@@ -47,7 +47,6 @@ const showScores = () => {
 
 
 const startGame = () => {
-    getData();
     document.getElementById("inYourFace").classList.add("hidden")
     startButton.style.display = "none";
     while (snake === null) {
@@ -91,8 +90,11 @@ const startGame = () => {
     socketReg(obj)
 }
 
+
+let canvas = null;
 function setup() {
-    let canvas = createCanvas(720, 500);
+    canvas = createCanvas(720, 500);
+    canvas.style.margin = "0";
     w = width;
     h = height;
     canvas.parent("sketchHere");
@@ -105,7 +107,7 @@ let counter = 1;
 function draw() {
     counter++;
 
-    background(220);
+    background(45, 48, 58);
 
     if (food !== null) {
         food.show();
@@ -124,6 +126,7 @@ function draw() {
 
         //console.log(deadFood.length)
         if (counter % 5 === 0) {
+            scrollSnake();
             showScores();
             showPlayers();
             for (let foodEl of deadFood) {
@@ -143,7 +146,7 @@ function draw() {
             if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
                 if (snake.hitSnake(snakeList[user])) {
-                    endGame();
+                    //endGame();
                 }
             }
 
@@ -174,6 +177,16 @@ function draw() {
 
 }
 
+const scrollSnake = () => {
+    let widthOfScreen = window.innerWidth;
+    let heigthOfScreen = window.innerHeight;
+    document.getElementById("sketchHere").scroll({
+        top: snake.y - heigthOfScreen / 2,
+        left: snake.x - widthOfScreen / 2,
+        behavior: 'smooth'
+    });
+}
+
 const endGame = () => {
     dead(snake.name, food);
     food = null;
@@ -185,19 +198,19 @@ const endGame = () => {
 
 function keyPressed() {
     if (snake !== null) {
-        if (keyCode === LEFT_ARROW || keyCode === 'a') {
+        if (keyCode === LEFT_ARROW || key == 'a') {
             if (snake.xdir !== 1) {
                 snake.setDir(-1, 0);
             }
-        } else if (keyCode === RIGHT_ARROW || keyCode === 'd') {
+        } else if (keyCode === RIGHT_ARROW || key == 'd') {
             if (snake.xdir !== -1) {
                 snake.setDir(1, 0);
             }
-        } else if (keyCode === DOWN_ARROW || keyCode === 's') {
+        } else if (keyCode === DOWN_ARROW || key == 's') {
             if (snake.ydir !== -1) {
                 snake.setDir(0, 1);
             }
-        } else if (keyCode === UP_ARROW || keyCode === 'w') {
+        } else if (keyCode === UP_ARROW || key == 'w') {
             if (snake.ydir !== 1) {
                 snake.setDir(0, -1);
             }
@@ -217,6 +230,10 @@ function keyPressed() {
                 console.log(snakeList[users[0]]);
                 console.log(users);
             }
+        } else if (key == 'b') {
+            //scrollSnake();
+        } else if (key == 'n') {
+
         }
     }
 }
@@ -225,8 +242,7 @@ function keyPressed() {
 (() => {
     name = sessionStorage.getItem("username");
     if (name !== null) {
-        getData();
-        startGame();
+        getData(name);
     } else {
         window.location.href = "/";
     }

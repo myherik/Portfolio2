@@ -12,7 +12,7 @@ class Snake {
         this.ydir = 0;
         this.size = 0;
         this.score = 0;
-        this.rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+        this.rgb = this.genColor();
         this.name = name;
         //this.counter = 1;
     }
@@ -20,6 +20,10 @@ class Snake {
     setDir(x, y) {
         this.xdir = x;
         this.ydir = y;
+    }
+
+    genColor() {
+        return [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
     }
 
     show() {
@@ -228,6 +232,6 @@ class Snake {
     }
 
     changeColor() {
-        this.rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+        this.rgb = this.genColor();
     }
 }

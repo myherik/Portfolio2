@@ -1,7 +1,9 @@
 FROM node
+WORKDIR /usr/src/app/Backend
+COPY ./Backend/package*.json .
+RUN npm install
 WORKDIR /usr/src/app
 COPY . .
 WORKDIR /usr/src/app/Backend
-RUN npm install
 EXPOSE 8080
-CMD [ "node", "index.js" ]
+CMD [ "npm", "start" ]
