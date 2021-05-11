@@ -32,7 +32,7 @@ socket.on('get-data', obj => {
     //console.log(obj.users);
 
     document.getElementById("pb").innerText = `Highscore: ${obj.score}`;
-    document.getElementById("all-time").innerText = `By: ${obj.high.username} with the score ${obj.high.score}`;
+    document.getElementById("all-time").innerText = `By: ${obj.high.username.split("@")[0]} with the score ${obj.high.score}`;
 
     users = obj.users;
     for (let user of users) {
@@ -118,7 +118,6 @@ const dead = (name, infood) => {
 
 socket.on('dead', (name) => {
     //users[regObj.name].pop();
-
     //users.splice(users.indexOf(name.name), 1)
     users = users.filter(e => e !== name.name)
     delete snakeList[name.name];

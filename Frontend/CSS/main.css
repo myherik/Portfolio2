@@ -15,7 +15,11 @@
     max-width: 100vw!important;
     max-height: 100vh!important;
     overflow: hidden;
-    border: white 1px solid;
+    /*
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: white 1px solid;*/
 }
 
 .row-1 {
@@ -124,4 +128,9 @@
 
 .p5Canvas {
     display: block;
+    margin: auto;
+}
+
+.btn-primary {
+    background-color: rgb(21, 122, 235);
 }

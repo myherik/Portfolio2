@@ -14,9 +14,12 @@
 
     Dø når slangen treffer seg selv eller andre slanger __ ish done
     
+GLITCHES: uendelig food OG du ikke dør av og til hvis man treffer annen slange
 https openssl
 TLS implementering
 Prometheus implementatering
+KOMMENTER KODEN
+BADASS RAPPORT
 [OPTIONAL] Mer komplisert score kalkulering
 [OPTIONAL] livemap før registrering
 

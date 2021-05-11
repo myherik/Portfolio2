@@ -262,8 +262,8 @@ io.on('connection', (socket) => {
         let user = userBySoket[socket.id];
         console.log(user + " died");
         if (user !== undefined) {
-            for (let bodypart of snakes[user].body) {
-                deadFood.push(bodypart);
+            for (let i = 0; i < snakes[user].body.length - 1; i++) {
+                deadFood.push(snakes[user].body[i]);
             }
 
             let score = snakes[user].score;

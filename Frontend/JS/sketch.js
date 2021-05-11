@@ -17,6 +17,8 @@ const setDead = (list) => {
     deadFood = list;
 }
 
+const wall = new Wall();
+
 let w, h;
 
 let scaleVar = 2;
@@ -28,9 +30,9 @@ startButton.addEventListener("click", (e) => {
 });
 
 const showPlayers = () => {
-    let htmlUserList = `<p>${snake.name}</p>`;
+    let htmlUserList = `<p>${snake.name.split("@")[0]}</p>`;
     for (let user of users) {
-        htmlUserList += `<p>${user}</p>`;
+        htmlUserList += `<p>${user.split("@")[0]}</p>`;
     }
     document.getElementById("placePlayersHere").innerHTML = htmlUserList;
 }
@@ -41,7 +43,7 @@ const showScores = () => {
     let scoreList = "<ol>"
     for (let i = 0; i < Math.min(10, users.length); i++) {
         let user = users[i];
-        scoreList += `<li>${user}: ${snakeList[user].score}</li>`
+        scoreList += `<li>${user.split("@")[0]}: ${snakeList[user].score}</li>`
     }
     scoreList += "</ol>";
     document.getElementById("placePlayerScoresHere").innerHTML = scoreList;
@@ -95,7 +97,7 @@ const startGame = () => {
 
 let canvas = null;
 function setup() {
-    canvas = createCanvas(720*scaleVar, 500*scaleVar);
+    canvas = createCanvas(720*scaleVar + 10, 500*scaleVar + 10);
     canvas.style.margin = "0";
     w = width;
     h = height;
@@ -104,12 +106,19 @@ function setup() {
     frameRate(60);
 }
 
+const setCanvas = () => {
+    resizeCanvas(720*scaleVar + 10, 500*scaleVar + 10);
+}
+
 let counter = 1;
 
 function draw() {
+
     scale(scaleVar);
     counter++;
     background(45, 48, 58);
+    
+    wall.show();
 
     if (food !== null) {
         food.show();
@@ -186,7 +195,7 @@ const scrollSnake = () => {
     //console.log(sketch.offsetHeight + " " + sketch.offsetWidth)
     sketch.scroll({
         top: snake.y*scaleVar - sketch.offsetHeight / 2,
-        left: snake.x*scaleVar - sketch.offsetWidth / 2,
+        left: snake.x*scaleVar - sketch.offsetWidth / 2 - 5,
         behavior: 'smooth'
     });
     /*
@@ -248,8 +257,10 @@ function keyPressed() {
             console.log(snake.x + " " + snake.y)
         } else if (key == '-') {
             scaleVar -= 0.1
+            setCanvas();
         } else if (key == '+') {
             scaleVar += 0.1
+            setCanvas();
         }
     }
 }
