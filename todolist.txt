@@ -19,6 +19,7 @@ https openssl
 TLS implementering
 Prometheus implementatering
 KOMMENTER KODEN
+README.md fil :'(
 BADASS RAPPORT
 [OPTIONAL] Mer komplisert score kalkulering
 [OPTIONAL-EXTREME] livemap før login/registrering
@@ -31,3 +32,4 @@ node.js
 express
 socket.io
 bcrypt
+google authorization
