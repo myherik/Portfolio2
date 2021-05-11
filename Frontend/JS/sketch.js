@@ -19,6 +19,8 @@ const setDead = (list) => {
 
 let w, h;
 
+let scaleVar = 2;
+
 startButton.addEventListener("click", (e) => {
     if (snake === null) {
         getData(name)
@@ -93,7 +95,7 @@ const startGame = () => {
 
 let canvas = null;
 function setup() {
-    canvas = createCanvas(720, 500);
+    canvas = createCanvas(720*scaleVar, 500*scaleVar);
     canvas.style.margin = "0";
     w = width;
     h = height;
@@ -105,6 +107,7 @@ function setup() {
 let counter = 1;
 
 function draw() {
+    scale(scaleVar);
     counter++;
     background(45, 48, 58);
 
@@ -180,11 +183,19 @@ const scrollSnake = () => {
     let widthOfScreen = window.innerWidth;
     let heightOfScreen = window.innerHeight;
     let sketch = document.getElementById("sketchHere");
+    //console.log(sketch.offsetHeight + " " + sketch.offsetWidth)
+    sketch.scroll({
+        top: snake.y*scaleVar - sketch.offsetHeight / 2,
+        left: snake.x*scaleVar - sketch.offsetWidth / 2,
+        behavior: 'smooth'
+    });
+    /*
     sketch.scroll({
         top: snake.y - heightOfScreen / 2,
         left: snake.x - widthOfScreen/ 2,
         behavior: 'smooth'
     });
+    */
 
 }
 
@@ -234,7 +245,11 @@ function keyPressed() {
         } else if (key == 'b') {
             //scrollSnake();
         } else if (key == 'n') {
-
+            console.log(snake.x + " " + snake.y)
+        } else if (key == '-') {
+            scaleVar -= 0.1
+        } else if (key == '+') {
+            scaleVar += 0.1
         }
     }
 }

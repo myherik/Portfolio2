@@ -10,7 +10,8 @@
 }
 
 #sketchHere {
-    height: 500px;
+    height: 720px;
+    width: 1280px;
     max-width: 100vw!important;
     max-height: 100vh!important;
     overflow: hidden;

@@ -20,7 +20,7 @@ Prometheus implementatering
 [OPTIONAL] Mer komplisert score kalkulering
 [OPTIONAL] livemap før registrering
 
-Sources
+Sources -----------------------------------------------------------------------------
 p5
 bootstrap
 Erik for arrowkeys :)
