@@ -157,7 +157,7 @@ function draw() {
             if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
                 if (snake.hitSnake(snakeList[user])) {
-                    //endGame();
+                    endGame();
                 }
             }
 
