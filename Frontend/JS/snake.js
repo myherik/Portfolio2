@@ -1,7 +1,7 @@
 
 class Snake {
 
-    constructor(name) {
+    constructor(name) {// constructor for snake object
         this.body = [];
         this.points = []
         this.x = Math.floor(Math.random() * 710) + 5;
@@ -17,12 +17,12 @@ class Snake {
         //this.counter = 1;
     }
 
-    setDir(x, y) {
+    setDir(x, y) {// movement direction
         this.xdir = x;
         this.ydir = y;
     }
 
-    genColor() {
+    genColor() { // gives snake a oolour (included a minimum brightness)
         let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
         while (rgb[0] + rgb[1] + rgb[2] < 275) {
             rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
@@ -30,7 +30,7 @@ class Snake {
         return rgb;
     }
 
-    show() {
+    show() { // p5 code for showing snake
 
         textSize(8);
         fill(this.rgb[0], this.rgb[1], this.rgb[2]);
@@ -45,7 +45,7 @@ class Snake {
 
     }
 
-    update() {
+    update() {// snakeupdates when moving
 
         if (this.xdir === 0 && this.ydir === 0) {
             return;
@@ -85,7 +85,7 @@ class Snake {
 
     }
 
-    grow() {
+    grow() {// method for growing snake when having had a snack
         const newPoint = new Point(this.points[0][0].x, this.points[0][0].y)
         //console.log(newPoint);
         this.body.unshift(newPoint);
@@ -95,7 +95,7 @@ class Snake {
     }
 
 
-    checkDead() {
+    checkDead() {// checks if snake is dead
         //console.log(this.x + " " + this.y);
         if (this.x < 0 || this.x > 720 || this.y < 0 || this.y > 500) {
             return true;
@@ -103,7 +103,7 @@ class Snake {
         return false;
     }
 
-    hitSnake(snake) {
+    hitSnake(snake) {// checks if I hit another snake
         let i = 0;
         for (i; i < snake.body.length; i += 2) {
             //console.log("dead? " + snake.name)
@@ -117,7 +117,7 @@ class Snake {
     }
 
 
-    eatFood(food) {
+    eatFood(food) {// method for doing the act of eating
         ///*
         if (this.x <= food.x + 2.5 && this.x + 5 >= food.x - 2.5 && this.y <= food.y + 2.5 && this.y + 5 >= food.y - 2.5) {
             if (food.name !== null) {
@@ -134,6 +134,7 @@ class Snake {
     }
 
     copy() {
+        //sends ONLY necessary data over the network
         let copy = new Snake(this.name);
         copy.body = this.body;
         copy.rgb = this.rgb;
@@ -142,7 +143,7 @@ class Snake {
         return copy;
     }
 
-    changeColor() {
+    changeColor() {// method for changing the colour of the snake
         this.rgb = this.genColor();
     }
 }

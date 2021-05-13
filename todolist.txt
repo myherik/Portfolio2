@@ -1,26 +1,27 @@
-        Feilmelding når piltrykk ved spill ikke aktiv __ done
-        Unik farge på slangen for hver spiller __ done
-        implementer express __ done
-        name follows snake continously __ done
-        docker container for online spill :) __ done
-        mat kan spises av alle slanger uavhengig av hvem maten "tilhører"__ done
+        Feilmelding når piltrykk ved spill ikke aktiv __ ✅
+        Unik farge på slangen for hver spiller __ ✅
+        implementer express __ ✅
+        name follows snake continously __ ✅
+        docker container for online spill :) __ ✅
+        mat kan spises av alle slanger uavhengig av hvem maten "tilhører"__ ✅
         død slange blir til mat__ done
-        Hitbox, slange dør selv om den ikke treffer motspiller __ done   
-        disconnect problemer __ done
-        Lag database for typ highscore __ done
-        "Hvordan spille spillet instruksjoner" __done
-        Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen) __done
-        innlogging for brukere (ingen like brukernavn og highscores skal bli accurate) __ done
+        Hitbox, slange dør selv om den ikke treffer motspiller __ ✅   
+        disconnect problemer __ ✅
+        Lag database for typ highscore __ ✅
+        "Hvordan spille spillet instruksjoner" __✅
+        Område større enn canvas? canvas følger slangen (kan også bidra til responsiv skjerm der canvas er skjermstørrelsen) __ ✅
+        innlogging for brukere (ingen like brukernavn og highscores skal bli accurate) __ ✅
+        https openssl __ ✅
+        TLS implementering __ ✅
+
 
     Dø når slangen treffer seg selv eller andre slanger __ ish done
     
 KNOWN GLITCHES: uendelig food av og til?!?!
-https openssl
-TLS implementering
+
 Prometheus implementatering
 KOMMENTER KODEN
 README.md fil :'(
-BADASS RAPPORT
 [OPTIONAL] Mer komplisert score kalkulering
 [OPTIONAL-EXTREME] livemap før login/registrering
 [OPTIONAL-EXTREME] sikkerhet på database. (kun spesifikke ip adresser kan logge inn)

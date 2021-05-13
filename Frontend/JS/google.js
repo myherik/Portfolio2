@@ -1,6 +1,6 @@
 let id_token = null;
 
-function onSignIn(googleUser) {
+function onSignIn(googleUser){ // function for signing in with google authorization
     var profile = googleUser.getBasicProfile();
     //console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     //console.log('Name: ' + profile.getName());
@@ -10,26 +10,26 @@ function onSignIn(googleUser) {
     id_token = googleUser.getAuthResponse().id_token;
     console.log(`ID Token to pass to server: ${id_token}`)
 
-    fetch("/google", {
+    fetch("/google", {// google API endpoint
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({token: id_token})
+        body: JSON.stringify({ token: id_token })
     })
-    .then(response => response.json()
-    .then(data => {
-        if (data.status === 'success') {
-            sessionStorage.setItem('username', data.body.username);
-            signOut();
-            window.location.href = "/game"
-        } else {
-            console.log("google not working!")
-        }
-    }))
+        .then(response => response.json()
+            .then(data => {
+                if (data.status === 'success') {
+                    sessionStorage.setItem('username', data.body.username);
+                    signOut();
+                    window.location.href = "/game"
+                } else {
+                    console.log("google not working!")
+                }
+            }))
 }
 
-function signOut() {
+const signOut = () => { // google signout function
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
         console.log('User signed out.');

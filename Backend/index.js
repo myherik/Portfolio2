@@ -322,6 +322,11 @@ const socketLogic = (socket) => {
             delete userBySoket[socket.id]; // remove user from userlist by socketID
             users = users.filter(e => e !== user)
 
+            // empties deadfood when no user is playing
+            if (users.length === 0) {
+                deadFood = []
+            }
+
             socket.broadcast.emit('dead', { name: user, food: deadFood }); // broadcast that user is dead to all clients
             scoreModel.findOne({ username: user }, (err, data) => { // Getting highscore of the user and updates if bigger than previous
                 if (data !== null) {
@@ -366,6 +371,11 @@ const socketLogic = (socket) => {
             delete userBySoket[socket.id];
             //users.splice(users.indexOf(user), 1);
             users = users.filter(e => e !== user);
+
+            // empties deadfood when no user is playing
+            if (users.length === 0) {
+                deadFood = []
+            }
         }
     })
 }
