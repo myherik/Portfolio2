@@ -5,11 +5,16 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const mongoose = require('mongoose');
+
+//import bcrypt for hashing password
 const bcrypt = require('bcrypt');
 
+
+//Imports for handeling goolge oAuth2
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client("381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com");
 
+// importing models for handeling insert and find in db
 const userModel = require('./user');
 let User = null;
 
@@ -20,13 +25,21 @@ const path = require('path');
 
 app.use(express.json());
 
+
+// /login endpoint in API
 app.post("/login", (req, res) => {
+
+    //getting the username and password from the request
     const { username, password } = req.body;
+    // checking that the db is connected
     if (User !== null) {
+        // checking if the username is in the db
         User.findOne({ username: username }, (err, data) => {
             if (data) {
+                // we have user, checking with bcrypt that the passwords match
                 bcrypt.compare(password, data.password, (err, data) => {
                     if (data) {
+                        // responding with 200 and the username
                         res.status(200).json({
                             status: "OK",
                             body: {
@@ -35,6 +48,7 @@ app.post("/login", (req, res) => {
                         })
                     }
                     else {
+                        // not rigth password error back
                         res.status(400).json({
                             status: "Error",
                             body: {
@@ -45,6 +59,7 @@ app.post("/login", (req, res) => {
 
                 })
             } else {
+                // no user found, 400 error back
                 res.status(400).json({
                     status: "Error",
                     body: {
@@ -56,9 +71,13 @@ app.post("/login", (req, res) => {
     }
 })
 
+
+// API endpoint for register user
 app.post("/register", (req, res) => {
+    //getting the username and password from request
     const { username, password } = req.body;
     if (password.length <= 5) {
+        // password has to be at least 5 characters
         res.status(400).json({
             body: {
                 message: "Invalid password; must have at least 5 carachters"
@@ -67,14 +86,17 @@ app.post("/register", (req, res) => {
         return;
     }
 
+    //checking db connection
     if (User != null) {
         try {
             let bool = true;
+            //hashing incoming password
             bcrypt.hash(password, 10, (err, data) => {
+                // using imported model to create new user
                 let insert = new User({ username: username, password: data });
-                console.log(insert);
+                // saving the user to db
                 insert.save((err) => {
-
+                    // save gone bad, username already used
                     if (err) {
                         res.status(400).json({
                             body: {
@@ -83,6 +105,7 @@ app.post("/register", (req, res) => {
                         })
 
                     } else {
+                        // user created, responding with 201 created
                         res.status(201).json({
                             body: {
                                 message: "User created"
@@ -96,6 +119,7 @@ app.post("/register", (req, res) => {
 
         }
     } else {
+        // response if db not connected
         res.status(500).json({
             body: {
                 message: "DB not available"
@@ -104,24 +128,29 @@ app.post("/register", (req, res) => {
     }
 })
 
+// API endoint for verifying google
 app.post("/google", (req, res) => {
-    console.log(req.body.token)
+    // verify token from user
     client.verifyIdToken({
         idToken: req.body.token,
         audience: "381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com", // Specify the CLIENT_ID of the app that accesses the backend
         }).then((result) => {
-            console.log("verified")
+            // token is verified and checking db
             if (User != null) {
+                // checking if google user has been used before
                 User.findOne({username: result.payload.email}, (err, user) => {
                     if (err) {
-                        res.status(400).json({
+                        // error in getting from db
+                        res.status(500).json({
                             status: 'fail',
                             body: {
-                                message:"invalid token"
+                                message:"db error"
                             }
                         })
                     } else {
+                        // checking if user exist and is google user
                         if (user && user.password === 'google') {
+                            // responding that user is found
                             res.status(200).json({
                                 status: 'success',
                                 body: {
@@ -130,18 +159,20 @@ app.post("/google", (req, res) => {
                                 }
                             })
                         } else {
-                            console.log("no user")
+                            // no user found and trying to insert new one
                             User.create({username: result.payload.email, password: "google"}, (errCreate, data) => {
-                                
+                                // checking for db error
                                 if (errCreate) {
                                     res.status(400).json({
                                         status: 'fail',
                                         body: {
-                                            message:"invalid token"
+                                            message:"username used already"
                                         }
                                     })
                                 } else {
+                                    // no error checking that we get data from db
                                     if (data) {
+                                        // responding to forntend with email
                                         res.status(200).json({
                                             status: 'success',
                                             body: {
@@ -158,6 +189,7 @@ app.post("/google", (req, res) => {
                 })
             }
         }).catch((err) => {
+            // getting erros from google or db and responding
             console.log(err);
             res.status(400).json({
                 status: 'fail',
@@ -168,26 +200,31 @@ app.post("/google", (req, res) => {
         });
 })
 
+// endpoint to get login/register page
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../Frontend/HTML/index.html"))
 })
 
+//endpoint to get game page
 app.get("/game", (req, res) => {
     res.sendFile(path.join(__dirname, "../Frontend/HTML/game.html"))
 })
 
+// endpoint to get css files
 app.get("/CSS/:file", (req, res) => {
     res.sendFile(path.join(__dirname, "../") + "Frontend/CSS/" + req.params.file)
 })
 
+//endpoint to get js files
 app.get("/JS/:file", (req, res) => {
     res.sendFile(path.join(__dirname, "../") + "/Frontend/JS/" + req.params.file)
 })
-
+// endpoint to get media files
 app.get("/Media/:file", (req, res) => {
     res.sendFile(path.join(__dirname, "../Frontend/Media/" + req.params.file))
 })
 
+// Variables needed for logic
 let userBySoket = {}
 let users = [];
 let snakes = {};
@@ -196,6 +233,7 @@ let deadFood = [];
 
 let highscore = { username: "non", score: 0 };
 
+// Method to get highscore registered to db
 const getHighScore = () => {
     scoreModel.findOne({}).sort({ score: "descending" }).exec((err, data) => {
         if (data !== null) {
@@ -204,6 +242,7 @@ const getHighScore = () => {
     })
 }
 
+// Logic for websocket, specifically for connecting client to server
 io.on('connection', (socket) => {
     console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
@@ -218,25 +257,23 @@ io.on('connection', (socket) => {
         }
 
     })
-
+    // Registering client
     socket.on('register', (data) => {
-        /*
+        /* model for data object
         {
             name: name,
             snake: snake.
             food: food
         }
         */
-
-
         let ava = true;
-        for (let user of users) {
+        for (let user of users) { // Kicks user if username already in use
             if (data.name === user) {
                 ava = false;
                 socket.emit('yeeted', { kicked: true });
             }
         }
-        if (ava) {
+        if (ava) { // If available registers username and emits to all other connected sockets that are player registered
             userBySoket[socket.id] = data.name;
             users.push(data.name);
             snakes[data.name] = data.snake;
@@ -247,33 +284,35 @@ io.on('connection', (socket) => {
         }
     });
 
+    // websocket endpoint for updating position of snake
     socket.on('update', data => {
 
-
+        // you get kicked if you try to play but not registered
         if (userBySoket[socket.id] === undefined) {
             socket.emit('yeeted', { kicked: true })
         }
-
+        // updating snake on server and sending new position to other connected players
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
     });
-
+    
+    // websocket endpoint for when snake dies
     socket.on('dead', data => {
         let user = userBySoket[socket.id];
         console.log(user + " died");
         if (user !== undefined) {
-            for (let i = 0; i < snakes[user].body.length - 1; i++) {
+            for (let i = 0; i < snakes[user].body.length - 1; i++) { // Turns the snakes body into food
                 deadFood.push(snakes[user].body[i]);
             }
 
             let score = snakes[user].score;
 
-            delete snakes[user];
-            delete userBySoket[socket.id];
+            delete snakes[user]; // removes snake from snakelist
+            delete userBySoket[socket.id]; // remove user from userlist by socketID
             users = users.filter(e => e !== user)
 
-            socket.broadcast.emit('dead', { name: user, food: deadFood });
-            scoreModel.findOne({ username: user }, (err, data) => {
+            socket.broadcast.emit('dead', { name: user, food: deadFood }); // broadcast that user is dead to all clients
+            scoreModel.findOne({ username: user }, (err, data) => { // Getting highscore of the user and updates if bigger than previous
                 if (data !== null) {
                     if (score > data.score) {
                         scoreModel.findByIdAndUpdate(data.id, { score: score }, (err, data) => {
@@ -281,7 +320,7 @@ io.on('connection', (socket) => {
                         })
                     }
                     data.score
-                } else {
+                } else { // adds score if not already existing
                     let newScore = new Score({ username: user, score: score })
                     newScore.save();
                 }
@@ -294,17 +333,17 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('deadFood', data => {
+    socket.on('deadFood', data => { // broadcasts dead food to all clients
         deadFood = data;
         socket.broadcast.emit('deadFood', data);
     })
 
-    socket.on('foodUpdate', data => {
+    socket.on('foodUpdate', data => { // broadcasts new food position to all clients
         foods[data.name] = data.food;
         socket.broadcast.emit('foodUpdate', data)
     })
 
-    socket.on('disconnect', obj => {
+    socket.on('disconnect', obj => { // broadcasts a disconnected user to all clients and removes from all necessary lists
         let user = userBySoket[socket.id];
         console.log(user + " disconnected");
         if (user !== undefined) {

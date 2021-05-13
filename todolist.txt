@@ -23,6 +23,7 @@ README.md fil :'(
 BADASS RAPPORT
 [OPTIONAL] Mer komplisert score kalkulering
 [OPTIONAL-EXTREME] livemap før login/registrering
+[OPTIONAL-EXTREME] sikkerhet på database. (kun spesifikke ip adresser kan logge inn)
 
 Sources -----------------------------------------------------------------------------
 p5

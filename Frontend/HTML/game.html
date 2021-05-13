@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width = device-width, initial-scale=1.0">
     <title>Snake</title>
-<!-- CSS only -->
+    <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">  
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
@@ -16,23 +16,21 @@
 
 <body style="background-color:  #2d303a;">
 
-    <div id="content">
-        <div class="row-1">
-            <div class="row-2">
+    <div id="content"> <!-- All content inside the snake -->
+        <div class="row-1"> <!-- The 'row' is very misleading but all content is also in this div -->
+            <div class="row-2"> <!-- This is where we have the actual game canvas drawn (through JS) -->
                 <div id="game">
                     <div id="sketchHere"></div>
-                    <div class="row-1">
-                        <button class="btn btn-outline-success" id="start">Start snake</button>
-                    </div>
                 </div>
             </div>
 
-            <div id="inYourFace" class="fix hidden">
+            <div id="inYourFace" class="fix hidden"> <!-- The text that shows up when you die as well as the button for starting over again -->
                 <h1>You died!</h1>
+                <button class="btn btn-outline-success" id="start">Start snake</button>
             </div>
 
 
-            <div class="row-2" id="scores">
+            <div class="row-2" id="scores"> <!-- This part holds all the scores and name of online players. Its position is fixed in the top right corner -->
                 <h2>Connected players right now</h2>
                 <div id="placePlayersHere">
 
@@ -49,13 +47,14 @@
             </div>
         </div>
     </div>
-    <script src="/JS/wall.js"></script>
-    <script src="/JS/food.js"></script>
-    <script src="/JS/point.js"></script>
-    <script src="/JS/snake.js"></script>
-    <script src="/JS/tempsnake.js"></script>
-    <script defer src="/JS/clientSnake.js"></script>
-    <script defer src="/JS/sketch.js"></script>
+
+    <!-- All necessary scripts to make the game work -->
+    <script src="/JS/wall.js"></script> <!-- The wall object marking the borders of the game -->
+    <script src="/JS/food.js"></script> <!-- The food object that you can eat -->
+    <script src="/JS/point.js"></script> <!-- Helps with creating the food -->
+    <script src="/JS/snake.js"></script> <!-- The snake object and a lot of methods helping to make the game work -->
+    <script defer src="/JS/clientSnake.js"></script> <!-- Your client for running the game communicating with the node server -->
+    <script defer src="/JS/sketch.js"></script> <!-- This JS file does all the actual drawing on the canvas -->
 
 </body>
 

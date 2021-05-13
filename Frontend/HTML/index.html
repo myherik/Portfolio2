@@ -18,9 +18,9 @@
 
 <body style="background-color: #e5e5e5">
 
-    <div class="column">
-        <div id="LorR">
-            <div class="show" id="login">
+    <div class="column"> <!-- All content is inside this div -->
+        <div id="LorR"> <!-- This is the form for Login an Register when visible -->
+            <div class="show" id="login"> <!-- Login form  -->
                 <h1>Log in and play</h1>
                 <div class="input-group mb-3" style="display:flex; flex-direction: row;">
                     <input type="text" id="loginNm" class="form-control" placeholder="username">
@@ -31,7 +31,7 @@
                 </div>
                 <p id="loginMessage"></p>
             </div>
-            <div class="hidden" id="reg">
+            <div class="hidden" id="reg"> <!-- Register form -->
                 <h1>Register a new account to play</h1>
                 <div class="input-group mb-3" style="display:flex; flex-direction: row;">
                     <input type="text" id="regNm" class="form-control" placeholder="username">
@@ -42,14 +42,14 @@
                 </div>
                 <p id="registerMessage"></p>
             </div>
-            <div class="show">
+            <div class="show"> <!-- div for button where you can toggle between login or register as well as google login -->
                 <h3 id="toggleText">Don't have an account? Click here to register!</h3>
                 <button class="btn btn-primary" onclick="toggle()" id="toggleButton" class="button">Register</button>
                 <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </div>
-        <div class="row-3">
-            <br>
+        <div class="row-3"> <!-- I know it says row, but it is the second column of content -->
+            <br> <!-- This column contains Instructions on how to play the game -->
             <h1>✨How to play✨</h1>
             <p>To move around press either the arrowkeys shown here</p>
             <img class="imageKeys" src="/Media/arrowblanks.png" alt="arrowkeys image">
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-
+    <!-- Scripts necessary to make index work -->
     <script src="/JS/google.js"></script>
     <script src="/JS/index.js"></script>
 </body>

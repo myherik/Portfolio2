@@ -23,7 +23,11 @@ class Snake {
     }
 
     genColor() {
-        return [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+        let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+        while (rgb[0] + rgb[1] + rgb[2] < 275) {
+            rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+        }
+        return rgb;
     }
 
     show() {
@@ -110,7 +114,7 @@ class Snake {
 
     hitSnake(snake) {
         let i = 0;
-        for (i; i < snake.body.length; i++) {
+        for (i; i < snake.body.length; i += 2) {
             //console.log("dead? " + snake.name)
             if (this.x + 5 > snake.body[i].x && this.x < snake.body[i].x + 5 && (this.y + 5 > snake.body[i].y && this.y < snake.body[i].y + 5)) {
                 console.log(this.name + " died trying to take a bite of " + snake.name);
