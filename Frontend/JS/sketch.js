@@ -215,6 +215,18 @@ const endGame = () => { // method for ending the game
     document.getElementById("inYourFace").classList.remove("hidden");
 }
 
+const showHelp = () => {
+    const help = document.getElementById("help");
+    const scores = document.getElementById("scores");
+    if (help.classList.contains("hidden")) {
+        help.classList.remove("hidden");
+        scores.classList.add("hidden");
+    } else {
+        help.classList.add("hidden");
+        scores.classList.remove("hidden");
+    }
+}
+
 function keyPressed() { // every game mechanic for pressing a button 
     if (snake !== null) {
         if (keyCode === LEFT_ARROW || key == 'a') {// left
@@ -233,15 +245,18 @@ function keyPressed() { // every game mechanic for pressing a button
             if (snake.ydir !== 1) {
                 snake.setDir(0, -1);
             }
-        } else if (key == ' ') {// testing purposes only pausing the game
+        }/* else if (key == ' ') {// testing purposes only pausing the game
             snake.setDir(0, 0);
         }
         else if (key == 'm') {// testing purposes only growing without eating
             snake.grow();
             console.log(snake.copy());
-        }
+        }*/
         else if (key == 'c') {// canges colour of snake if you're not happy with it
             snake.changeColor();
+        }
+        else if (key == 'h') {
+            showHelp();
         }
         else if (key == 'v') {// testing purposes only logging the snake
             console.log(snake);
@@ -249,9 +264,9 @@ function keyPressed() { // every game mechanic for pressing a button
                 console.log(snakeList[users[0]]);
                 console.log(users);
             }
-        } else if (key == 'n') {// testing purposes only showing snakes position in canvas
+        } /*else if (key == 'n') {// testing purposes only showing snakes position in canvas
             console.log(snake.x + " " + snake.y)
-        } else if (key == '-') {// zoom out
+        }*/ else if (key == '-') {// zoom out
             scaleVar -= 0.1
             setCanvas();
         } else if (key == '+') {// zoom in

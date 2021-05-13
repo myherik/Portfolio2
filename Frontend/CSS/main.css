@@ -102,7 +102,7 @@
 }
 
 .hidden {
-    display: none;
+    display: none!important;
 }
 
 #LorR {
@@ -127,6 +127,7 @@
     background-color: #2d303a;
     border-radius: 10px 5px 10px 5px;
     padding: 0.5em;
+    max-width: 80%;
     /*font-style: italic;*/
 }
 
@@ -142,6 +143,8 @@
 .keys {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .key {
@@ -149,4 +152,23 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+}
+
+#help {
+    position: fixed;
+    color : white;
+    background: none;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+}
+
+#help * {
+    background: none!important;
+}
+
+@media screen and (max-width: 768px) {
+    .column {
+        flex-direction: column;
+    }
 }
