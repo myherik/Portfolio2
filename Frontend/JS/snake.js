@@ -86,15 +86,6 @@ class Snake {
     }
 
     grow() {
-
-        /*
-        head.x += this.xdir * 5;
-        head.y += this.ydir * 5;
-        this.x += this.xdir * 5;
-        this.y += this.ydir * 5;
-        this.body.push(head);
-        this.dir.push(headDir);
-        */
         const newPoint = new Point(this.points[0][0].x, this.points[0][0].y)
         //console.log(newPoint);
         this.body.unshift(newPoint);
@@ -121,31 +112,6 @@ class Snake {
                 return true;
             }
 
-
-
-            /*
-            if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
-                && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            else if (this.x - 2.5 < snake.body[i].x + 5 && this.x + 2.5 > snake.body[i].x + 5
-                && this.y - 2.5 < snake.body[i].y + 5 && this.y + 2.5 > snake.body[i].y + 5) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            else if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
-                && this.y - 2.5 < snake.body[i].y + 5 && this.y + 2.5 > snake.body[i].y + 5) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            else if (this.x - 2.5 < snake.body[i].x + 5 && this.x + 2.5 > snake.body[i].x + 5
-                && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            */
-
         }
         return false;
     }
@@ -164,65 +130,6 @@ class Snake {
             }
             this.grow();
         }
-        //*/
-        /*
-        if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
-
-            //console.log("nom nom")
-            //let i;
-            //for (i = 0; i < 2; i++) {
-            //    this.grow();
-            //}
-            this.grow();
-        }
-        else if (food.x - 2.5 < this.x + 5 && food.x + 2.5 > this.x + 5
-            && food.y - 2.5 < this.y + 5 && food.y + 2.5 > this.y + 5) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
-            //console.log("treff")
-            this.grow();
-        }
-        else if (food.x - 2.5 < this.x && food.x + 2.5 > this.x
-            && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
-            //console.log("food");
-            this.grow();
-        }
-        else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
-            && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
-            //console.log("wihooo");
-            this.grow();
-        }
-        */
         return false;
     }
 

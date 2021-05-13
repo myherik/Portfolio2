@@ -1,9 +1,23 @@
 const express = require('express');
 const app = express();
+
+const path = require('path');
+
 const http = require('http');
+const https = require('https');
 const server = http.createServer(app);
+
+const fs = require('fs');
+const SSLserver = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, '../SSL', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, '../SSL', 'cert.pem'))
+},
+    app);
+
 const { Server } = require("socket.io");
 const io = new Server(server);
+const sslIO = new Server(SSLserver);
+
 const mongoose = require('mongoose');
 
 //import bcrypt for hashing password
@@ -11,7 +25,7 @@ const bcrypt = require('bcrypt');
 
 
 //Imports for handeling goolge oAuth2
-const {OAuth2Client} = require('google-auth-library');
+const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com");
 
 // importing models for handeling insert and find in db
@@ -20,8 +34,6 @@ let User = null;
 
 const scoreModel = require('./score')
 let Score = null;
-
-const path = require('path');
 
 app.use(express.json());
 
@@ -134,70 +146,70 @@ app.post("/google", (req, res) => {
     client.verifyIdToken({
         idToken: req.body.token,
         audience: "381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com", // Specify the CLIENT_ID of the app that accesses the backend
-        }).then((result) => {
-            // token is verified and checking db
-            if (User != null) {
-                // checking if google user has been used before
-                User.findOne({username: result.payload.email}, (err, user) => {
-                    if (err) {
-                        // error in getting from db
-                        res.status(500).json({
-                            status: 'fail',
+    }).then((result) => {
+        // token is verified and checking db
+        if (User != null) {
+            // checking if google user has been used before
+            User.findOne({ username: result.payload.email }, (err, user) => {
+                if (err) {
+                    // error in getting from db
+                    res.status(500).json({
+                        status: 'fail',
+                        body: {
+                            message: "db error"
+                        }
+                    })
+                } else {
+                    // checking if user exist and is google user
+                    if (user && user.password === 'google') {
+                        // responding that user is found
+                        res.status(200).json({
+                            status: 'success',
                             body: {
-                                message:"db error"
+                                message: "token OK",
+                                username: result.payload.email
                             }
                         })
                     } else {
-                        // checking if user exist and is google user
-                        if (user && user.password === 'google') {
-                            // responding that user is found
-                            res.status(200).json({
-                                status: 'success',
-                                body: {
-                                    message:"token OK",
-                                    username: result.payload.email
-                                }
-                            })
-                        } else {
-                            // no user found and trying to insert new one
-                            User.create({username: result.payload.email, password: "google"}, (errCreate, data) => {
-                                // checking for db error
-                                if (errCreate) {
-                                    res.status(400).json({
-                                        status: 'fail',
+                        // no user found and trying to insert new one
+                        User.create({ username: result.payload.email, password: "google" }, (errCreate, data) => {
+                            // checking for db error
+                            if (errCreate) {
+                                res.status(400).json({
+                                    status: 'fail',
+                                    body: {
+                                        message: "username used already"
+                                    }
+                                })
+                            } else {
+                                // no error checking that we get data from db
+                                if (data) {
+                                    // responding to forntend with email
+                                    res.status(200).json({
+                                        status: 'success',
                                         body: {
-                                            message:"username used already"
+                                            message: "token OK",
+                                            username: result.payload.email
                                         }
                                     })
-                                } else {
-                                    // no error checking that we get data from db
-                                    if (data) {
-                                        // responding to forntend with email
-                                        res.status(200).json({
-                                            status: 'success',
-                                            body: {
-                                                message:"token OK",
-                                                username: result.payload.email
-                                            }
-                                        })
-                                    }
                                 }
-                                
-                            })
-                        }
+                            }
+
+                        })
                     }
-                })
-            }
-        }).catch((err) => {
-            // getting erros from google or db and responding
-            console.log(err);
-            res.status(400).json({
-                status: 'fail',
-                body: {
-                    message:"invalid token"
                 }
             })
-        });
+        }
+    }).catch((err) => {
+        // getting erros from google or db and responding
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            body: {
+                message: "invalid token"
+            }
+        })
+    });
 })
 
 // endpoint to get login/register page
@@ -242,8 +254,7 @@ const getHighScore = () => {
     })
 }
 
-// Logic for websocket, specifically for connecting client to server
-io.on('connection', (socket) => {
+const socketLogic = (socket) => {
     console.log('new connection users: ' + users)
     socket.on('get-data', obj => {
         if (Score !== null) {
@@ -295,7 +306,7 @@ io.on('connection', (socket) => {
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
     });
-    
+
     // websocket endpoint for when snake dies
     socket.on('dead', data => {
         let user = userBySoket[socket.id];
@@ -346,39 +357,56 @@ io.on('connection', (socket) => {
     socket.on('disconnect', obj => { // broadcasts a disconnected user to all clients and removes from all necessary lists
         let user = userBySoket[socket.id];
         console.log(user + " disconnected");
-        if (user !== undefined) {
+        if (user !== undefined) { // Same as on 'dead' where snake turns into dead food
             for (let bodypart of snakes[user].body) {
                 deadFood.push(bodypart);
             }
-            socket.broadcast.emit('dead', { name: user, food: deadFood });
-            delete snakes[user];
+            socket.broadcast.emit('dead', { name: user, food: deadFood }); // Broadcasts to all clients that snake is gone
+            delete snakes[user]; // Deletes snake from socketlist and snakelist
             delete userBySoket[socket.id];
             //users.splice(users.indexOf(user), 1);
             users = users.filter(e => e !== user);
         }
     })
+}
+
+// Logic for websocket, specifically for connecting client to server
+io.on('connection', (socket) => {
+    socketLogic(socket);
 })
 
-mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false
-
+sslIO.on('connection', (socket) => {
+    socketLogic(socket);
 })
-    .then(
-        (e) => {
-            console.log('connected to db');
-            User = userModel;
-            Score = scoreModel;
-            getHighScore();
 
-        },
-        (err) => {
-            //console.log(err);
-            console.log("error")
-        })
+const dbConnect = () => {
+    mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", { // Connects to mongodb with mongoose framework
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false
+    })
+        .then(
+            (e) => { // If successful in connecting to mongodb
+                console.log('connected to db');
+                User = userModel;
+                Score = scoreModel;
+                getHighScore();
 
-server.listen(8080, () => {
-    console.log(__dirname)
+            },
+            (err) => {// If unsuccessful in connecting to mongodb
+                console.log("error connecting to db")
+                dbConnect(); // Tries to connect anew
+            })
+}
+
+
+
+server.listen(8080, () => { // Server at port 8080
+    console.log("http server");
+    dbConnect();
 });
+
+SSLserver.listen(8081, () => {
+    console.log("https server");
+})
