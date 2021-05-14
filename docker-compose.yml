@@ -9,6 +9,8 @@ services:
         ports:
             - 8080:8080
             - 8081:8081
+        depends_on: 
+            - "mongodb"
     mongodb:
         image: mongo
         container_name: mongodb
@@ -26,3 +28,5 @@ services:
             - '--config.file=/prometheus-data/prometheus.yml'
         ports:
             - 9090:9090
+        depends_on:
+            - "node_app"
