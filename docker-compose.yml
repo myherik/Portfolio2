@@ -17,3 +17,12 @@ services:
         environment: 
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: root
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        volumes:
+            - ./Prometheus:/prometheus-data
+        command:
+            - '--config.file=/prometheus-data/prometheus.yml'
+        ports:
+            - 9090:9090

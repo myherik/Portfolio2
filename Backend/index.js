@@ -23,6 +23,21 @@ const mongoose = require('mongoose');
 //import bcrypt for hashing password
 const bcrypt = require('bcrypt');
 
+const Prometheus = require('prom-client');
+const metrics = Prometheus.collectDefaultMetrics();
+const updateTotal = new Prometheus.Counter({
+    name: 'update',
+    help: 'number of updates',
+    labelNames: ['username']
+});
+
+const websocketRequestDurationMicroseconds = new Prometheus.Histogram({
+    name: 'websocket_request_duration_ms',
+    help: 'Duration of websocket requests in ms',
+    labelNames: ['method', 'route', 'code'],
+    buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]  // buckets for response time from 0.1ms to 500ms
+})
+
 
 //Imports for handeling goolge oAuth2
 const { OAuth2Client } = require('google-auth-library');
@@ -37,6 +52,11 @@ let Score = null;
 
 app.use(express.json());
 
+
+app.get('/metrics', (req, res) => {
+    res.set('Content-Type', Prometheus.register.contentType);
+    res.end(Prometheus.register.metrics())
+})
 
 // /login endpoint in API
 app.post("/login", (req, res) => {
@@ -297,6 +317,7 @@ const socketLogic = (socket) => {
 
     // websocket endpoint for updating position of snake
     socket.on('update', data => {
+        const start = Date.now();
 
         // you get kicked if you try to play but not registered
         if (userBySoket[socket.id] === undefined) {
@@ -305,6 +326,10 @@ const socketLogic = (socket) => {
         // updating snake on server and sending new position to other connected players
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
+        websocketRequestDurationMicroseconds
+            .labels('websocket', 'update', '200')
+            .observe(Date.now()-start);
+        updateTotal.inc({ username: data.name });
     });
 
     // websocket endpoint for when snake dies
@@ -411,7 +436,6 @@ const dbConnect = () => {
 }
 
 
-
 server.listen(8080, () => { // Server at port 8080
     console.log("http server");
     dbConnect();
@@ -419,4 +443,19 @@ server.listen(8080, () => { // Server at port 8080
 
 SSLserver.listen(8081, () => {
     console.log("https server");
+})
+
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    clearInterval(metricsInterval)
+
+    server.close((err) => {
+        if (err) {
+        console.error(err)
+        process.exit(1)
+        }
+
+        process.exit(0)
+    })
 })

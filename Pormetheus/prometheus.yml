@@ -1,0 +1,9 @@
+scrape-configs:
+  - job_name: 'prometheus'
+    scrape_intervals: 5s
+
+    static_configs:
+      targets: ['node_app:8080'] 
+      labels:
+        service: 'my-service'
+        
