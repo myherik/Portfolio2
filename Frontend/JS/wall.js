@@ -12,22 +12,22 @@ class Wall {
         //left border wall
         fill(255);
         noStroke();
-        rect(0, 0, 1, 503);
+        rect(0, 0, 1, boardHeight + 3);
 
         //rigth border wall
         fill(255);
         noStroke();
-        rect(720 + 2, 0, 1, 503);
+        rect(boardWidth + 2, 0, 1, boardHeight + 3);
 
         //top border wall
         fill(255);
         noStroke();
-        rect(0, 0, 723, 1);
+        rect(0, 0, boardWidth + 3, 1);
 
         //bottom border wall
         fill(255);
         noStroke();
-        rect(0, 500 + 2, 723, 1);
+        rect(0, boardHeight + 2, boardWidth + 3, 1);
 
         fill(255);
         noStroke();
@@ -36,5 +36,30 @@ class Wall {
         fill(255);
         noStroke();
         rect(560, 430, 5, 20);
+    
+        fill(255);
+        noStroke();
+        rect(252, 129, 20, 5);
+
+        fill(255);
+        noStroke();
+        rect(130, 129, 5, 20);
+
+        fill(255);
+        noStroke();
+        rect(160, 198, 5, 30);
+
+        fill(255);
+        noStroke();
+        rect(200, 44, 5, 80);
+
+        fill(255);
+        noStroke();
+        rect(350, 128, 5, 90);
+
+        fill(255);
+        noStroke();
+        rect(10, 44, 5, 70);
+    
     }
 }

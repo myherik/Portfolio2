@@ -326,17 +326,18 @@ const socketLogic = (socket) => {
     socket.on('update', data => {
         const start = Date.now();
 
-        // you get kicked if you try to play but not registered
+        // you get kicked out if you try to play but not registered
         if (userBySoket[socket.id] === undefined) {
             socket.emit('yeeted', { kicked: true })
+        } else {
+            // updating snake on server and sending new position to other connected players
+            snakes[data.name] = data.snake;
+            socket.broadcast.emit('update', data);
+            websocketRequestDurationMicroseconds
+                .labels('update')
+                .observe(Date.now()-start);
+            updateTotal.inc({ username: data.name });
         }
-        // updating snake on server and sending new position to other connected players
-        snakes[data.name] = data.snake;
-        socket.broadcast.emit('update', data);
-        websocketRequestDurationMicroseconds
-            .labels('update')
-            .observe(Date.now()-start);
-        updateTotal.inc({ username: data.name });
     });
 
     // websocket endpoint for when snake dies
@@ -358,14 +359,12 @@ const socketLogic = (socket) => {
             if (users.length === 0) {
                 deadFood = []
             }
-
+            checkDeadFood()
             socket.broadcast.emit('dead', { name: user, food: deadFood }); // broadcast that user is dead to all clients
             scoreModel.findOne({ username: user }, (err, data) => { // Getting highscore of the user and updates if bigger than previous
                 if (data !== null) {
                     if (score > data.score) {
-                        scoreModel.findByIdAndUpdate(data.id, { score: score }, (err, data) => {
-
-                        })
+                        scoreModel.findByIdAndUpdate(data.id, { score: score }, (err, data) => {})
                     }
                     data.score
                 } else { // adds score if not already existing
@@ -393,14 +392,15 @@ const socketLogic = (socket) => {
 
     socket.on('disconnect', obj => { // broadcasts a disconnected user to all clients and removes from all necessary lists
         let user = userBySoket[socket.id];
+        delete userBySoket[socket.id];
         console.log(user + " disconnected");
         if (user !== undefined) { // Same as on 'dead' where snake turns into dead food
             for (let bodypart of snakes[user].body) {
                 deadFood.push(bodypart);
             }
+            checkDeadFood();
             socket.broadcast.emit('dead', { name: user, food: deadFood }); // Broadcasts to all clients that snake is gone
             delete snakes[user]; // Deletes snake from socketlist and snakelist
-            delete userBySoket[socket.id];
             //users.splice(users.indexOf(user), 1);
             users = users.filter(e => e !== user);
 
@@ -410,6 +410,14 @@ const socketLogic = (socket) => {
             }
         }
     })
+}
+
+const checkDeadFood = () => {
+    for (let thisFood of deadFood) {
+        if (thisFood.x > 350 * users.length - 20 || thisFood.y > 250 * users.length - 20) {
+            deadFood.filter(e => e !== thisFood)
+        }
+    }
 }
 
 // Logic for websocket, specifically for connecting client to server

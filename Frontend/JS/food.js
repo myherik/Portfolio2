@@ -22,8 +22,8 @@ class Food {
     }
 
     refreshFood() { // refreshing food when original food is eaten
-        let x = Math.floor(Math.random() * 715 + 2.5);
-        let y = Math.floor(Math.random() * 495 + 2.5);
+        let x = Math.floor(Math.random() * (boardWidth - 10) + 5);
+        let y = Math.floor(Math.random() * (boardHeight - 10) + 5);
 
         //this = new Food(x, y)
         this.food.x = x;

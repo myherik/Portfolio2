@@ -40,12 +40,12 @@ const showPlayers = () => {// shows other players
 const showScores = () => { // shows scores of other active players
 
     document.getElementById("realtime").innerHTML = `Score: ${snake.score}`;
-    let scoreList = "<ol>"
+    let scoreList = "<p>";
     for (let i = 0; i < Math.min(10, users.length); i++) {
         let user = users[i];
-        scoreList += `<li>${user.split("@")[0]}: ${snakeList[user].score}</li>`
+        scoreList += `<p>${user.split("@")[0]}: ${snakeList[user].score}</p>`
     }
-    scoreList += "</ol>";
+    scoreList += "</p>";
     document.getElementById("placePlayerScoresHere").innerHTML = scoreList;
 }
 
@@ -55,6 +55,7 @@ const startGame = () => { // method for starting the game
     startButton.style.display = "none"; // hides startbutton 
     while (snake === null) {// as long as snake have not been created yet
         let testSnake = new Snake(name);
+        console.log("testSnake")
         let available = true;
         for (let user of users) {
             if (testSnake.hitSnake(snakeList[user])) {
@@ -67,8 +68,8 @@ const startGame = () => { // method for starting the game
         }
     }
     while (food === null) { // as long as food is not been able to be created yet
-        let tempx = Math.floor(Math.random() * 715 + 2.5);
-        let tempy = Math.floor(Math.random() * 495 + 2.5);
+        let tempx = Math.floor(Math.random() * (boardWidth - 10) + 5);
+        let tempy = Math.floor(Math.random() * (boardHeight - 10) + 5);
         let bool = true;
         for (let user of users) {
             if (foodList[user].x === tempx && foodList[user].y === tempy) {
@@ -94,20 +95,44 @@ const startGame = () => { // method for starting the game
     socketReg(obj) // registers object
 }
 
+let boardWidth = 360;
+let boardHeight = 250;
+let updateSize = false;
+
+const setUpdate = () => {
+    updateSize = true;
+}
+
+const checkSnakes = () => {
+    return (snake.x < boardWidth - 15 && snake.y < boardHeight - 15);
+}
+
+const setSize = () => {
+    boardWidth = 360 + 10*users.length;
+    boardHeight = 250 + 10*users.length;
+
+    if (food !== null) {
+        if (food.x > boardWidth - 15 || food.y > boardHeight - 15) {
+        food.refreshFood();
+        foodUpdate({ food: food, name: food.name })
+    }
+    }
+
+    setCanvas();
+}
 
 let canvas = null;
 function setup() {// creates canvas for drawing and places into html
-    canvas = createCanvas(720 * scaleVar + 10, 500 * scaleVar + 10);
+    canvas = createCanvas(boardWidth * scaleVar + 10, boardHeight * scaleVar + 10);
     canvas.style.margin = "0";
     w = width;
     h = height;
     canvas.parent("sketchHere");
-    //frameRate(12);
     frameRate(60);
 }
 
 const setCanvas = () => { // when zooming in or out canvas is redrawn for you
-    resizeCanvas(720 * scaleVar + 10, 500 * scaleVar + 10);
+    resizeCanvas(boardWidth * scaleVar + 10, boardHeight * scaleVar + 10);
 }
 
 let counter = 1;
@@ -128,6 +153,11 @@ function draw() { // method called 60 times per second for drawing the game
         snake.update();
         snake.show();
         snake.eatFood(food);
+
+        if (updateSize && checkSnakes()) {
+            setSize(); 
+            updateSize = false;
+        }
 
         update({ // sends updates
             name: snake.name,

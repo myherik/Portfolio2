@@ -7,7 +7,6 @@ const socketReg = (regObj) => {// emits register object to register endpoint in 
 }
 
 socket.on('register', regObj => {// on registering recieving information from server
-    users.push(regObj.name);
 
     // adds the snake to the list in sketch
     const outSnake = new Snake(regObj.name);
@@ -18,6 +17,8 @@ socket.on('register', regObj => {// on registering recieving information from se
 
     snakeList[regObj.name] = outSnake;
     foodList[regObj.name] = food;
+    users.push(regObj.name);
+    setSize();
 })
 
 const getData = (name) => { // emits getting data method to endpoint in server websocket
@@ -28,8 +29,6 @@ const getData = (name) => { // emits getting data method to endpoint in server w
 socket.on('get-data', obj => { // recieving data from server and using that data to play the game
     //console.log("get-data motatt")
     updateBool = true;
-
-    //console.log(obj.users);
 
     document.getElementById("pb").innerText = `Highscore: ${obj.score}`;
     document.getElementById("all-time").innerText = `By: ${obj.high.username.split("@")[0]} with the score ${obj.high.score}`;
@@ -54,6 +53,7 @@ socket.on('get-data', obj => { // recieving data from server and using that data
     }
     setDead(newDeadFood); // sends deadfoodlist to sketch
 
+    setSize();
     startGame(); // starts game
 
 })
@@ -104,8 +104,6 @@ socket.on('deadFood', (deadFood) => { // recieves updates on deadFood from serve
 
     console.log(newList.length);
     setDead(newList);
-    //console.log(deadFood.length);
-
 })
 
 const dead = (name, infood) => {// emits that my snake has died to server
@@ -126,6 +124,9 @@ socket.on('dead', (name) => { // recieves any updates of death
         const thisfood = new Food(mat.x, mat.y, null);
         deadFood.push(thisfood);
     }
+
+    console.log("resize")
+    setUpdate();
 
 })
 

@@ -4,8 +4,9 @@ class Snake {
     constructor(name) {// constructor for snake object
         this.body = [];
         this.points = []
-        this.x = Math.floor(Math.random() * 710) + 5;
-        this.y = Math.floor(Math.random() * 490) + 5;
+        this.x = Math.floor(Math.random() * ( boardWidth - 20)) + 10;
+        this.y = Math.floor(Math.random() * ( boardHeight - 20)) + 10;
+        console.log(this.x + " " + this.y)
         this.body[0] = new Point(this.x, this.y);
         this.points[0] = [];
         this.xdir = 0;
@@ -97,7 +98,7 @@ class Snake {
 
     checkDead() {// checks if snake is dead
         //console.log(this.x + " " + this.y);
-        if (this.x < 0 || this.x > 720 || this.y < 0 || this.y > 500) {
+        if (this.x < 0 || this.x > boardWidth || this.y < 0 || this.y > boardHeight) {
             return true;
         }
         return false;
@@ -135,12 +136,19 @@ class Snake {
 
     copy() {
         //sends ONLY necessary data over the network
+        /*
         let copy = new Snake(this.name);
         copy.body = this.body;
         copy.rgb = this.rgb;
         copy.score = this.score;
+        */
 
-        return copy;
+        return {
+            name: this.name,
+            body: this.body,
+            rgb: this.rgb,
+            score: this.score
+        };
     }
 
     changeColor() {// method for changing the colour of the snake
