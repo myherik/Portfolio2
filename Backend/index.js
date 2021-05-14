@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express');
 const app = express();
 
@@ -23,8 +25,12 @@ const mongoose = require('mongoose');
 //import bcrypt for hashing password
 const bcrypt = require('bcrypt');
 
-const Prometheus = require('prom-client');
-const metrics = Prometheus.collectDefaultMetrics();
+const Prometheus = require('prom-client')
+const registry = new Prometheus.Registry();
+registry.setDefaultLabels({app: 'node-app'});
+
+const metricsDings = Prometheus.collectDefaultMetrics({registry});
+
 const updateTotal = new Prometheus.Counter({
     name: 'update',
     help: 'number of updates',
@@ -34,10 +40,11 @@ const updateTotal = new Prometheus.Counter({
 const websocketRequestDurationMicroseconds = new Prometheus.Histogram({
     name: 'websocket_request_duration_ms',
     help: 'Duration of websocket requests in ms',
-    labelNames: ['method', 'route', 'code'],
+    labelNames: ['route'],
     buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]  // buckets for response time from 0.1ms to 500ms
-})
+});
 
+registry.registerMetric(updateTotal);
 
 //Imports for handeling goolge oAuth2
 const { OAuth2Client } = require('google-auth-library');
@@ -54,8 +61,8 @@ app.use(express.json());
 
 
 app.get('/metrics', (req, res) => {
-    res.set('Content-Type', Prometheus.register.contentType);
-    res.end(Prometheus.register.metrics())
+    res.set('Content-Type', Prometheus.register.contentType)
+    res.send(registry.metrics())
 })
 
 // /login endpoint in API
@@ -327,7 +334,7 @@ const socketLogic = (socket) => {
         snakes[data.name] = data.snake;
         socket.broadcast.emit('update', data);
         websocketRequestDurationMicroseconds
-            .labels('websocket', 'update', '200')
+            .labels('update')
             .observe(Date.now()-start);
         updateTotal.inc({ username: data.name });
     });

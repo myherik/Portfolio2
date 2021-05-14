@@ -1,9 +1,11 @@
-scrape-configs:
-  - job_name: 'prometheus'
-    scrape_intervals: 5s
+global:
+  scrape_interval: 5s
 
+scrape_configs:
+  - job_name: 'prometheus'
     static_configs:
-      targets: ['node_app:8080'] 
-      labels:
-        service: 'my-service'
-        
+      - targets: ['localhost:9090'] 
+      
+  - job_name: 'node_app'
+    static_configs:
+      - targets: ['localhost:8080']

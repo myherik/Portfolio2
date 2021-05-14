@@ -55,15 +55,25 @@
 }
 
 #scores{
+    width: fit-content!important;
     color: white;
     position: fixed;
     opacity: 0.4;
     top: 1%;
-    right: 0;
+    right: 1%;
     background: none;
+    text-align: center;
 }
 
-#score h1, h2, h3, h4, p {
+#scores h2 {
+    font-size: 20px;
+}
+
+#scores h4 {
+    font-size: 14px;
+}
+
+#score *{
     background: none; 
 }
 
@@ -118,6 +128,14 @@
     width: 33%;
 }
 
+#inYourFace {
+    z-index: 3;
+}
+
+#inYourFace button {
+    margin: 2px;
+}
+
 #inYourFace h1 {
     color: #df4759;
 }
@@ -165,6 +183,30 @@
 
 #help * {
     background: none!important;
+}
+
+#littleH {
+    position: fixed;
+    width: fit-content;
+
+    /*display: flex;
+    flex-basis: 3px;
+    flex-direction: column;*/
+    text-align: center;
+    z-index: 3;
+    left: 1%;
+    top: 1%;
+    color: white;
+    opacity: 0.4;
+}
+
+#littleH img {
+    width: 2vw;
+    min-width: 25px;
+}
+
+#littleH p {
+    font-size: 10px;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,8 +1,6 @@
-
 // all variables needed for drawing the game
 
 let startButton = document.getElementById("start");
-//let sketchHere = document.getElementById("sketchHere");
 
 let name = null;
 
@@ -211,7 +209,6 @@ const endGame = () => { // method for ending the game
     food = null;
     snake = null;
     startButton.style.display = "block";
-    startButton.innerHTML = "Start på nytt";
     document.getElementById("inYourFace").classList.remove("hidden");
 }
 
@@ -245,9 +242,9 @@ function keyPressed() { // every game mechanic for pressing a button
             if (snake.ydir !== 1) {
                 snake.setDir(0, -1);
             }
-        }/* else if (key == ' ') {// testing purposes only pausing the game
+        } else if (key == ' ') {// testing purposes only pausing the game
             snake.setDir(0, 0);
-        }
+        }/*
         else if (key == 'm') {// testing purposes only growing without eating
             snake.grow();
             console.log(snake.copy());
@@ -272,6 +269,10 @@ function keyPressed() { // every game mechanic for pressing a button
         } else if (key == '+') {// zoom in
             scaleVar += 0.1
             setCanvas();
+        }
+    } else {
+        if (key == 'h') {
+            showHelp();
         }
     }
 }

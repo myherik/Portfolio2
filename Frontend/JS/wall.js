@@ -29,5 +29,12 @@ class Wall {
         noStroke();
         rect(0, 500 + 2, 723, 1);
 
+        fill(255);
+        noStroke();
+        rect(100, 30, 200, 5);
+
+        fill(255);
+        noStroke();
+        rect(560, 430, 5, 20);
     }
 }

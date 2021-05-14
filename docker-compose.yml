@@ -23,9 +23,8 @@ services:
         image: prom/prometheus
         container_name: prometheus
         volumes:
-            - ./Prometheus:/prometheus-data
-        command:
-            - '--config.file=/prometheus-data/prometheus.yml'
+            - ./Prometheus:/etc/prometheus
+        command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
         ports:
             - 9090:9090
         depends_on:

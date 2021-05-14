@@ -16,6 +16,8 @@
 
 <body style="background-color:  #2d303a;">
 
+
+
     <div id="content"> <!-- All content inside the snake -->
         <div class="row-1"> <!-- The 'row' is very misleading but all content is also in this div -->
             <div class="row-2"> <!-- This is where we have the actual game canvas drawn (through JS) -->
@@ -27,6 +29,7 @@
             <div id="inYourFace" class="fix hidden"> <!-- The text that shows up when you die as well as the button for starting over again -->
                 <h1>You died!</h1>
                 <button class="btn btn-outline-success" id="start">Start snake</button>
+                <button class="btn btn-outline-warning" onclick="showHelp()">Show help</button>
             </div>
 
             <div id="help" class="hidden">
@@ -87,8 +90,12 @@
                 </div>
             </div>
 
+            <div id="littleH">
+                <img src="../Media/whiteHkey.png" alt="white h key for help">
+                <p>Show help</p>
+            </div>
 
-            <div class="row-2" id="scores"> <!-- This part holds all the scores and name of online players. Its position is fixed in the top right corner -->
+            <div id="scores"> <!-- This part holds all the scores and name of online players. Its position is fixed in the top right corner -->
                 <h2>Connected players right now</h2>
                 <div id="placePlayersHere">
 
