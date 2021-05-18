@@ -29,6 +29,8 @@ class Wall {
         noStroke();
         rect(0, boardHeight + 2, boardWidth + 3, 1);
 
+        /*
+
         fill(255);
         noStroke();
         rect(100, 30, 200, 5);
@@ -60,6 +62,8 @@ class Wall {
         fill(255);
         noStroke();
         rect(10, 44, 5, 70);
+        
+        */
     
     }
 }

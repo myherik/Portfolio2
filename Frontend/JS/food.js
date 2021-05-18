@@ -13,11 +13,11 @@ class Food {
             fill(150, 50, 70);
             noStroke();
             circle(this.x, this.y, 5);
-        } else {
+        } /*else {
             fill(70, 150, 50);
             noStroke();
             circle(this.x, this.y, 5);
-        }
+        }*/
 
     }
 

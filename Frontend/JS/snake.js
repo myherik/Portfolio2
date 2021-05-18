@@ -106,12 +106,27 @@ class Snake {
 
     hitSnake(snake) {// checks if I hit another snake
         let i = 0;
-        for (i; i < snake.body.length; i += 2) {
+        for (i; i < snake.body.length;/* i += 3*/) {
             //console.log("dead? " + snake.name)
-            if (this.x + 5 > snake.body[i].x && this.x < snake.body[i].x + 5 && (this.y + 5 > snake.body[i].y && this.y < snake.body[i].y + 5)) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
+            try {
+                if (this.x + 5 > snake.body[i].x && this.x < snake.body[i].x + 5 && (this.y + 5 > snake.body[i].y && this.y < snake.body[i].y + 5)) {
+                    console.log(this.name + " died trying to take a bite of " + snake.name);
+                    return true;
+                } else {
+                    let diffX = Math.floor(Math.abs(this.x - snake.body[i].x) / 5);
+                    let diffY = Math.floor(Math.abs(this.y - snake.body[i].y) / 5);
+
+                    i += diffY + diffX;
+
+                    if (i > snake.body.length) {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.log(err);
                 return true;
             }
+            
 
         }
         return false;
@@ -125,8 +140,10 @@ class Snake {
                 food.refreshFood();
                 foodUpdate({ food: food, name: food.name })
             } else {
-                deadFood = deadFood.filter(e => e !== food);
-                //console.log(deadFood.length);
+                console.log(food.x + " food " + food.y);
+                food.x = -10; 
+                food.y = -10;
+                setDead(deadFood.filter(e => e.x !== -10));
                 deadFoodUpdate(deadFood);
             }
             this.grow();

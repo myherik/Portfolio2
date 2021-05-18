@@ -47,11 +47,13 @@ socket.on('get-data', obj => { // recieving data from server and using that data
         foodList[user] = newFood;
     }
 
+/*
     let newDeadFood = [];
     for (let foorish of obj.deadFood) {// pushes dead food to list
         newDeadFood.push(new Food(foorish.x, foorish.y, null));
     }
-    setDead(newDeadFood); // sends deadfoodlist to sketch
+    */
+    setDead(obj.deadFood); // sends deadfoodlist to sketch
 
     setSize();
     startGame(); // starts game
@@ -83,7 +85,7 @@ const foodUpdate = (foodObj) => { // emits updates on food to server
 }
 
 socket.on('foodUpdate', (foodObj) => { // recieves updates on food from server
-    if (foodObj.name === snake.name) { // if food is my snakes food
+    if (snake !== null && foodObj.name === snake.name) { // if food is my snakes food
         food.x = foodObj.food.x;
         food.y = foodObj.food.y;
     } else {
@@ -97,13 +99,14 @@ const deadFoodUpdate = (deadFood) => { // emits updates on deadFood to server
 }
 
 socket.on('deadFood', (deadFood) => { // recieves updates on deadFood from server
-    let newList = [];
+    /*let newList = [];
     for (let dead of deadFood) {
-        newList.push(new Food(dead.x, dead.y, null));
+        let newFood = new Food(dead.x, dead.y, null);
+        newFood.showFood = dead.showFood;
+        newList.push();
     }
-
-    console.log(newList.length);
-    setDead(newList);
+    */
+    setDead(deadFood);
 })
 
 const dead = (name, infood) => {// emits that my snake has died to server
@@ -120,10 +123,7 @@ socket.on('dead', (name) => { // recieves any updates of death
     users = users.filter(e => e !== name.name) // removes dead snake from lists
     delete snakeList[name.name];
 
-    for (let mat of name.food) {// makes food out of that snake
-        const thisfood = new Food(mat.x, mat.y, null);
-        deadFood.push(thisfood);
-    }
+    setDead(name.food);
 
     console.log("resize")
     setUpdate();

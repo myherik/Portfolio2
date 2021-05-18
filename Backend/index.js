@@ -32,7 +32,7 @@ registry.setDefaultLabels({app: 'node-app'});
 const metricsDings = Prometheus.collectDefaultMetrics({registry});
 
 const updateTotal = new Prometheus.Counter({
-    name: 'update',
+    name: 'updateTotal',
     help: 'number of updates',
     labelNames: ['username']
 });
@@ -61,8 +61,12 @@ app.use(express.json());
 
 
 app.get('/metrics', (req, res) => {
-    res.set('Content-Type', Prometheus.register.contentType)
-    res.send(registry.metrics())
+    registry.metrics().then(data => {
+        //console.log(data);
+        res.setHeader('Content-Type', Prometheus.register.contentType)
+        res.end(data);
+    });
+    
 })
 
 // /login endpoint in API
@@ -345,9 +349,15 @@ const socketLogic = (socket) => {
         let user = userBySoket[socket.id];
         console.log(user + " died");
         if (user !== undefined) {
-            for (let i = 0; i < snakes[user].body.length - 1; i++) { // Turns the snakes body into food
-                deadFood.push(snakes[user].body[i]);
+            let lengthOfDeadfood = deadFood.length;
+            let bodyLength = snakes[user].body.length;
+
+            for (let i = 0; i < snakes[user].body.length - 1 && deadFood.length < 100; i++) { // Turns the snakes body into food
+                deadFood.push({x: snakes[user].body[i].x, y: snakes[user].body[i].y, name: null});
             }
+
+            let diff = (deadFood.length - lengthOfDeadfood)
+            console.log("deadfood " + bodyLength + " " + diff);
 
             let score = snakes[user].score;
 
@@ -395,9 +405,10 @@ const socketLogic = (socket) => {
         delete userBySoket[socket.id];
         console.log(user + " disconnected");
         if (user !== undefined) { // Same as on 'dead' where snake turns into dead food
-            for (let bodypart of snakes[user].body) {
-                deadFood.push(bodypart);
+            for (let i = 0; i < snakes[user].body.lengt && deadFood.length < 100; i++) {
+                deadFood.push({x: snakes[user].body[i].x, y: snakes[user].body[i], name: null});
             }
+    
             checkDeadFood();
             socket.broadcast.emit('dead', { name: user, food: deadFood }); // Broadcasts to all clients that snake is gone
             delete snakes[user]; // Deletes snake from socketlist and snakelist

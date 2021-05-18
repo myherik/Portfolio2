@@ -99,20 +99,22 @@ let boardWidth = 360;
 let boardHeight = 250;
 let updateSize = false;
 
+let adjustment = 50
+
 const setUpdate = () => {
     updateSize = true;
 }
 
 const checkSnakes = () => {
-    return (snake.x < boardWidth - 15 && snake.y < boardHeight - 15);
+    return (snake.x < boardWidth - (adjustment + 5) && snake.y < boardHeight - (adjustment + 5));
 }
 
 const setSize = () => {
-    boardWidth = 360 + 10*users.length;
-    boardHeight = 250 + 10*users.length;
+    boardWidth = 360 + adjustment*users.length;
+    boardHeight = 250 + adjustment*users.length;
 
     if (food !== null) {
-        if (food.x > boardWidth - 15 || food.y > boardHeight - 15) {
+        if (food.x > boardWidth - (adjustment + 5) || food.y > boardHeight - (adjustment + 5)) {
         food.refreshFood();
         foodUpdate({ food: food, name: food.name })
     }
@@ -136,6 +138,12 @@ const setCanvas = () => { // when zooming in or out canvas is redrawn for you
 }
 
 let counter = 1;
+
+const showDeadFood = (el) => {
+    fill(70, 150, 50);
+    noStroke();
+    circle(el.x, el.y, 5);
+}
 
 function draw() { // method called 60 times per second for drawing the game
 
@@ -171,15 +179,17 @@ function draw() { // method called 60 times per second for drawing the game
             showScores();
             showPlayers();
             for (let foodEl of deadFood) {
-                foodEl.show();
+                showDeadFood(foodEl)
                 snake.eatFood(foodEl);
             }
             if (snake !== null && snake.checkDead()) {
+                console.log("out of bounds");
                 endGame();
+                return;
             }
         } else {
             for (let foodEl of deadFood) {
-                foodEl.show();
+                showDeadFood(foodEl);
             }
         }
 
@@ -190,7 +200,9 @@ function draw() { // method called 60 times per second for drawing the game
             if (counter % 5 === 0) {
                 snake.eatFood(foodList[user])
                 if (snake.hitSnake(snakeList[user])) {
+                    console.log("HIT SNAKE");
                     endGame();
+                    return;
                 }
             }
 
@@ -199,7 +211,7 @@ function draw() { // method called 60 times per second for drawing the game
     } else {
         // when dead
         for (let foodEl of deadFood) {
-            foodEl.show();
+            showDeadFood(foodEl);
         }
 
         for (let user of users) {
