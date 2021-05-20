@@ -25,6 +25,7 @@ const mongoose = require('mongoose');
 //import bcrypt for hashing password
 const bcrypt = require('bcrypt');
 
+/*
 const Prometheus = require('prom-client')
 const registry = new Prometheus.Registry();
 registry.setDefaultLabels({app: 'node-app'});
@@ -45,6 +46,7 @@ const websocketRequestDurationMicroseconds = new Prometheus.Histogram({
 });
 
 registry.registerMetric(updateTotal);
+*/
 
 //Imports for handeling goolge oAuth2
 const { OAuth2Client } = require('google-auth-library');
@@ -60,6 +62,7 @@ let Score = null;
 app.use(express.json());
 
 
+/*
 app.get('/metrics', (req, res) => {
     registry.metrics().then(data => {
         //console.log(data);
@@ -68,6 +71,7 @@ app.get('/metrics', (req, res) => {
     });
     
 })
+*/
 
 // /login endpoint in API
 app.post("/login", (req, res) => {
@@ -328,7 +332,7 @@ const socketLogic = (socket) => {
 
     // websocket endpoint for updating position of snake
     socket.on('update', data => {
-        const start = Date.now();
+        //const start = Date.now();
 
         // you get kicked out if you try to play but not registered
         if (userBySoket[socket.id] === undefined) {
@@ -337,10 +341,12 @@ const socketLogic = (socket) => {
             // updating snake on server and sending new position to other connected players
             snakes[data.name] = data.snake;
             socket.broadcast.emit('update', data);
+            /*
             websocketRequestDurationMicroseconds
                 .labels('update')
                 .observe(Date.now()-start);
             updateTotal.inc({ username: data.name });
+            */
         }
     });
 
@@ -352,7 +358,7 @@ const socketLogic = (socket) => {
             let lengthOfDeadfood = deadFood.length;
             let bodyLength = snakes[user].body.length;
 
-            for (let i = 0; i < snakes[user].body.length - 1 && deadFood.length < 100; i++) { // Turns the snakes body into food
+            for (let i = snakes[user].body.length - 2; i >= 0 && deadFood.length < 100; i--) { // Turns the snakes body into food
                 deadFood.push({x: snakes[user].body[i].x, y: snakes[user].body[i].y, name: null});
             }
 
@@ -405,7 +411,7 @@ const socketLogic = (socket) => {
         delete userBySoket[socket.id];
         console.log(user + " disconnected");
         if (user !== undefined) { // Same as on 'dead' where snake turns into dead food
-            for (let i = 0; i < snakes[user].body.lengt && deadFood.length < 100; i++) {
+            for (let i = snakes[user].body.lengt - 1; i >= 0  && deadFood.length < 100; i--) {
                 deadFood.push({x: snakes[user].body[i].x, y: snakes[user].body[i], name: null});
             }
     

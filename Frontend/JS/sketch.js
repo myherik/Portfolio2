@@ -97,35 +97,59 @@ const startGame = () => { // method for starting the game
 
 let boardWidth = 360;
 let boardHeight = 250;
-let updateSize = false;
+let updateSize = true;
+let updateSnake = false;
+
+let deadWidth = boardWidth;
+let deadHeight = boardHeight;
 
 let adjustment = 50
 
 const setUpdate = () => {
     updateSize = true;
+    updateSnake = true;
 }
 
 const checkSnakes = () => {
+    if (snake === null) {
+        return true;
+    }
     return (snake.x < boardWidth - (adjustment + 5) && snake.y < boardHeight - (adjustment + 5));
 }
 
 const setSize = () => {
-    boardWidth = 360 + adjustment*users.length;
-    boardHeight = 250 + adjustment*users.length;
 
-    if (food !== null) {
-        if (food.x > boardWidth - (adjustment + 5) || food.y > boardHeight - (adjustment + 5)) {
-        food.refreshFood();
-        foodUpdate({ food: food, name: food.name })
+    if (boardWidth < 360 + adjustment*users.length) {
+        boardWidth++;
+        boardHeight++;
+    } else if (boardWidth > 360 + adjustment*users.length) {
+        boardWidth--;
+        boardHeight--;
+
+        if (food !== null) {
+            if (food.x > boardWidth - (adjustment + 5) || food.y > boardHeight - (adjustment + 5)) {
+                food.refreshFood();
+                foodUpdate({ food: food, name: food.name })
+        }
     }
+    } else if (updateSize || updateSnake) {
+        if (updateSize) {
+            setCanvas();
+            updateSize = false;
+        }
+        if (checkSnakes()) {
+            deadWidth = boardWidth;
+            deadHeight = boardHeight;
+            updateSnake = false;
+        }
     }
 
-    setCanvas();
 }
 
 let canvas = null;
 function setup() {// creates canvas for drawing and places into html
-    canvas = createCanvas(boardWidth * scaleVar + 10, boardHeight * scaleVar + 10);
+    canvas = createCanvas(boardWidth * scaleVar + 100, boardHeight * scaleVar + 100);
+    //canvas = createCanvas(1000, 1000)
     canvas.style.margin = "0";
     w = width;
     h = height;
@@ -134,7 +158,7 @@ function setup() {// creates canvas for drawing and places into html
 }
 
 const setCanvas = () => { // when zooming in or out canvas is redrawn for you
-    resizeCanvas(boardWidth * scaleVar + 10, boardHeight * scaleVar + 10);
+    resizeCanvas(boardWidth * scaleVar + 100, boardHeight * scaleVar + 100);
 }
 
 let counter = 1;
@@ -158,14 +182,13 @@ function draw() { // method called 60 times per second for drawing the game
     }
 
     if (snake !== null) {
-        snake.update();
+        if (snake.update()) {
+            endGame();
+            return;
+        }
+
         snake.show();
         snake.eatFood(food);
-
-        if (updateSize && checkSnakes()) {
-            setSize(); 
-            updateSize = false;
-        }
 
         update({ // sends updates
             name: snake.name,
@@ -224,6 +247,8 @@ function draw() { // method called 60 times per second for drawing the game
         counter = 1;
     }
 
+    setSize(); 
+
 }
 
 const scrollSnake = () => {// method for scrolling the game if zoomed enough in
@@ -231,15 +256,17 @@ const scrollSnake = () => {// method for scrolling the game if zoomed enough in
     let heightOfScreen = window.innerHeight;
     let sketch = document.getElementById("sketchHere");
     //console.log(sketch.offsetHeight + " " + sketch.offsetWidth)
+
     sketch.scroll({
-        top: snake.y * scaleVar - sketch.offsetHeight / 2,
+        top: snake.y * scaleVar - sketch.offsetHeight / 2 - 5,
         left: snake.x * scaleVar - sketch.offsetWidth / 2 - 5,
         behavior: 'smooth'
     });
+    
     /*
     sketch.scroll({
-        top: snake.y - heightOfScreen / 2,
-        left: snake.x - widthOfScreen/ 2,
+        top: snake.y - boardHeight / 2,
+        left: snake.x - boardWidth/ 2,
         behavior: 'smooth'
     });
     */

@@ -62,7 +62,7 @@ class Wall {
         fill(255);
         noStroke();
         rect(10, 44, 5, 70);
-        
+
         */
     
     }

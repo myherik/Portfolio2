@@ -19,6 +19,8 @@ services:
         environment: 
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: root
+
+
     prometheus:
         image: prom/prometheus
         container_name: prometheus
@@ -29,3 +31,16 @@ services:
             - 9090:9090
         depends_on:
             - "node_app"
+    
+    node_exporter:
+        image: quay.io/prometheus/node-exporter:latest
+        container_name: node_exporter
+        command:
+            - '--path.rootfs=/host'
+        network_mode: host
+        pid: host
+        restart: unless-stopped
+        volumes:
+            - '/:/host:ro'
+        ports: 
+            - 9100:9100

@@ -8,7 +8,7 @@ class Snake {
         this.y = Math.floor(Math.random() * ( boardHeight - 20)) + 10;
         console.log(this.x + " " + this.y)
         this.body[0] = new Point(this.x, this.y);
-        this.points[0] = [];
+        this.points[0] = [this.body[0]];
         this.xdir = 0;
         this.ydir = 0;
         this.size = 0;
@@ -84,6 +84,34 @@ class Snake {
         }
 
 
+        let i = 0;
+        for (i; i < this.body.length - 1;/* i += 3*/) {
+            //console.log("dead? " + i)
+            try {
+                if (this.x + 3 > this.body[i].x && this.x < this.body[i].x + 3 && (this.y + 3 > this.body[i].y && this.y < this.body[i].y + 3)) {
+                    console.log(this.name + " died trying to take a bite of " + this.name + " " + i);
+                    return true;
+                } else {
+                    let diffX = Math.floor(Math.abs(this.x - this.body[i].x) / 5);
+                    let diffY = Math.floor(Math.abs(this.y - this.body[i].y) / 5);
+
+                    i += Math.max(diffY + diffX, 1);
+
+                    if (i > this.body.length) {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+                return true;
+            }
+            
+
+        }
+        
+        return false;
+
+
     }
 
     grow() {// method for growing snake when having had a snack
@@ -98,7 +126,7 @@ class Snake {
 
     checkDead() {// checks if snake is dead
         //console.log(this.x + " " + this.y);
-        if (this.x < 0 || this.x > boardWidth || this.y < 0 || this.y > boardHeight) {
+        if (this.x < 0 || this.x > deadWidth || this.y < 0 || this.y > deadHeight) {
             return true;
         }
         return false;
@@ -146,7 +174,17 @@ class Snake {
                 setDead(deadFood.filter(e => e.x !== -10));
                 deadFoodUpdate(deadFood);
             }
-            this.grow();
+            if (this.body.length > 100) {
+                if (this.body.length%2 === 0) {
+                    this.grow();
+                } else {
+                    this.score++;
+                }
+
+            } else {
+                this.grow();
+            }
+            
         }
         return false;
     }

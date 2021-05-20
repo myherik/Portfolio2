@@ -32,12 +32,15 @@ Alternatively you could run the project with seperate docker containers with the
 
 ```
 docker network create skynet
+
 docker build -t snake-server . 
+
 docker run --network skynet --name mongodb -v $(pwd)/mongodb/data:/data/db -e MONGO_INITDB_ROOT_PASSWORD=root -e MONGO_INITDB_USERNAME=root -d mongo
+
 docker run --network skynet -p 8080:8080 -p 8081:8081 snake-server
 ```
 
-Now if you enter a browser and type in localhost:8080 or alternatively for openssl you can do https://localhost:8081 you should be able to get to the login page. If you enter with the https you have to approove it yourself as most browsers will not say it is a valid certification.
+Now if you enter a browser and type in http://localhost:8080 or alternatively for secure connction you can do https://localhost:8081 you should be able to get to the login page. If you enter with the https you have to approove it yourself as most browsers will not say it is a valid certification. Signin with google is not awailable on google choreme as google do not accept the certification.
 
 We have also used the OsloMet linux VM to host for testing purposes so that we could test within the group without being on the same network. This gave us the address os13.vlab.cs.hioa.no:8081 where anyone on the internet could come in and try. This was very useful in testing the multiplayer mechanics as we have not been able to meet in person a lot due to the world conditions.
 
@@ -102,6 +105,20 @@ ___
 
 ## Screenshots of end product and output
 ___
+
+![Console of node.js server](./MediaReadme/console.png)
+- If the console displays http server, https server and connected to db the application has started the right way
+
+![login/Register](./MediaReadme/login:register.png)
+- This is is the screen you will be faced with when first opening the page. From here you can see instructions on how to play the game as well as your options for logging in/registering
+
+![Game board](./MediaReadme/board.png)
+- How it looks like while playing the game. In this example there are three players.
+- On the right you see the scores, players and highscore
+- Upper left corner, H, press h to show help
+
+
+![Resize](./MediaReadme/resize.gif)
 
 ## Libraries used making this project and sources
 ___

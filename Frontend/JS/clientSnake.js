@@ -18,7 +18,7 @@ socket.on('register', regObj => {// on registering recieving information from se
     snakeList[regObj.name] = outSnake;
     foodList[regObj.name] = food;
     users.push(regObj.name);
-    setSize();
+    setUpdate();
 })
 
 const getData = (name) => { // emits getting data method to endpoint in server websocket
@@ -55,7 +55,7 @@ socket.on('get-data', obj => { // recieving data from server and using that data
     */
     setDead(obj.deadFood); // sends deadfoodlist to sketch
 
-    setSize();
+    setUpdate();
     startGame(); // starts game
 
 })
