@@ -1,4 +1,4 @@
-# Portfolio2 - Snake - Group 5
+# **Portfolio2 - Snake - Group 5**
 
 ## Implementing game mechanics
 ___
@@ -13,7 +13,8 @@ Now that we had a functioning multiplayer snake we added features that is not to
 
 Now that we had completed all the expected features we started on the stretch goals. The natural first stretch goal to start with was a database to store scores on. We used mongodb to implement this. We figured creating users was also nice for having personal best scores and improving on top score whilst noone else could have that name.
 
-Having users also made it natural to implement API so that we have a starting page for login and instructions while the game itself could be its own thing. Other stretch goals we have implemented are https with openssl (self signed certification on port 8081), google authentication, scrolling the game, allowing for >10 players, password hashing with bcrypt and [WHEN PROMETHEUS DONE INSERT HERE] 
+Having users also made it natural to implement API so that we have a starting page for login and instructions while the game itself could be its own thing. Other stretch goals we have implemented are https with openssl (self signed certification on port 8081), google authentication, scrolling the game, allowing for 10 < players, password hashing with bcrypt and [WHEN PROMETHEUS DONE INSERT HERE] 
+
 
 We decided not to implement bots on purpose as we thought it would not be good for the game. 
 
@@ -28,7 +29,7 @@ Deployment with docker is necessary. To start hosting use the following command.
 docker compose up --build
 ```
 
-Alternatively you could run the project with seperate docker containers with these commands
+Alternatively you could run the project in seperate docker containers with these commands
 
 ```
 docker network create skynet
@@ -40,7 +41,15 @@ docker run --network skynet --name mongodb -v $(pwd)/mongodb/data:/data/db -e MO
 docker run --network skynet -p 8080:8080 -p 8081:8081 snake-server
 ```
 
-Now if you enter a browser and type in http://localhost:8080 or alternatively for secure connction you can do https://localhost:8081 you should be able to get to the login page. If you enter with the https you have to approove it yourself as most browsers will not say it is a valid certification. Signin with google is not awailable on google choreme as google do not accept the certification.
+Now if you enter a browser and type in http://localhost:8080 or alternatively for secure connction you can do https://localhost:8081 you should be able to get to the login page. If you enter with the https you have to approove it yourself as most browsers will not say it is a valid certification. Sign in with google is not available on google choreme with https, as google do not accept the certification. To be able to use TLS/SSL we had to sign our own certificate since we dont have a domain. We used openssl for this.
+
+```
+openssl genrsa -out key.pem
+
+openssl req -new -key key.pem -out csr.pem
+
+openssl x509 -req -days 365 -n csr.pem -signkey key.pem -out cert.pem
+```
 
 We have also used the OsloMet linux VM to host for testing purposes so that we could test within the group without being on the same network. This gave us the address os13.vlab.cs.hioa.no:8081 where anyone on the internet could come in and try. This was very useful in testing the multiplayer mechanics as we have not been able to meet in person a lot due to the world conditions.
 
@@ -92,7 +101,7 @@ ___
 
 - [ADD PROMETHEUS HERE WHEN DONE]
 
-- Allowed for >10 players or unlimited players
+- Allowed for 10 < players or unlimited players
 
 - (Follow up from previous goal) Scrolling is implemented due to large ammount of players are a possibility. The game board revolves around your snake and not the snake just moving around in the game board.
 
@@ -102,6 +111,7 @@ ___
 
 - Password hashing (more secure login)
 - Google authentication (option of google login)
+- Snake kills itself if hitting its own body
 
 ## Screenshots of end product and output
 ___
@@ -109,7 +119,7 @@ ___
 ![Console of node.js server](./MediaReadme/console.png)
 - If the console displays http server, https server and connected to db the application has started the right way
 
-![login/Register](./MediaReadme/login:register.png)
+![login/Register](./MediaReadme/login_register.png)
 - This is is the screen you will be faced with when first opening the page. From here you can see instructions on how to play the game as well as your options for logging in/registering
 
 ![Game board](./MediaReadme/board.png)
@@ -117,8 +127,62 @@ ___
 - On the right you see the scores, players and highscore
 - Upper left corner, H, press h to show help
 
+![death screen](./MediaReadme/doedskjerm.JPG)
+- This is the screen you will be faced with when you died.
+- Here you have two buttons.
+    1. Start again with the green button.
+    2. Show help with the yellow button (this does the same as pressing the 'h' key)
+
+![help screen](./MediaReadme/help.JPG)
+- This is the help screen while playing the game.
+- You can still play the game with this screen on
 
 ![Resize](./MediaReadme/resize.gif)
+- In this GIF you can see movement and death screen, but the point is to show how the gameboard grows bigger when an additional player joins the game.
+
+![kill gif](./MediaReadme/kill.gif)
+- This GIF shows a player dying and the screen shrinking due to one less player in the game.
+
+## Comments on choices we have made
+___
+
+- **We decided on not having any bots**
+
+    We did not find any easy way to implement this in JS, and since the rest of the project is done in JS we found it unnatural to try. Additionally the program is very resource demanding, so running bots on the same machine would not be good.
+
+- **Why we chose mongodb as our database**
+
+    We had only used SQL database before, so we figured it would be nice to try something different. Mongodb also stores data as JSON files which means that the variables and values in the database have the same structure. This makes the transition to and from the database easy. It is also the most used database with node.js framework
+
+- **Why we chose node.js backend and socket.io for networking**
+
+    We all have had some experience with javascript before, and we also thought that a snake game fits best being web based. This made it the most natural choice for us.
+
+- **Why use p5.js for graphics rendering**
+
+    Some of us have used p5 before and knew this was a very useful tool for making the graphics work. With this framework you get all the core functionality and tools for you to make the game as you wish. You just have to make the choices and implementation yourself.
+
+- **Why use docker compose**
+
+    Since we have multiple applications that are dependent on eachother we needed a way for them to communicate and work together. This can be done with normal docker commands, however doing it with a well configured docker compose file you can start the entire project seamlessly. 
+
+- **Why our backend server is serving our frontend application**
+
+    In the beginning of the development we faced problems when backend and frontend where running different applications because cors stopped networking. To avoid this problem we made our backend application serve our frontend as well. 
 
 ## Libraries used making this project and sources
 ___
+
+- node.js
+- express
+- socket.io
+- mongoose
+- Bcrypt
+- google-auth-library
+----
+- p5.js
+- bootstrap
+- google-apis-platform.js
+---
+- openssl
+
