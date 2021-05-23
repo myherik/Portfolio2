@@ -1,5 +1,7 @@
 # **Portfolio2 - Snake - Group 5**
 
+#### Students: s341833, s341867, s331394
+
 ## Implementing game mechanics
 
 ---
@@ -71,6 +73,8 @@ Once logged in you are immediately placed in the game, but you are just standing
 
 When moving, the goal of the game is to get the highest possible score. Move towards the red or green circles and you will get bigger and get a higher score. If you hit the white walls or another snake you will die and your score will reset. You know that you have died when a large red text in the middle of the screen pops up saying "You Died!". To start over again all you have to do is to press the green button that also showed up when you died. If you die or disconnect (by for example closing the browser) your score will be saved if it beats your previous score. If your score is higher than any other players score then it will show under "All time high score".
 
+If you get outside of the board during the shrinking process, you are able to get inside the board without getting killed. Once you have entered the new gameboard, moving outside will get you killed. 
+
 ## Goals we believe we have succeeded in implementing into the project
 
 ---
@@ -119,7 +123,7 @@ When moving, the goal of the game is to get the highest possible score. Move tow
 - Google authentication (option of google login)
 - Snake kills itself if hitting its own body
 - The wall is increasing or decreasing in size, depending on the live amount of players.
-- If a player is outside of the wall because the game zone got smaller, it doesn't get killed
+- If a player is outside of the wall because the size of the game zone got smaller, it doesn't get killed.
 
 ## Screenshots of end product and output
 
