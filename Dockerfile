@@ -6,4 +6,6 @@ WORKDIR /usr/src/app
 COPY . .
 WORKDIR /usr/src/app/Backend
 EXPOSE 8080
-CMD [ "./startscript.sh" ]
+#RUN sed -i -e 's/\r$//' startscript.sh
+#CMD [ "./startscript.sh" ]
+CMD sed -i -e 's/\r$//' startscript.sh && ./startscript.sh
