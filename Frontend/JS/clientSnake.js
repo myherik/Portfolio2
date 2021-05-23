@@ -33,7 +33,7 @@ socket.on('get-data', obj => { // recieving data from server and using that data
     document.getElementById("pb").innerText = `Highscore: ${obj.score}`;
     document.getElementById("all-time").innerText = `By: ${obj.high.username.split("@")[0]} with the score ${obj.high.score}`;
 
-    users = obj.users;
+    users = obj.users //.filter(name => name !== snake.name);
     for (let user of users) { // Does everything necessary to make your snake able to play the game
         const newSnake = new Snake(user);
         newSnake.body = obj.snakes[user].body;
@@ -65,7 +65,7 @@ const update = (regObj) => {// emits update method to server socket
 }
 
 socket.on('update', (regObj) => { // recieves updated data from server to client
-    //console.log(regObj);
+    console.log("update");
     //const outSnake = new Snake(regObj.name);
     //outSnake.body = regObj.snake.body;
     if (updateBool) { // updatebool makes sure that you can't recieve updates until all information has been loaded
@@ -78,6 +78,20 @@ socket.on('update', (regObj) => { // recieves updated data from server to client
 
     }
     //snakeList[regObj.name] = outSnake;
+})
+
+socket.on('newUpdate', (snakeListInn) => {
+    console.log("newUpdate")
+    if (updateBool) {
+        for (let user of users) {
+            snakeList[user].body = snakeListInn[user].body;
+            snakeList[user].score = snakeListInn[user].score;
+            snakeList[user].rgb = snakeListInn[user].rgb;
+        }
+
+        users.sort((a, b) => snakeList[b].score - snakeList[a].score);
+    }
+    
 })
 
 const foodUpdate = (foodObj) => { // emits updates on food to server
@@ -134,4 +148,8 @@ socket.on('yeeted', (data) => { // kicks you and forces you to go back to login 
     if (data.kicked === true) {
         window.location.href = "/"
     }
+})
+
+socket.on('meg', data => {
+    console.log(data);
 })

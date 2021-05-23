@@ -6,4 +6,4 @@ WORKDIR /usr/src/app
 COPY . .
 WORKDIR /usr/src/app/Backend
 EXPOSE 8080
-CMD [ "npm", "start" ]
+CMD [ "./startscript.sh" ]

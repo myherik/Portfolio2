@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
     node_app:
         build: .
@@ -9,8 +9,10 @@ services:
         ports:
             - 8080:8080
             - 8081:8081
+            - 9100:9100
         depends_on: 
             - "mongodb"
+
     mongodb:
         image: mongo
         container_name: mongodb
@@ -19,7 +21,6 @@ services:
         environment: 
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: root
-
 
     prometheus:
         image: prom/prometheus
@@ -31,16 +32,14 @@ services:
             - 9090:9090
         depends_on:
             - "node_app"
-    
-    node_exporter:
-        image: quay.io/prometheus/node-exporter:latest
-        container_name: node_exporter
-        command:
-            - '--path.rootfs=/host'
-        network_mode: host
-        pid: host
-        restart: unless-stopped
+
+    grafana:
+        image: stefanwalther/grafana
+        container_name: grafana
+        ports:
+            - 3000:3000
         volumes:
-            - '/:/host:ro'
-        ports: 
-            - 9100:9100
+            - ./Grafana:/var/lib/grafana
+        depends_on:
+            - "prometheus"
+    

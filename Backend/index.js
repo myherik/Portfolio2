@@ -16,37 +16,27 @@ const SSLserver = https.createServer({
 },
     app);
 
-const { Server } = require("socket.io");
-const io = new Server(server);
-const sslIO = new Server(SSLserver);
+const ioServer = require("socket.io")();
+
+ioServer.attach(server, {
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    cookie: false
+})
+
+ioServer.attach(SSLserver, {
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    cookie: false
+})
+
+
+
 
 const mongoose = require('mongoose');
 
 //import bcrypt for hashing password
 const bcrypt = require('bcrypt');
-
-/*
-const Prometheus = require('prom-client')
-const registry = new Prometheus.Registry();
-registry.setDefaultLabels({app: 'node-app'});
-
-const metricsDings = Prometheus.collectDefaultMetrics({registry});
-
-const updateTotal = new Prometheus.Counter({
-    name: 'updateTotal',
-    help: 'number of updates',
-    labelNames: ['username']
-});
-
-const websocketRequestDurationMicroseconds = new Prometheus.Histogram({
-    name: 'websocket_request_duration_ms',
-    help: 'Duration of websocket requests in ms',
-    labelNames: ['route'],
-    buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]  // buckets for response time from 0.1ms to 500ms
-});
-
-registry.registerMetric(updateTotal);
-*/
 
 //Imports for handeling goolge oAuth2
 const { OAuth2Client } = require('google-auth-library');
@@ -60,18 +50,6 @@ const scoreModel = require('./score')
 let Score = null;
 
 app.use(express.json());
-
-
-/*
-app.get('/metrics', (req, res) => {
-    registry.metrics().then(data => {
-        //console.log(data);
-        res.setHeader('Content-Type', Prometheus.register.contentType)
-        res.end(data);
-    });
-    
-})
-*/
 
 // /login endpoint in API
 app.post("/login", (req, res) => {
@@ -123,7 +101,7 @@ app.post("/login", (req, res) => {
 app.post("/register", (req, res) => {
     //getting the username and password from request
     const { username, password } = req.body;
-    if (password.length <= 5) {
+    if (password.length < 5) {
         // password has to be at least 5 characters
         res.status(400).json({
             body: {
@@ -332,7 +310,6 @@ const socketLogic = (socket) => {
 
     // websocket endpoint for updating position of snake
     socket.on('update', data => {
-        //const start = Date.now();
 
         // you get kicked out if you try to play but not registered
         if (userBySoket[socket.id] === undefined) {
@@ -341,12 +318,6 @@ const socketLogic = (socket) => {
             // updating snake on server and sending new position to other connected players
             snakes[data.name] = data.snake;
             socket.broadcast.emit('update', data);
-            /*
-            websocketRequestDurationMicroseconds
-                .labels('update')
-                .observe(Date.now()-start);
-            updateTotal.inc({ username: data.name });
-            */
         }
     });
 
@@ -438,13 +409,10 @@ const checkDeadFood = () => {
 }
 
 // Logic for websocket, specifically for connecting client to server
-io.on('connection', (socket) => {
+ioServer.on('connection', (socket) => {
     socketLogic(socket);
 })
 
-sslIO.on('connection', (socket) => {
-    socketLogic(socket);
-})
 
 const dbConnect = () => {
     mongoose.connect("mongodb://user:user@mongodb:27017/snakedb", { // Connects to mongodb with mongoose framework
@@ -475,19 +443,4 @@ server.listen(8080, () => { // Server at port 8080
 
 SSLserver.listen(8081, () => {
     console.log("https server");
-})
-
-
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    clearInterval(metricsInterval)
-
-    server.close((err) => {
-        if (err) {
-        console.error(err)
-        process.exit(1)
-        }
-
-        process.exit(0)
-    })
 })
