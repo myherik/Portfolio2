@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
     node_app:
         build: .
@@ -8,14 +8,38 @@ services:
             - /usr/src/app/Backend/node_modules
         ports:
             - 8080:8080
+            - 8081:8081
+            - 9100:9100
+        depends_on: 
+            - "mongodb"
 
     mongodb:
         image: mongo
         container_name: mongodb
         volumes:
             - ./mongodb/data:/data/db
-        ports: 
-            - 27017:27017
         environment: 
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: root
+
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        volumes:
+            - ./Prometheus:/etc/prometheus
+        command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+        ports:
+            - 9090:9090
+        depends_on:
+            - "node_app"
+
+    grafana:
+        image: stefanwalther/grafana
+        container_name: grafana
+        ports:
+            - 3000:3000
+        volumes:
+            - ./Grafana:/var/lib/grafana
+        depends_on:
+            - "prometheus"
+    

@@ -1,13 +1,14 @@
 
 class Snake {
 
-    constructor(name) {
+    constructor(name) {// constructor for snake object
         this.body = [];
         this.points = []
-        this.x = Math.floor(Math.random() * 710) + 5;
-        this.y = Math.floor(Math.random() * 490) + 5;
+        this.x = Math.floor(Math.random() * ( boardWidth - 20)) + 10;
+        this.y = Math.floor(Math.random() * ( boardHeight - 20)) + 10;
+        console.log(this.x + " " + this.y)
         this.body[0] = new Point(this.x, this.y);
-        this.points[0] = [];
+        this.points[0] = [this.body[0]];
         this.xdir = 0;
         this.ydir = 0;
         this.size = 0;
@@ -17,20 +18,24 @@ class Snake {
         //this.counter = 1;
     }
 
-    setDir(x, y) {
+    setDir(x, y) {// movement direction
         this.xdir = x;
         this.ydir = y;
     }
 
-    genColor() {
-        return [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+    genColor() { // gives snake a oolour (included a minimum brightness)
+        let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+        while (rgb[0] + rgb[1] + rgb[2] < 275) {
+            rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+        }
+        return rgb;
     }
 
-    show() {
+    show() { // p5 code for showing snake
 
         textSize(8);
         fill(this.rgb[0], this.rgb[1], this.rgb[2]);
-        text(this.name, this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
+        text(this.name.split("@")[0], this.body[this.body.length - 1].x, this.body[this.body.length - 1].y);
 
 
         for (let i = 0; i < this.body.length; i++) {
@@ -41,7 +46,7 @@ class Snake {
 
     }
 
-    update() {
+    update() {// snakeupdates when moving
 
         if (this.xdir === 0 && this.ydir === 0) {
             return;
@@ -79,18 +84,37 @@ class Snake {
         }
 
 
+        let i = 0;
+        for (i; i < this.body.length - 1;/* i += 3*/) {
+            //console.log("dead? " + i)
+            try {
+                if (this.x + 3 > this.body[i].x && this.x < this.body[i].x + 3 && (this.y + 3 > this.body[i].y && this.y < this.body[i].y + 3)) {
+                    console.log(this.name + " died trying to take a bite of " + this.name + " " + i);
+                    return true;
+                } else {
+                    let diffX = Math.floor(Math.abs(this.x - this.body[i].x) / 5);
+                    let diffY = Math.floor(Math.abs(this.y - this.body[i].y) / 5);
+
+                    i += Math.max(diffY + diffX, 1);
+
+                    if (i > this.body.length) {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.log(err);
+                return true;
+            }
+            
+
+        }
+        
+        return false;
+
+
     }
 
-    grow() {
-
-        /*
-        head.x += this.xdir * 5;
-        head.y += this.ydir * 5;
-        this.x += this.xdir * 5;
-        this.y += this.ydir * 5;
-        this.body.push(head);
-        this.dir.push(headDir);
-        */
+    grow() {// method for growing snake when having had a snack
         const newPoint = new Point(this.points[0][0].x, this.points[0][0].y)
         //console.log(newPoint);
         this.body.unshift(newPoint);
@@ -100,138 +124,89 @@ class Snake {
     }
 
 
-    checkDead() {
+    checkDead() {// checks if snake is dead
         //console.log(this.x + " " + this.y);
-        if (this.x < 0 || this.x > 720 || this.y < 0 || this.y > 500) {
+        if (this.x < 0 || this.x > deadWidth || this.y < 0 || this.y > deadHeight) {
             return true;
         }
         return false;
     }
 
-    hitSnake(snake) {
+    hitSnake(snake) {// checks if I hit another snake
         let i = 0;
-        for (i; i < snake.body.length; i++) {
+        for (i; i < snake.body.length;/* i += 3*/) {
             //console.log("dead? " + snake.name)
-            if (this.x + 5 > snake.body[i].x && this.x < snake.body[i].x + 5 && (this.y + 5 > snake.body[i].y && this.y < snake.body[i].y + 5)) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
+            try {
+                if (this.x + 5 > snake.body[i].x && this.x < snake.body[i].x + 5 && (this.y + 5 > snake.body[i].y && this.y < snake.body[i].y + 5)) {
+                    console.log(this.name + " died trying to take a bite of " + snake.name);
+                    return true;
+                } else {
+                    let diffX = Math.floor(Math.abs(this.x - snake.body[i].x) / 5);
+                    let diffY = Math.floor(Math.abs(this.y - snake.body[i].y) / 5);
 
+                    i += diffY + diffX;
 
-
-            /*
-            if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
-                && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
+                    if (i > snake.body.length) {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.log(err);
                 return true;
             }
-            else if (this.x - 2.5 < snake.body[i].x + 5 && this.x + 2.5 > snake.body[i].x + 5
-                && this.y - 2.5 < snake.body[i].y + 5 && this.y + 2.5 > snake.body[i].y + 5) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            else if (this.x - 2.5 < snake.body[i].x && this.x + 2.5 > snake.body[i].x
-                && this.y - 2.5 < snake.body[i].y + 5 && this.y + 2.5 > snake.body[i].y + 5) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            else if (this.x - 2.5 < snake.body[i].x + 5 && this.x + 2.5 > snake.body[i].x + 5
-                && this.y - 2.5 < snake.body[i].y && this.y + 2.5 > snake.body[i].y) {
-                console.log(this.name + " died trying to take a bite of " + snake.name);
-                return true;
-            }
-            */
+            
 
         }
         return false;
     }
 
 
-    eatFood(food) {
+    eatFood(food) {// method for doing the act of eating
         ///*
         if (this.x <= food.x + 2.5 && this.x + 5 >= food.x - 2.5 && this.y <= food.y + 2.5 && this.y + 5 >= food.y - 2.5) {
             if (food.name !== null) {
                 food.refreshFood();
                 foodUpdate({ food: food, name: food.name })
             } else {
-                deadFood = deadFood.filter(e => e !== food);
-                //console.log(deadFood.length);
+                console.log(food.x + " food " + food.y);
+                food.x = -10; 
+                food.y = -10;
+                setDead(deadFood.filter(e => e.x !== -10));
                 deadFoodUpdate(deadFood);
             }
-            this.grow();
-        }
-        //*/
-        /*
-        if (food.x - 2.5 < this.x && food.x + 2.5 > this.x && food.y - 2.5 < this.y && food.y + 2.5 > this.y) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
+            if (this.body.length > 100) {
+                if (this.body.length%2 === 0) {
+                    this.grow();
+                } else {
+                    this.score++;
+                }
 
-            //console.log("nom nom")
-            //let i;
-            //for (i = 0; i < 2; i++) {
-            //    this.grow();
-            //}
-            this.grow();
-        }
-        else if (food.x - 2.5 < this.x + 5 && food.x + 2.5 > this.x + 5
-            && food.y - 2.5 < this.y + 5 && food.y + 2.5 > this.y + 5) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
             } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
+                this.grow();
             }
-            //console.log("treff")
-            this.grow();
+            
         }
-        else if (food.x - 2.5 < this.x && food.x + 2.5 > this.x
-            && food.food.y - 2.5 < this.y + 5 && food.food.y + 2.5 > this.y + 5) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
-            //console.log("food");
-            this.grow();
-        }
-        else if (food.food.x - 2.5 < this.x + 5 && food.food.x + 2.5 > this.x + 5
-            && food.food.y - 2.5 < this.y && food.food.y + 2.5 > this.y) {
-            if (food.name !== null) {
-                food.refreshFood();
-                foodUpdate({ food: food, name: food.name })
-            } else {
-                deadFood = deadFood.filter(e => e !== food);
-                console.log(deadFood.length);
-                deadFoodUpdate(deadFood);
-            }
-            //console.log("wihooo");
-            this.grow();
-        }
-        */
         return false;
     }
 
     copy() {
+        //sends ONLY necessary data over the network
+        /*
         let copy = new Snake(this.name);
         copy.body = this.body;
         copy.rgb = this.rgb;
         copy.score = this.score;
+        */
 
-        return copy;
+        return {
+            name: this.name,
+            body: this.body,
+            rgb: this.rgb,
+            score: this.score
+        };
     }
 
-    changeColor() {
+    changeColor() {// method for changing the colour of the snake
         this.rgb = this.genColor();
     }
 }

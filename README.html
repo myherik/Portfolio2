@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="portfolio2---snake---group-5"><strong>Portfolio2 - Snake - Group 5</strong></h1>
+<h4 id="students-s341833-s341867-s331394">Students: s341833, s341867, s331394</h4>
+<h2 id="implementing-game-mechanics">Implementing game mechanics</h2>
+<hr>
+<p>Technology chosen: Node.js backend with html/css/javascript for graphics and socket.io for networking</p>
+<p>The first thing we had to do was obviously to set up a basic gameboard where we figured using canvas with the p5 library was the best solution. Then we pieced together every function of the game we needed one by one. The snake itself was the natural starting point. Then we added movement, food, growing and so on.</p>
+<p>Once we had the most basic implementation of a snake game we thought it'd be nice to start adding the multiplayer functionality with websockets. We started by registering our snake to the server and for all clients to retrieve other registered snakes. In theory this makes it possible for an infinte ammount of players.</p>
+<p>Now that we had a functioning multiplayer snake we added features that is not totally necessary but nice to have in the game. This includes dying when hitting another snake, dead snakes turning into food and scores just to mention some of them.</p>
+<p>Now that we had completed all the expected features we started on the stretch goals. The natural first stretch goal to start with was a database to store scores on. We used mongodb to implement this. We figured creating users was also nice for having personal best scores and improving on top score whilst noone else could have that name.</p>
+<p>Having users also made it natural to implement API so that we have a starting page for login and instructions while the game itself could be its own thing. Other stretch goals we have implemented are https with openssl (self signed certification on port 8081), google authentication, scrolling the game, allowing for 10 &lt; players, password hashing with bcrypt and finally prometheus with grafana. Prometheus with grafana allows us to monitor any data we would like from the project.</p>
+<p>We decided not to implement bots on purpose as we thought it would not be good for the game.</p>
+<h2 id="running-the-project">Running the project</h2>
+<hr>
+<p>Deployment with docker is necessary. To start hosting use the following command.</p>
+<pre class="hljs"><code><div>docker compose up --build -d
+</div></code></pre>
+<p>Alternatively you could run the project in seperate docker containers with these commands</p>
+<pre class="hljs"><code><div>docker network create skynet
+
+docker build -t snake-server .
+
+docker run --network skynet --name mongodb -v $(pwd)/mongodb/data:/data/db -e MONGO_INITDB_ROOT_PASSWORD=root -e MONGO_INITDB_USERNAME=root -d mongo
+
+docker run --network skynet --name node_app -p 8080:8080 -p 8081:8081 snake-server
+
+docker run --network skynet --name prometheus -p 9090:9090 -v $(pwd)/Prometheus/prometheus.yml:/etc/prometheus prom/prometheus
+
+docker run --network skynet --name grafana - 3000:3000 -v $(pwd)/Grafana:/var/lib/grafana stefanwalther/grafana
+</div></code></pre>
+<p>Now if you enter a browser and type in: http://localhost:8080 or alternatively for secure connection: https://localhost:8081 you should be able to get to the login page. If you enter with the https you have to approove it yourself as most browsers will not say it is a valid certification. Sign in with google is not available on google chrome with https, as google do not accept the certification. To be able to use TLS/SSL we had to sign our own certificate since we dont have a domain. We used openssl for this.</p>
+<pre class="hljs"><code><div>openssl genrsa -out key.pem
+
+openssl req -new -key key.pem -out csr.pem
+
+openssl x509 -req -days 365 -n csr.pem -signkey key.pem -out cert.pem
+
+</div></code></pre>
+<p>We have also used the OsloMet linux VM to host for testing purposes, so that we could test within the group without being on the same network. This gave us the address os13.vlab.cs.hioa.no:8081 where anyone on the internet could come in and try. This was very useful in testing the multiplayer mechanics, as we have not been able to meet in person due to the world conditions.</p>
+<h2 id="interaction-with-the-end-product">Interaction with the end product</h2>
+<hr>
+<p>You will get instructions on how to play the game on the login page as well.</p>
+<p>To start the game you have two options. You can log in with a user or through google. If you do not have a user/google account and/or do not wish to use google you can easily create a user by clicking the 'Register' button. When having clicked the register button you can fill in the input field with a username and password of your choice as long as username is not already registered in the database.</p>
+<p>Test user is already created for testing where you can input admin as both username and password in the input fields for login.</p>
+<p>Once logged in you are immediately placed in the game, but you are just standing still. You can start moving in any of direction by pressing either the arrowkeys or the 'WASD' keys on your keyboard. The entirety of the game is played with these keys, but there are a few additional keys available. You can press the 'C' key if you are not happy with the colour of your snake, and you'll be given another random colour. If you want the game zoomed more in or out you can press the keys '-' or '+' respectively. We also have the keypress 'H' for help.</p>
+<p>When moving, the goal of the game is to get the highest possible score. Move towards the red or green circles and you will get bigger and get a higher score. If you hit the white walls or another snake you will die and your score will reset. You know that you have died when a large red text in the middle of the screen pops up saying &quot;You Died!&quot;. To start over again all you have to do is to press the green button that also showed up when you died. If you die or disconnect (by for example closing the browser) your score will be saved if it beats your previous score. If your score is higher than any other players score then it will show under &quot;All time high score&quot;.</p>
+<p>If you get outside of the board during the shrinking process, you are able to get inside the board without getting killed. Once you have entered the new gameboard, moving outside will get you killed.</p>
+<h2 id="goals-we-believe-we-have-succeeded-in-implementing-into-the-project">Goals we believe we have succeeded in implementing into the project</h2>
+<hr>
+<h3 id="user-stories-goals">User stories goals:</h3>
+<ul>
+<li>
+<p>Starting the program and easily start playing alone with no one else connected</p>
+</li>
+<li>
+<p>Moving the snake around the board using the keyboard</p>
+</li>
+<li>
+<p>Dead players turning into food</p>
+</li>
+<li>
+<p>Game tells you what keys to use so that you do not have to refer to documentation</p>
+</li>
+<li>
+<p>Running into walls and other players will kill you</p>
+</li>
+<li>
+<p>Very clear indication of death</p>
+</li>
+<li>
+<p>Scrolling is automatic when no outer wall is visible</p>
+</li>
+<li>
+<p>A clear list of connected players</p>
+</li>
+<li>
+<p>Snake grows by running into &quot;food&quot;</p>
+</li>
+<li>
+<p>Points given for getting bigger and ammount of points are clearly visible</p>
+</li>
+</ul>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Minimum of 2 players supported</li>
+</ul>
+<h3 id="stretch-goals">Stretch Goals</h3>
+<ul>
+<li>
+<p>Secure all communication with TLS (https with openssl)</p>
+</li>
+<li>
+<p>Prometheus and Grafana is used to monitor usage, and is running in the node backend container, to eliminate usage from other running applications</p>
+</li>
+<li>
+<p>Allowed for 10 &lt; players or unlimited players.adding</p>
+</li>
+<li>
+<p>(Follow up from previous goal) Scrolling is implemented due to large ammount of players are a possibility. The game board revolves around your snake and not the snake just moving around in the game board</p>
+</li>
+<li>
+<p>Persistent high score list with a database backend (mongodb)</p>
+</li>
+</ul>
+<h3 id="other-goals">Other Goals</h3>
+<ul>
+<li>Password hashing (more secure login)</li>
+<li>Google authentication (option of google login)</li>
+<li>Snake kills itself if hitting its own body</li>
+<li>The wall is increasing or decreasing in size, depending on the live amount of players.</li>
+<li>If a player is outside of the wall because the size of the game zone got smaller, it doesn't get killed.</li>
+</ul>
+<h2 id="screenshots-of-end-product-and-output">Screenshots of end product and output</h2>
+<hr>
+<p><img src="./MediaReadme/docker_compose.png" alt="Docker compose output"></p>
+<ul>
+<li>If the console displays node_app og mongodb started, run the command underneath to check for next step</li>
+</ul>
+<pre class="hljs"><code><div>docker logs -f node_app
+</div></code></pre>
+<p><img src="./MediaReadme/console.png" alt="Console of node.js server"></p>
+<ul>
+<li>If the console displays http server, https server and connected to db the application has started the right way</li>
+</ul>
+<p><img src="./MediaReadme/login_register.png" alt="login/Register"></p>
+<ul>
+<li>This is the screen you will be faced with when first opening the page. From here you can see instructions on how to play the game as well as your options for logging in/registering</li>
+</ul>
+<p><img src="./MediaReadme/board.png" alt="Game board"></p>
+<ul>
+<li>How it looks while playing the game. In this example there are three players.</li>
+<li>On the right you can see the scores, players and highscore.</li>
+<li>Upper left corner, H, press h to show help.</li>
+</ul>
+<p><img src="./MediaReadme/doedskjerm.JPG" alt="death screen"></p>
+<ul>
+<li>This is the screen you will face when you die.</li>
+<li>Here you have two buttons.
+<ol>
+<li>Start again with the green button.</li>
+<li>Show help with the yellow button (this does the same as pressing the 'h' key)</li>
+</ol>
+</li>
+</ul>
+<p><img src="./MediaReadme/help.JPG" alt="help screen"></p>
+<ul>
+<li>This is the help screen while playing the game.</li>
+<li>The game continues even with the screen on</li>
+</ul>
+<p><img src="./MediaReadme/resize.gif" alt="Resize"></p>
+<ul>
+<li>In this GIF you can see movement and death screen, but the point is to show how the gameboard grows bigger when an additional player joins the game.</li>
+</ul>
+<p><img src="./MediaReadme/kill.gif" alt="kill gif"></p>
+<ul>
+<li>This GIF shows a player dying and the screen shrinking due to one less player in the game.</li>
+</ul>
+<h6 id="nb-for-gifs-to-work-open-md-or-html-file">NB! for gifs to work open .md or .html file</h6>
+<p><img src="./MediaReadme/grafana.png" alt="Grafana"></p>
+<ul>
+<li>This shows that network recieved and network transmitted is greater the more players and activity are present in the game. From 0 to 3 players the memory went up 2 per cent points. CPU idles at 2% with no players, and peaks at 25% with 3 players connected. Grafana dashboard is present at http://localhost:3000.</li>
+</ul>
+<h2 id="comments-on-choices-we-have-made">Comments on choices we have made</h2>
+<hr>
+<ul>
+<li>
+<p><strong>We decided on not having any bots</strong></p>
+<p>We did not find any easy way to implement this in JS, and since the rest of the project is done in JS we found it unnatural to try. Additionally the program is very resource demanding, so running bots on the same machine would not be a good idea.</p>
+</li>
+<li>
+<p><strong>Why we chose mongodb as our database</strong></p>
+<p>We had only used SQL database before, so we figured it would be nice to try something different. Mongodb also stores data as JSON files which means that the variables and values in the database have the same structure. This makes the transition to and from the database easy. It is also the most used database with node.js framework</p>
+</li>
+<li>
+<p><strong>Why we chose node.js backend and socket.io for networking</strong></p>
+<p>We all have had some experience with javascript before, and we also thought that a snake game fits best being web based. This made it the most natural choice for us.</p>
+</li>
+<li>
+<p><strong>Why use p5.js for graphics rendering</strong></p>
+<p>Some of us have used p5 before and knew this was a very useful tool for making the graphics work. With this framework you get all the core functionality and tools for you to make the game as you wish. You just have to make the choices and implementation yourself.</p>
+</li>
+<li>
+<p><strong>Why use docker compose</strong></p>
+<p>Since we have multiple applications that are dependent on each other, we needed a way for them to communicate and work together. This can be done with normal docker commands, however doing it with a well configured docker compose file you can start the entire project seamlessly.</p>
+</li>
+<li>
+<p><strong>Why our backend server is serving our frontend application</strong></p>
+<p>In the beginning of the development we faced problems when backend and frontend where running different applications because CORS stopped networking. To avoid this problem we made our backend application serve our frontend as well.</p>
+</li>
+<li>
+<p><strong>Why have prometheus node exporter running inside of the backend docker container</strong></p>
+<p>This allows us to only monitor the computer usage that comes from the game. This means that if other applications are running the on the same computer it will not dillute the data.</p>
+</li>
+</ul>
+<h2 id="libraries-and-sources-used-making-this-project">Libraries and sources used making this project</h2>
+<hr>
+<ul>
+<li>node.js</li>
+<li>express</li>
+<li>socket.io</li>
+<li>mongoose</li>
+<li>Bcrypt</li>
+<li>google-auth-library</li>
+</ul>
+<hr>
+<ul>
+<li>p5.js</li>
+<li>bootstrap</li>
+<li>google-apis-platform.js</li>
+</ul>
+<hr>
+<ul>
+<li>openssl</li>
+</ul>
+<hr>
+<ul>
+<li>Prometheus</li>
+<li>Grafana</li>
+</ul>
+
+</body>
+</html>

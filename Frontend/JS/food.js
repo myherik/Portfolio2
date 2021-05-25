@@ -1,6 +1,6 @@
-class Food{
+class Food {
 
-    constructor(x, y, name){
+    constructor(x, y, name) {// constructor for food object
         //console.log(x + " " + y)
         this.x = x;
         this.y = y;
@@ -8,15 +8,22 @@ class Food{
         this.name = name;
     }
 
-    show() {
-        fill(150, 50, 70);
-        noStroke();
-        circle(this.x, this.y, 5);
+    show() { // p5 code for showing snake
+        if (this.name !== null) {
+            fill(150, 50, 70);
+            noStroke();
+            circle(this.x, this.y, 5);
+        } /*else {
+            fill(70, 150, 50);
+            noStroke();
+            circle(this.x, this.y, 5);
+        }*/
+
     }
 
-    refreshFood() {
-        let x = Math.floor(Math.random() * 715 + 2.5);
-        let y = Math.floor(Math.random() * 495 + 2.5);
+    refreshFood() { // refreshing food when original food is eaten
+        let x = Math.floor(Math.random() * (boardWidth - 10) + 5);
+        let y = Math.floor(Math.random() * (boardHeight - 10) + 5);
 
         //this = new Food(x, y)
         this.food.x = x;

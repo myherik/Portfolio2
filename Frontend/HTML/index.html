@@ -10,13 +10,17 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/CSS/main.css">
+    <!-- Google sign-in stuff -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- NOTE: Replace "content" with your own client ID -->
+    <meta name="google-signin-client_id" content="381497228886-mmimqoc80fkg0k813q80r20ejhf42npn.apps.googleusercontent.com">
 </head>
 
 <body style="background-color: #e5e5e5">
 
-    <div class="column">
-        <div id="LorR">
-            <div class="show" id="login">
+    <div class="column"> <!-- All content is inside this div -->
+        <div id="LorR"> <!-- This is the form for Login an Register when visible -->
+            <div class="show" id="login"> <!-- Login form  -->
                 <h1>Log in and play</h1>
                 <div class="input-group mb-3" style="display:flex; flex-direction: row;">
                     <input type="text" id="loginNm" class="form-control" placeholder="username">
@@ -27,7 +31,7 @@
                 </div>
                 <p id="loginMessage"></p>
             </div>
-            <div class="hidden" id="reg">
+            <div class="hidden" id="reg"> <!-- Register form -->
                 <h1>Register a new account to play</h1>
                 <div class="input-group mb-3" style="display:flex; flex-direction: row;">
                     <input type="text" id="regNm" class="form-control" placeholder="username">
@@ -38,36 +42,71 @@
                 </div>
                 <p id="registerMessage"></p>
             </div>
-            <div class="show">
+            <div class="show"> <!-- div for button where you can toggle between login or register as well as google login -->
                 <h3 id="toggleText">Don't have an account? Click here to register!</h3>
                 <button class="btn btn-primary" onclick="toggle()" id="toggleButton" class="button">Register</button>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </div>
         </div>
-        <div class="row-3">
-            <br>
+        <div class="row-3"> <!-- I know it says row, but it is the second column of content -->
+            <br> <!-- This column contains Instructions on how to play the game -->
             <h1>✨How to play✨</h1>
-            <p>To move around press either the arrowkeys shown here</p>
-            <img class="imageKeys" src="/Media/arrowblanks.png" alt="arrowkeys image">
-            <p>or use the "wasd" keys shown here</p>
-            <img class="imageKeys" src="/Media/wasdkeys.png" alt="wasd keys image">
-            <h4>Basic instructions</h4>
-            <div class="textbox">
-                <p>Change colour of your snake by pressing 'c'</li>
-                <p>Grow bigger by eating the red apples</li>
-                <p>Do not hit the border as you will die</li>
-                <p>Do not hit another snake as you will die</li>
+            <div class="keys">
+                <div class="key">
+                    <img class="imageKeys" src="/Media/arrowblanks.png" alt="arrowkeys image">
+                    <p>To move around press either the arrowkeys shown here</p>
+                </div>
+                <div class="key">
+                    <img class="imageKeys" src="/Media/wasdkeys.png" alt="wasd keys image">
+                    <p>or use the "wasd" keys shown here</p>
+                </div> 
             </div>
-            <h4>General information</h4>
-            <div class="textbox">
-                <p>Bigger snake = bigger score</li>
-                <p>Dead snakes turn into food equivalent to their score</li>
+            <div class="keys">
+                <div class="key">
+                    <img class="imageKeys" src="/Media/ckey.png" alt="c key image">
+                    <p>Click to change color</p>
+                </div> 
+                <div class="key">
+                    <img class="imageKeys" src="/Media/hkey.png" alt="h key image">
+                    <p>Show help</p>
+                </div> 
             </div>
+            <div class="keys">
+                <div class="key">
+                    <img class="imageKeys" src="/Media/plusskey.png" alt="+ key image">
+                    <p>Zoom in</p>
+                </div> 
+                <div class="key">
+                    <img class="imageKeys" src="/Media/minuskey.png" alt="- key image">
+                    <p>Zoom out</p>
+                </div> 
+            </div>
+            <div class="keys">
+                <div class="key">
+                    <h4>Basic instructions</h4>
+                    <div class="textbox">
+                        <p>Grow bigger by eating the red or green apples</p>
+                        <p>Do not hit the border as you will die</p>
+                        <p>Do not hit another snake as you will die</p>
+                    </div>
+                </div>
+                <div class="key">
+                    <h4>General information</h4>
+                    <div class="textbox">
+                        <p>Bigger snake = bigger score</p>
+                        <p>Dead snakes turn into food equivalent to their score</p>
+                        <p>Green apples = dead snakes</p>
+                    </div>
+                </div>
+            </div>
+            
+            
             <br>
         </div>
     </div>
 
-
-
+    <!-- Scripts necessary to make index work -->
+    <script src="/JS/google.js"></script>
     <script src="/JS/index.js"></script>
 </body>
 
